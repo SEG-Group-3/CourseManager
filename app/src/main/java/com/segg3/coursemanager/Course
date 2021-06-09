@@ -1,0 +1,17 @@
+package com.segg3.coursemanager;
+
+import java.util.Date;
+
+class Course {
+    public String name;
+    public String code;
+    public Date date;
+
+
+    public Course(String name, String code, Date date) {
+        this.name = name;
+        this.code = code;
+        this.date = date;
+    }
+
+}
