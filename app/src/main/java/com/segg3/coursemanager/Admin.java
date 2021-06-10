@@ -3,6 +3,7 @@ package com.segg3.coursemanager;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import android.nfc.Tag;
 import android.util.DebugUtils;
@@ -110,7 +111,7 @@ class Admin extends User{
             @Override
             public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
+                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                         Course courseTmp = new Course(document.get(COURSENAME_KEY, String.class), document.get(COURSECODE_KEY, String.class), null, document.getId());
                     }
                 }
