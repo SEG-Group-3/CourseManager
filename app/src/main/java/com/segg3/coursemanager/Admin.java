@@ -105,6 +105,20 @@ class Admin extends User{
         });
     }
 
+    private void readCourseDatabase() {
+        courseDB.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Course courseTmp = new Course(document.get(COURSENAME_KEY, String.class), document.get(COURSECODE_KEY, String.class), null, document.getId());
+                    }
+                }
+            }
+        });
+    }
+
+
     public void deleteUser(String userId) {
 
         userDB.document(userId).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
