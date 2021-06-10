@@ -6,12 +6,13 @@ class Course {
     public String name;
     public String code;
     public Date date;
+    private String id;
 
-
-    public Course(String name, String code, Date date) {
+    public Course(String name, String code, Date date, String id) {
         this.name = name;
         this.code = code;
         this.date = date;
+        this.id = id;
     }
 
     //Setters
@@ -25,6 +26,12 @@ class Course {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    //Getters
+
+    public String getId() {
+        return this.id;
     }
 
 }

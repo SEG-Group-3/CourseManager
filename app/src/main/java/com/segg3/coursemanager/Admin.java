@@ -65,10 +65,23 @@ class Admin extends User{
         });
     }
 
-    public void deleteCourse(Course course) {
-
+    public void deleteCourse(String delCourseID) {
+        courseDB.document(delCourseID).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Log.d("Message:", "Course was deleted.");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull @NotNull Exception e) {
+                Log.w("Message:", "Course could not be deleted.");
+            }
+        });
     }
 
+    public void deleteCourse(Course course) {
+        deleteCourse(course.getId());
+    }
 
     /*
     Parameters:
