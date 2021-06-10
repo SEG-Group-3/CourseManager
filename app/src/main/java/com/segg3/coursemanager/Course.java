@@ -6,7 +6,7 @@ class Course {
     public String name;
     public String code;
     public Date date;
-    private String id;
+    private final String id;
 
     public Course(String name, String code, Date date, String id) {
         this.name = name;

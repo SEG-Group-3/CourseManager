@@ -34,10 +34,11 @@ class Admin extends User{
         super(userID, name, email, username, loginToken);
     }
 
+    //Attribute names for database
     public static final String COURSENAME_KEY = "name";
-    public static final String COURSECODE_KEY = "Id";
+    public static final String COURSECODE_KEY = "code";
 
-
+    //Database references for adding/deleting/editing courses/users
     private static final CollectionReference courseDB = FirebaseFirestore.getInstance().collection("Courses");
     private static final CollectionReference userDB = FirebaseFirestore.getInstance().collection("Users");
 
