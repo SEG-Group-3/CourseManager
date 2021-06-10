@@ -29,7 +29,6 @@ import org.jetbrains.annotations.NotNull;
 
 class Admin extends User{
 
-
     public Admin(String userID, String name, String email, String username, String loginToken) {
         super(userID, name, email, username, loginToken);
     }
@@ -120,7 +119,6 @@ class Admin extends User{
         });
     }
 
-
     public void deleteUser(String userId) {
 
         userDB.document(userId).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -136,7 +134,6 @@ class Admin extends User{
         });
     }
 
-
     public void deleteUser(User delUser) {
 
         userDB.document(delUser.getUserID()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -151,6 +148,5 @@ class Admin extends User{
             }
         });
     }
-
 
 }
