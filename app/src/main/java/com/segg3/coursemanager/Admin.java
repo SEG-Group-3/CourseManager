@@ -1,6 +1,7 @@
 package com.segg3.coursemanager;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import android.nfc.Tag;
@@ -32,17 +33,36 @@ class Admin extends User{
         super(userID, name, email, username, loginToken);
     }
 
+    public static final String COURSENAME_KEY = "name";
+    public static final String COURSECODE_KEY = "Id";
+
 
     private static final CollectionReference courseDB = FirebaseFirestore.getInstance().collection("Courses");
     private static final CollectionReference userDB = FirebaseFirestore.getInstance().collection("Users");
+
+    // for adding course
+    HashMap<String, Object> courseDatabase = new HashMap<>();
 
     @Override
     public String getType()
     {
         return "Admin";
     }
-    public void createCourse(String courseCode, String courseName) {
 
+    public void createCourse(Course course) {
+        courseDatabase.put(COURSENAME_KEY, course.name);
+        courseDatabase.put(COURSECODE_KEY, course.code);
+        courseDB.add(courseDatabase).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                Log.d("Message:", "Course was created.");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull @NotNull Exception e) {
+                Log.w("Message:", "Course could not be created.");
+            }
+        });
     }
 
     public void deleteCourse(Course course) {
@@ -59,7 +79,7 @@ class Admin extends User{
     public void editCourse(Course course, String newName, String newCode) {
         DocumentReference doc = courseDB.document(course.code);
 
-        doc.update( course.code, newCode, course.name, newName).addOnSuccessListener(new OnSuccessListener<Void>() {
+        doc.update(course.code, newCode, course.name, newName).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 Log.d("Message:", "Course edit successful.");
