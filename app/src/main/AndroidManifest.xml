@@ -8,14 +8,21 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.CourseManager">
-        <activity android:name=".MainActivity">
+        android:theme="@style/Theme.CourseManager"
+        android:fullBackupContent="false">
+<!--        Declaration of all activities in our app-->
+        <activity android:name=".MainActivity" android:screenOrientation="nosensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".auth.login.ui.LoginActivity" android:screenOrientation="nosensor"/>
+        <activity android:name=".auth.register.ui.RegisterActivity" android:screenOrientation="nosensor"/>
+
+
+
     </application>
 
 </manifest>
