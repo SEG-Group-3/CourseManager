@@ -17,4 +17,23 @@ abstract class User {
 
     public abstract String getType();
 
+
+    //Setters:
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getLoginToken() {
+        return loginToken;
+    }
+
 }
