@@ -49,8 +49,27 @@ class Admin extends User{
 
     }
 
-    public void editCourse(Course course) {
 
+    /*
+    Parameters:
+    course -> course to be edited.
+    newName -> new course name.
+    newCode -> new course code.
+     */
+    public void editCourse(Course course, String newName, String newCode) {
+        DocumentReference doc = courseDB.document(course.code);
+
+        doc.update( course.code, newCode, course.name, newName).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Log.d("Message:", "Course edit successful.");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull @NotNull Exception e) {
+                Log.w("Message:", "Course edit unsuccessful.");
+            }
+        });
     }
 
     public void deleteUser(String userId) {
