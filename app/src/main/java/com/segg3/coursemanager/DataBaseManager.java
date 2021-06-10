@@ -17,7 +17,7 @@ public abstract class DataBaseManager
 
     protected DataBaseManager()
     {
-        db.addSnapshotListener((snapshots, e) -> {
+        DataBaseManager.db.addSnapshotListener((snapshots, e) -> {
             if (e != null) {
                 Log.w("TAG", "listen:error", e);
                 return;
