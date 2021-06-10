@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "47300807058",
+    "project_id": "coursemanager-dc94b",
+    "storage_bucket": "coursemanager-dc94b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:47300807058:android:465b7ba54cdbce48bd994b",
+        "android_client_info": {
+          "package_name": "com.segg3.coursemanager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "47300807058-5ansfjevvjco5lh89sm64enp0pnrfpso.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAc10D6HWKjTTOTr7o-azo6HuVndPe-Oho"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "47300807058-5ansfjevvjco5lh89sm64enp0pnrfpso.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
