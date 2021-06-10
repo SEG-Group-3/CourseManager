@@ -1,3 +1,26 @@
 <resources>
     <string name="app_name">Course Manager</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_username">Username</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_log_in">Log in</string>
+    <string name="action_sign_up">Sign up</string>
+    <string name="welcome">Sign up or log in to continue</string>
+    <string name="account_created">Account Created!</string>
+
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_email">Not a valid email address</string>
+    <string name="invalid_password_confirmation">Password does not match first entry</string>
+    <string name="error_empty_selection">An item must be selected</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="error_empty_field">Field Cannot Be empty</string>
+    <string name="login_failed">"Incorrect Username or Password"</string>
+    <string name="description_main_logo">University of Ottawa</string>
+    <string name="prompt_account_type">Account Type</string>
+    <string name="prompt_full_name">Full Name</string>
+    <string name="prompt_confirm_password">Confirm Password</string>
+    <string name="description_close_button">Close Button</string>
+    <string name="role_student">Student</string>
+    <string name="role_instructor">Instructor</string>
 </resources>

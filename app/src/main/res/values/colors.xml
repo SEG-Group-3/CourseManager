@@ -9,4 +9,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="garnet">#8f001a</color>
     <color name="light_garnet">#BD0016</color>
+    <color name="polar_grey">#F2F2F2</color>
+    <color name="charcoal_grey">#2D2D2C</color>
+    <color name="gallery_grey">#EFEFEF</color>
+
 </resources>

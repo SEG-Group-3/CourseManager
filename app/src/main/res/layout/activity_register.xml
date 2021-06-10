@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/garnet"
-    android:foregroundTint="#040303"
-    android:foregroundTintMode="add">
+    android:layout_height="match_parent">
+
+    <ImageButton
+        android:id="@+id/close_button"
+        android:layout_width="48dp"
+        android:layout_height="44dp"
+        android:layout_margin="20sp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/description_close_button"
+        android:scaleX="2"
+        android:scaleY="2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/presence_offline" />
+
 
     <androidx.cardview.widget.CardView
 
@@ -16,14 +26,14 @@
         android:layout_margin="5sp"
         android:clickable="true"
         android:focusable="true"
-        app:cardBackgroundColor="@color/light_garnet"
+        app:cardBackgroundColor="@color/gallery_grey"
         app:cardCornerRadius="20dp"
         app:cardElevation="0sp"
         app:cardUseCompatPadding="true"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
+        app:layout_constraintBottom_toTopOf="@+id/sign_up_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton">
+        app:layout_constraintTop_toBottomOf="@+id/close_button">
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -31,37 +41,60 @@
             android:orientation="vertical">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/menu"
+                android:id="@+id/username_input"
+
+                android:layout_width="fill_parent"
+                android:layout_height="0sp"
+                android:layout_margin="10sp"
+                android:layout_weight="1">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    style="material"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:hint="@string/prompt_username"
+                    android:singleLine="true"
+                    android:textColor="@color/light_garnet" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/account_type_menu"
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-                android:layout_width="match_parent"
-                android:layout_height="50sp"
-                android:layout_margin="20sp"
-                android:hint="Account Type">
+                android:layout_width="fill_parent"
+                android:layout_height="0sp"
+                android:layout_margin="10sp"
+                android:layout_weight="1">
 
                 <AutoCompleteTextView
+                    android:id="@+id/account_type_dropdown"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
 
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:backgroundTint="@color/white"
+                    android:hint="@string/prompt_account_type"
                     android:inputType="none"
                     android:textColor="@color/black" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout"
 
+                android:id="@+id/name_input"
                 android:layout_width="fill_parent"
-                android:layout_height="50sp"
-                android:layout_margin="20sp">
+                android:layout_height="0sp"
+                android:layout_margin="10sp"
+                android:layout_weight="1">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/usernameInput"
                     style="material"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="@color/white"
-                    android:hint="Full Name"
+                    android:hint="@string/prompt_full_name"
                     android:singleLine="true"
                     android:textColor="@color/light_garnet" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -69,69 +102,59 @@
             <com.google.android.material.textfield.TextInputLayout
 
 
+                android:id="@+id/email_input"
                 android:layout_width="fill_parent"
-                android:layout_height="50sp"
-                android:layout_margin="20sp">
+                android:layout_height="0sp"
+                android:layout_margin="10sp"
+                android:layout_weight="1">
 
                 <com.google.android.material.textfield.TextInputEditText
 
                     style="material"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="@color/white"
-                    android:hint="Email"
+                    android:hint="@string/prompt_email"
                     android:singleLine="true"
                     android:textColor="@color/light_garnet" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
 
+                android:id="@+id/password_input"
                 android:layout_width="fill_parent"
-                android:layout_height="50sp"
-                android:layout_margin="20sp"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/passwordInput"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@color/white"
-                    android:hint="Password"
-                    android:singleLine="true"
-                    android:textColor="@color/black" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout2"
-
-                android:layout_width="fill_parent"
-                android:layout_height="50sp"
-                android:layout_margin="20sp"
-                app:layout_constraintEnd_toEndOf="parent">
+                android:layout_height="0sp"
+                android:layout_margin="10sp"
+                android:layout_weight="1"
+                app:layout_constraintTop_toBottomOf="@+id/username_input"
+                app:passwordToggleEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@color/white"
-                    android:hint="Confirm Password"
+                    android:hint="@string/prompt_password"
+                    android:inputType="textPassword"
                     android:singleLine="true"
                     android:textColor="@color/black" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <ImageView
                 android:id="@+id/imageView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:layout_height="0sp"
                 android:layout_gravity="center"
-                android:scaleX="0.75"
-                android:scaleY="0.75"
+                android:layout_weight="1"
+                android:contentDescription="@string/description_main_logo"
+                android:scaleX="0.5"
+                android:scaleY="0.5"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:srcCompat="@drawable/ic_uottawa"
-                app:tint="#FFFFFF" />
+                app:tint="@color/black" />
 
         </LinearLayout>
 
@@ -139,11 +162,11 @@
     </androidx.cardview.widget.CardView>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/button2"
+        android:id="@+id/sign_up_button"
         android:layout_width="fill_parent"
         android:layout_height="75dp"
         android:layout_margin="20sp"
-        android:text="Sign Up"
+        android:text="@string/action_sign_up"
         android:textAllCaps="false"
         app:cornerRadius="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -151,17 +174,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:strokeColor="@color/white"
         app:strokeWidth="2sp" />
-
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="48dp"
-        android:layout_height="44dp"
-        android:layout_margin="20sp"
-        android:background="@android:color/transparent"
-        android:scaleX="2"
-        android:scaleY="2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/presence_offline" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
