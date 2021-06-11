@@ -10,6 +10,10 @@ public class AccountAccess extends DataBaseManager{
 
     private static CollectionReference db = FirebaseFirestore.getInstance().collection("Users");
 
+    private final String PASSWORD_KEY = "password";
+    private final String USERNAME_KEY = "userName";
+    private final String TYPE_KEY = "type";
+
     private List<User> users = new ArrayList<User>();
 
 
