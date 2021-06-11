@@ -23,4 +23,13 @@
     <string name="description_close_button">Close Button</string>
     <string name="role_student">Student</string>
     <string name="role_instructor">Instructor</string>
+
+    <string name="navigation_drawer_open">Open Navigation Drawer</string>
+    <string name="navigation_drawer_close">Close Navigation Drawer</string>
+    <string name="home">Home</string>
+    <string name="courses">Courses</string>
+    <string name="students">Students</string>
+    <string name="log_out">Log Out</string>
+    <string name="welcome_prefix">Welcome,</string>
+    <string name="home_tutorial">Click the hamburger menu to see more options</string>
 </resources>
