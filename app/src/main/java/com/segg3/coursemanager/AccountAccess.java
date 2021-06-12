@@ -122,7 +122,11 @@ public class AccountAccess extends DataBaseManager{
         return user;
     }
 
-    public static boolean createAccount()
+    public void createAccount()
+    {
+        throw new UnsupportedOperationException();
+    }
+    public void editAccount()
     {
         throw new UnsupportedOperationException();
     }
