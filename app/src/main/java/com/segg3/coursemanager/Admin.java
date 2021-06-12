@@ -2,8 +2,10 @@ package com.segg3.coursemanager;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 import android.nfc.Tag;
 import android.util.DebugUtils;
@@ -37,6 +39,9 @@ public class Admin extends User{
     public static final String COURSENAME_KEY = "name";
     public static final String COURSECODE_KEY = "code";
 
+    // For reading database
+    private Consumer<List<Course>> listener = null;
+
     //Database references for adding/deleting/editing courses/users
     private static final CollectionReference courseDB = FirebaseFirestore.getInstance().collection("Courses");
     private static final CollectionReference userDB = FirebaseFirestore.getInstance().collection("Users");
@@ -48,6 +53,15 @@ public class Admin extends User{
     public String getType()
     {
         return "Admin";
+    }
+
+
+    public void setListener(Consumer<List<Course>> listener) {
+        this.listener = listener;
+    }
+
+    public void removeListener() {
+        this.listener = null;
     }
 
     public void createCourse(Course course) {
