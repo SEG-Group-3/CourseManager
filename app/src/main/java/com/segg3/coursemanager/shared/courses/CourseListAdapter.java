@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.segg3.coursemanager.Course;
@@ -38,6 +39,7 @@ public class CourseListAdapter extends RecyclerView.Adapter<CardViewHolder> {
         holder.title.setText(courseList.get(position).name);
         holder.subtitle.setText(courseList.get(position).code);
         holder.subsubtitle.setText(courseList.get(position).getId());
+        holder.imageView.setImageDrawable(AppCompatResources.getDrawable(holder.imageView.getContext(),R.drawable.ic_book));
     }
 
     @Override
