@@ -1,5 +1,6 @@
 package com.segg3.coursemanager;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +42,7 @@ public class Admin extends User{
 
     // For reading database
     private Consumer<List<Course>> listener = null;
+    private List<Course> listOfCourses = new ArrayList<>();
 
     //Database references for adding/deleting/editing courses/users
     private static final CollectionReference courseDB = FirebaseFirestore.getInstance().collection("Courses");
@@ -150,10 +152,19 @@ public class Admin extends User{
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                         Course courseTmp = new Course(document.get(COURSENAME_KEY, String.class), document.get(COURSECODE_KEY, String.class), null, document.getId());
+                        listOfCourses.add(courseTmp);
                     }
+                    listener.accept(listOfCourses);
+                    Log.d("Message:", toString());
+                } else {
+                    Log.w("Message:", "Error getting courses", task.getException());
                 }
             }
         });
+    }
+
+    public List<Course> getListOfCourses() {
+        return listOfCourses;
     }
 
     public void deleteUser(String userId) {
