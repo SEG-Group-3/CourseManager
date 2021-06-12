@@ -11,6 +11,15 @@ public abstract class DataBaseManager
     private static CollectionReference db;
     protected static DataBaseManager instance;
 
+    protected DataBaseManagerListener listener;
+
+    public interface DataBaseManagerListener
+    {
+        public void onFinish(String message);
+        public void onFinish(String message, Object data);
+    }
+
+
     public static DataBaseManager getInstance()
     {
         throw new IllegalStateException();
@@ -26,6 +35,11 @@ public abstract class DataBaseManager
             readDataBase();
         });
         readDataBase();*/
+    }
+
+    public void setListener(DataBaseManagerListener listener)
+    {
+        this.listener = listener;
     }
 
     protected String get(QueryDocumentSnapshot document, String key)
