@@ -34,7 +34,7 @@ public abstract class DataBaseManager
         {
             return document.get(key, String.class);
         }
-        return "";
+        return null;
     }
 
     abstract void readDataBase();
