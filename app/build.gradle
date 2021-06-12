@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "com.segg3.coursemanager"
-        minSdkVersion 29
+        minSdkVersion 27
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
