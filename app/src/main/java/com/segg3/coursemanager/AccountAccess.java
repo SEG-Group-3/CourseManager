@@ -113,8 +113,13 @@ public class AccountAccess extends DataBaseManager{
                                         break;
                                 }
                                 onSuccessListener.onSuccess(user);
-                            }
 
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            onFailureListener.onFailure(new Exception("Failed Login"));
                         }
                     } else {
                         onFailureListener.onFailure(new Exception("Failed Login"));
