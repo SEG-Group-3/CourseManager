@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="100dp"
     android:layout_margin="5dp"
@@ -14,12 +13,16 @@
         android:layout_margin="10sp"
         android:orientation="horizontal">
 
+
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/card_drawable_image"
             android:layout_width="0sp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            tools:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
+            app:srcCompat="@drawable/ic_book" />
+
+
+
 
         <LinearLayout
             android:layout_width="0sp"
@@ -28,20 +31,28 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/couse_name_text"
+                android:id="@+id/card_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autoSizeTextType="uniform"
-                android:text="Course Name"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+                android:text="@string/title"
+                android:textAppearance="?attr/textAppearanceHeadline4" />
 
             <TextView
-                android:id="@+id/course_code_text"
+                android:id="@+id/card_subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autoSizeTextType="uniform"
-                android:text="Course Code"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+                android:text="@string/subtitle"
+                android:textAppearance="?attr/textAppearanceBody1" />
+
+            <TextView
+                android:id="@+id/card_subsubtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoSizeTextType="uniform"
+                android:text="@string/subsubtitle"
+                android:textAppearance="?attr/textAppearanceBody1" />
         </LinearLayout>
 
     </LinearLayout>
