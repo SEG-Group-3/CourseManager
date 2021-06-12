@@ -36,4 +36,9 @@ abstract class User {
         return loginToken;
     }
 
+
+    public String toString()
+    {
+        return "userID:" + userID + "\tname:" + name + "\temail:" + email + "\tusername:";
+    }
 }
