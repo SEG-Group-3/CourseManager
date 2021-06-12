@@ -38,7 +38,7 @@ public class EditCourseFragment extends Fragment {
         UIUtils.createYesNoMenu("Delete Item", "Do you really want to delete this item?", getActivity(), (dialog, which) -> {
             // Delete user here
             UIUtils.swipeFragmentLeft(getParentFragmentManager(), new CourseViewFragment());
-            UIUtils.createToast(getActivity().getApplicationContext(), "User deleted");
+            UIUtils.createToast(getActivity().getApplicationContext(), "Course deleted");
         });
         return super.onOptionsItemSelected(item);
     }
