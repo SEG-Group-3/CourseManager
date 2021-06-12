@@ -1,42 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group
-        android:id="@+id/group1"
-        android:checkableBehavior="single">
-        <item
-            android:id="@+id/item1"
-            android:icon="@drawable/ic_uottawa"
-            android:title="@string/courses"
-            android:checked="true" />
-        <item
-            android:id="@+id/item2"
-            android:icon="@drawable/ic_uottawa"
-            android:title="@string/students" />
-
-    </group>
-
-    <group
-        android:checkableBehavior="single"
-        android:enabled="true">
-
-        <item android:title="Subsection">
-            <menu>
-                <item
-                    android:title="Some stuff" />
-
-                <item
-                    android:title="Even more stuff" />
-
-            </menu>
-
-        </item>
-
-
-    </group>
-
     <item
-        android:id="@+id/nav_logout"
-        android:title="@string/log_out" />
+        android:id="@+id/nav_home"
+        android:title="@string/home" />
+
+
+    <group android:id="@+id/group_admin">
+
+        <item
+            android:id="@+id/nav_edit_courses"
+            android:title="@string/edit_course" />
+        <item
+            android:id="@+id/nav_edit_users"
+            android:title="@string/edit_users"
+            />
+    </group>
+
+
+
+    <group android:id="@+id/group_auth">
+
+        <item
+            android:id="@+id/nav_log_out"
+            android:title="@string/log_out" />
+    </group>
 
 </menu>
