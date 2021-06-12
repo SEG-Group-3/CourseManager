@@ -10,10 +10,10 @@
 
         <item
             android:id="@+id/nav_edit_courses"
-            android:title="@string/edit_course" />
+            android:title="@string/courses" />
         <item
             android:id="@+id/nav_edit_users"
-            android:title="@string/edit_users"
+            android:title="@string/users"
             />
     </group>
 
