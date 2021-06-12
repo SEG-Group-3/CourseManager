@@ -44,12 +44,12 @@ public class AccountAccess extends DataBaseManager{
 
     public void readDataBase()
     {
-
         throw new UnsupportedOperationException();
     }
 
     public User loginUser(String password, String userName)
     {
+        //todo update active users
         db.whereEqualTo(PASSWORD_KEY, password).whereEqualTo(USERNAME_KEY, userName).get()
         .addOnCompleteListener
         (
@@ -113,7 +113,8 @@ public class AccountAccess extends DataBaseManager{
 
     public boolean logOutUser()
     {
-        throw new UnsupportedOperationException();
+        //todo check if user is active
+        user = null;
     }
 
     public User getUser()
