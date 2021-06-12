@@ -1,10 +1,13 @@
 package com.segg3.coursemanager;
 
+import android.app.Activity;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -14,6 +17,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -48,8 +53,6 @@ public class AccountAccess extends DataBaseManager{
     {
         //super();
     }
-
-
 
     public void readDataBase()
     {
@@ -109,12 +112,12 @@ public class AccountAccess extends DataBaseManager{
                                             );
                                         break;
                                 }
-                                listener.onFinish("Logged in success", user);
+                                onSuccessListener.onSuccess(user);
                             }
 
                         }
                     } else {
-                        listener.onFinish("Logged in fail",null);
+                        onFailureListener.onFailure(new Exception("Failed Login"));
                         Log.d("FIRE", "Error getting documents: ", task.getException());
                     }
                 }
@@ -127,7 +130,7 @@ public class AccountAccess extends DataBaseManager{
     {
         //todo check if user is active
         user = null;
-        listener.onFinish("Logged out success");
+        onCompleteListener.onComplete(null);
     }
 
     public User getUser()
@@ -169,7 +172,6 @@ public class AccountAccess extends DataBaseManager{
                                 new OnSuccessListener<DocumentReference>() {
                                     @Override
                                     public void onSuccess(DocumentReference documentReference) {
-                                        listener.onFinish("Account Created");
                                         loginUser((String) userDataCache.get(PASSWORD_KEY), (String) userDataCache.get(USERNAME_KEY));
                                         userDataCache.clear();
                                     }
@@ -177,6 +179,15 @@ public class AccountAccess extends DataBaseManager{
                             );
                         }
                     }
+                }
+            }
+        )
+        .addOnFailureListener
+        (
+            new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull @NotNull Exception e) {
+                    onFailureListener.onFailure(e);
                 }
             }
         );
@@ -223,9 +234,18 @@ public class AccountAccess extends DataBaseManager{
                                     userDataCache.remove("key");
                                     db.document(user.getUserID()).set(userDataCache.get(userDataCache.get("key")));
                                 }
-                                listener.onFinish("Account Edited");
+                                onSuccessListener.onSuccess("Account Edited");
                             }
                         }
+                    }
+                }
+            )
+            .addOnFailureListener
+            (
+                new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull @NotNull Exception e) {
+                        onFailureListener.onFailure(e);
                     }
                 }
             );
