@@ -36,6 +36,9 @@ public class AccountAccess extends DataBaseManager{
 
     private Map<String, Object> userDataCache = new HashMap<String, Object>();
 
+    protected DataBaseManagerListener listener;
+
+
     public static DataBaseManager getInstance()
     {
         if (instance == null){
@@ -48,6 +51,8 @@ public class AccountAccess extends DataBaseManager{
     {
         //super();
     }
+
+
 
     public void readDataBase()
     {
@@ -107,10 +112,12 @@ public class AccountAccess extends DataBaseManager{
                                             );
                                         break;
                                 }
+                                listener.onFinish("Logged in success", user);
                             }
 
                         }
                     } else {
+                        listener.onFinish("Logged in fail",null);
                         Log.d("FIRE", "Error getting documents: ", task.getException());
                     }
                 }
@@ -123,6 +130,7 @@ public class AccountAccess extends DataBaseManager{
     {
         //todo check if user is active
         user = null;
+        listener.onFinish("Logged out success");
     }
 
     public User getUser()
@@ -164,6 +172,7 @@ public class AccountAccess extends DataBaseManager{
                                 new OnSuccessListener<DocumentReference>() {
                                     @Override
                                     public void onSuccess(DocumentReference documentReference) {
+                                        listener.onFinish("Account Created");
                                         loginUser((String) userDataCache.get(PASSWORD_KEY), (String) userDataCache.get(USERNAME_KEY));
                                         userDataCache.clear();
                                     }
@@ -183,6 +192,8 @@ public class AccountAccess extends DataBaseManager{
             case USERNAME_KEY:
             case PASSWORD_KEY:
             case TYPE_KEY:
+            case NAME_KEY:
+            case EMAIL_KEY:
                 userDataCache.clear();
                 userDataCache.put("key", key);
                 userDataCache.put(key, newVal);
@@ -215,6 +226,7 @@ public class AccountAccess extends DataBaseManager{
                                     userDataCache.remove("key");
                                     db.document(user.getUserID()).set(userDataCache.get(userDataCache.get("key")));
                                 }
+                                listener.onFinish("Account Edited");
                             }
                         }
                     }
