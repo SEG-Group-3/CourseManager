@@ -1,5 +1,7 @@
 package com.segg3.coursemanager;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Date;
 
 public class Course {
@@ -34,4 +36,14 @@ public class Course {
         return this.id;
     }
 
+    @NotNull
+    @Override
+    public String toString() {
+        return "Course{" +
+                "name='" + name + '\'' +
+                ", code='" + code + '\'' +
+                ", date=" + date +
+                ", id='" + id + '\'' +
+                '}';
+    }
 }

@@ -2,8 +2,10 @@ package com.segg3.coursemanager;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 import android.nfc.Tag;
 import android.util.DebugUtils;
@@ -37,6 +39,9 @@ public class Admin extends User{
     public static final String COURSENAME_KEY = "name";
     public static final String COURSECODE_KEY = "code";
 
+    // For reading database
+    private Consumer<List<Course>> listener = null;
+
     //Database references for adding/deleting/editing courses/users
     private static final CollectionReference courseDB = FirebaseFirestore.getInstance().collection("Courses");
     private static final CollectionReference userDB = FirebaseFirestore.getInstance().collection("Users");
@@ -48,6 +53,15 @@ public class Admin extends User{
     public String getType()
     {
         return "Admin";
+    }
+
+
+    public void setListener(Consumer<List<Course>> listener) {
+        this.listener = listener;
+    }
+
+    public void removeListener() {
+        this.listener = null;
     }
 
     public void createCourse(Course course) {
@@ -104,6 +118,29 @@ public class Admin extends User{
                 Log.w("Message:", "Course edit unsuccessful.");
             }
         });
+    }
+
+
+    //Edit course that draws from course ID rather than a course object itself.
+    public void editCourse(String courseID, String newName, String newCode) {
+        DocumentReference doc = courseDB.document(courseID);
+
+        doc.update(COURSECODE_KEY, newCode, COURSENAME_KEY, newName).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Log.d("Message:", "Course edit successful.");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull @NotNull Exception e) {
+                Log.w("Message:", "Course edit unsuccessful.");
+            }
+        });
+    }
+
+    // Edit course method that draws from the specific course that grabs actually ID from previous method
+    public void editCourse(Course course) {
+        editCourse(course.getId(), course.name, course.code);
     }
 
     private void readCourseDatabase() {
