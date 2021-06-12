@@ -111,7 +111,7 @@ public class AccountAccess extends DataBaseManager{
         return null;
     }
 
-    public boolean logOutUser()
+    public void logOutUser()
     {
         //todo check if user is active
         user = null;
