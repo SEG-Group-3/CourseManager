@@ -112,7 +112,7 @@ public class AccountAccess extends DataBaseManager{
                                             );
                                         break;
                                 }
-                                onSuccessListener.onSuccess("successful login");
+                                onSuccessListener.onSuccess(user);
                             }
 
                         }
@@ -139,7 +139,7 @@ public class AccountAccess extends DataBaseManager{
     {
         //todo check if user is active
         user = null;
-        onSuccessListener.onSuccess("successful logged out");
+        onSuccessListener.onSuccess(user);
     }
 
     public User getUser()
@@ -243,7 +243,7 @@ public class AccountAccess extends DataBaseManager{
                                     userDataCache.remove("key");
                                     db.document(user.getUserID()).set(userDataCache.get(userDataCache.get("key")));
                                 }
-                                onSuccessListener.onSuccess("Account Edited");
+                                onSuccessListener.onSuccess(user);
                             }
                         }
                     }
