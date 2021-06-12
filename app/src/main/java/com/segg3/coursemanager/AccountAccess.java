@@ -9,6 +9,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -93,6 +94,7 @@ public class AccountAccess extends DataBaseManager{
                                                 get(document, USERNAME_KEY),
                                                 null
                                             );
+
                                         break;
                                     case "instructor":
                                         user = new Instructor
@@ -140,6 +142,7 @@ public class AccountAccess extends DataBaseManager{
             default:
                 throw new IllegalArgumentException("invalid account type");
         }
+
         userDataCache.put(USERNAME_KEY, userName);
         userDataCache.put(PASSWORD_KEY, password);
 
@@ -172,8 +175,51 @@ public class AccountAccess extends DataBaseManager{
             }
         );
     }
-    public void editAccount()
+
+    public void editAccount(String key, String newVal)
     {
-        throw new UnsupportedOperationException();
+        switch (key)
+        {
+            case USERNAME_KEY:
+            case PASSWORD_KEY:
+            case TYPE_KEY:
+                userDataCache.clear();
+                userDataCache.put("key", key);
+                userDataCache.put(key, newVal);
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid key");
+        }
+
+        if(user != null)
+        {
+            db.document(user.getUserID()).get()
+            .addOnCompleteListener(
+                new OnCompleteListener<DocumentSnapshot>()
+                {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task)
+                    {
+                        if (task.isSuccessful())
+                        {
+                            DocumentSnapshot document = task.getResult();
+
+                            if (document.exists())
+                            {
+                                if(document.contains((String) userDataCache.get("key")))
+                                {
+                                    db.document(user.getUserID()).update((String) userDataCache.get("key"),(String) userDataCache.get(userDataCache.get("key")));
+                                }
+                                else
+                                {
+                                    userDataCache.remove("key");
+                                    db.document(user.getUserID()).set(userDataCache.get(userDataCache.get("key")));
+                                }
+                            }
+                        }
+                    }
+                }
+            );
+        }
     }
 }
