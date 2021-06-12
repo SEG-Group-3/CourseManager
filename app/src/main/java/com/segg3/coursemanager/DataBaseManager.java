@@ -13,9 +13,23 @@ public abstract class DataBaseManager
 
     protected static DataBaseManager instance;
 
-    protected OnFailureListener onFailureListener;
-    protected OnSuccessListener onSuccessListener;
+    public interface DataBaseManagerListener
+    {
+        default public void onFailure(Exception e)
+        {
 
+        }
+
+        default public void onProgress(String message, Object data)
+        {
+
+        }
+
+        default public void onSuccess(Object result)
+        {
+
+        }
+    }
 
     public static DataBaseManager getInstance()
     {
@@ -40,18 +54,6 @@ public abstract class DataBaseManager
         this.listener = listener;
     }
 */
-
-    public DataBaseManager addOnFailureListener(OnFailureListener listener)
-    {
-        onFailureListener = listener;
-        return this;
-    }
-
-    public DataBaseManager addOnSuccessListener(OnSuccessListener listener)
-    {
-        onSuccessListener = listener;
-        return this;
-    }
 
     protected String get(QueryDocumentSnapshot document, String key)
     {
