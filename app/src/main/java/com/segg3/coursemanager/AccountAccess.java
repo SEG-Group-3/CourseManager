@@ -36,9 +36,6 @@ public class AccountAccess extends DataBaseManager{
 
     private Map<String, Object> userDataCache = new HashMap<String, Object>();
 
-    protected DataBaseManagerListener listener;
-
-
     public static DataBaseManager getInstance()
     {
         if (instance == null){
