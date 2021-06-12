@@ -4,6 +4,7 @@ import android.renderscript.RSInvalidStateException;
 import android.util.Log;
 
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 public abstract class DataBaseManager
 {
@@ -25,6 +26,15 @@ public abstract class DataBaseManager
             readDataBase();
         });
         readDataBase();*/
+    }
+
+    protected String get(QueryDocumentSnapshot document, String key)
+    {
+        if(document.contains(key))
+        {
+            return document.get(key, String.class);
+        }
+        return "";
     }
 
     abstract void readDataBase();
