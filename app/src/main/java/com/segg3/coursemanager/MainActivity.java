@@ -13,6 +13,7 @@ import com.segg3.coursemanager.administrator.courses.ui.CourseViewFragment;
 import com.segg3.coursemanager.administrator.users.ui.UsersViewFragment;
 import com.segg3.coursemanager.auth.login.ui.LoginActivity;
 import com.segg3.coursemanager.databinding.ActivityMainBinding;
+import com.segg3.coursemanager.databinding.NavHeaderBinding;
 import com.segg3.coursemanager.shared.UIUtils;
 import com.segg3.coursemanager.shared.home.ui.HomeFragment;
 
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
+
         View view = binding.getRoot();
         setContentView(view);
 

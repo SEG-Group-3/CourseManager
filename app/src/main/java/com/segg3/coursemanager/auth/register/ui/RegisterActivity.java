@@ -97,11 +97,11 @@ public class RegisterActivity extends AppCompatActivity {
             }
             // go to the "main logged in user" activity
             // else
-            {
-                Toast.makeText(getApplicationContext(),
-                        R.string.login_failed,
-                        Toast.LENGTH_LONG).show();
-            }
+//            {
+//                Toast.makeText(getApplicationContext(),
+//                        R.string.login_failed,
+//                        Toast.LENGTH_LONG).show();
+//            }
         });
 
     }

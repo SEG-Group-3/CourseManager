@@ -6,14 +6,20 @@ import android.content.DialogInterface;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.segg3.coursemanager.R;
+import com.segg3.coursemanager.User;
+
+import org.jetbrains.annotations.NotNull;
 
 public class UIUtils {
     public static void swapViews(FragmentManager manager, Fragment next){

@@ -5,12 +5,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.segg3.coursemanager.AccountAccess;
+import com.segg3.coursemanager.DataBaseManager;
 import com.segg3.coursemanager.R;
 import com.segg3.coursemanager.auth.register.ui.RegisterActivity;
 import com.segg3.coursemanager.databinding.ActivityLoginBinding;
@@ -77,22 +80,44 @@ public class LoginActivity extends AppCompatActivity {
                 return;
 
 
+
             // Call authentication code authenticate Here!!!
+            ((AccountAccess) AccountAccess.getInstance()).loginUser(getFieldText(binding.passwordInput), getFieldText(binding.usernameInput),
+                    new DataBaseManager.DataBaseManagerListener() {
+                        @Override
+                        public void onFailure(Exception e) {
+                            UIUtils.createToast(getApplicationContext(), "Error logging in");
+                            binding.logInButton.setEnabled(true);
+                        }
+
+                        @Override
+                        public void onSuccess(Object result) {
+                            UIUtils.createToast(getApplicationContext(), "Logged in?");
+                            binding.logInButton.setEnabled(true);
+                            finish();
+                        }
+                });
+
+
+            binding.logInButton.setEnabled(false);
 
 
             // if (authentication passes)
             // go to the "main logged in user" activity
             // else
-            {
-                UIUtils.createToast(getApplicationContext(), R.string.login_failed);
-            }
+
         });
     }
+
 
     String getFieldText(TextInputLayout inputLayout){
         return  Objects.requireNonNull(inputLayout.getEditText()).getText().toString();
     }
 
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+    }
 
 
     @Override
