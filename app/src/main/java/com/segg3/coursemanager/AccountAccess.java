@@ -59,7 +59,7 @@ public class AccountAccess extends DataBaseManager{
         throw new UnsupportedOperationException();
     }
 
-    public User loginUser(String password, String userName)
+    public User loginUser(String password, String userName, DataBaseManagerListener callback)
     {
         //todo update active users
         db.whereEqualTo(PASSWORD_KEY, password).whereEqualTo(USERNAME_KEY, userName).get()
@@ -112,17 +112,17 @@ public class AccountAccess extends DataBaseManager{
                                             );
                                         break;
                                 }
-                                onSuccessListener.onSuccess(user);
+                                callback.onSuccess(user);
 
                                 return;
                             }
                         }
                         else
                         {
-                            onFailureListener.onFailure(new Exception("Failed Login"));
+                            callback.onFailure(new Exception("Failed Login"));
                         }
                     } else {
-                        onFailureListener.onFailure(new Exception("Failed Login"));
+                        callback.onFailure(new Exception("Failed Login"));
                         Log.d("FIRE", "Error getting documents: ", task.getException());
                     }
                 }
@@ -133,18 +133,18 @@ public class AccountAccess extends DataBaseManager{
             new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull @NotNull Exception e) {
-                    onFailureListener.onFailure(e);
+                    callback.onFailure(e);
                 }
             }
         );
         return null;
     }
 
-    public void logOutUser()
+    public void logOutUser(DataBaseManagerListener callback)
     {
         //todo check if user is active
         user = null;
-        onSuccessListener.onSuccess(user);
+        callback.onSuccess(user);
     }
 
     public User getUser()
@@ -152,7 +152,7 @@ public class AccountAccess extends DataBaseManager{
         return user;
     }
 
-    public void createAccount(String userName, String password, String type)
+    public void createAccount(String userName, String password, String type, DataBaseManagerListener callback)
     {
         switch (type)
         {
@@ -186,7 +186,7 @@ public class AccountAccess extends DataBaseManager{
                                 new OnSuccessListener<DocumentReference>() {
                                     @Override
                                     public void onSuccess(DocumentReference documentReference) {
-                                        loginUser((String) userDataCache.get(PASSWORD_KEY), (String) userDataCache.get(USERNAME_KEY));
+                                        loginUser((String) userDataCache.get(PASSWORD_KEY), (String) userDataCache.get(USERNAME_KEY), callback);
                                         userDataCache.clear();
                                     }
                                 }
@@ -201,13 +201,13 @@ public class AccountAccess extends DataBaseManager{
             new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull @NotNull Exception e) {
-                    onFailureListener.onFailure(e);
+                    callback.onFailure(e);
                 }
             }
         );
     }
 
-    public void editAccount(String key, String newVal)
+    public void editAccount(String key, String newVal, DataBaseManagerListener callback)
     {
         switch (key)
         {
@@ -248,7 +248,7 @@ public class AccountAccess extends DataBaseManager{
                                     userDataCache.remove("key");
                                     db.document(user.getUserID()).set(userDataCache.get(userDataCache.get("key")));
                                 }
-                                onSuccessListener.onSuccess(user);
+                                callback.onSuccess(user);
                             }
                         }
                     }
@@ -259,7 +259,7 @@ public class AccountAccess extends DataBaseManager{
                 new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull @NotNull Exception e) {
-                        onFailureListener.onFailure(e);
+                        callback.onFailure(e);
                     }
                 }
             );
