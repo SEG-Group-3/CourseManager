@@ -33,4 +33,7 @@
     <string name="welcome_prefix">Welcome,</string>
     <string name="home_tutorial">Click the hamburger menu to see more options</string>
     <string name="edit_course">Edit Course</string>
+    <string name="title">Title</string>
+    <string name="subtitle">Subtitle</string>
+    <string name="subsubtitle">SubSubTitle</string>
 </resources>
