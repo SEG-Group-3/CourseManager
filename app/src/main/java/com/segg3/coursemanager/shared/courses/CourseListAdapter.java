@@ -20,9 +20,9 @@ public class CourseListAdapter extends RecyclerView.Adapter<CardViewHolder> {
     private final List<Course> courseList;
     private View.OnClickListener onClickListener;
 
-    public CourseListAdapter(List<Course> courseList2, View.OnClickListener listener) {
+    public CourseListAdapter(List<Course> courses, View.OnClickListener listener) {
         onClickListener=listener;
-        courseList = courseList2;
+        courseList = courses;
     }
 
     @NonNull
