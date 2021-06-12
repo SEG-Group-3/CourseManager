@@ -7,16 +7,14 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.animation.AnimationUtils;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.segg3.coursemanager.R;
 import com.segg3.coursemanager.auth.register.ui.RegisterActivity;
 import com.segg3.coursemanager.databinding.ActivityLoginBinding;
+import com.segg3.coursemanager.shared.UIUtils;
 
 import java.util.Objects;
 
@@ -86,9 +84,7 @@ public class LoginActivity extends AppCompatActivity {
             // go to the "main logged in user" activity
             // else
             {
-                Toast.makeText(getApplicationContext(),
-                        R.string.login_failed,
-                        Toast.LENGTH_LONG).show();
+                UIUtils.createToast(getApplicationContext(), R.string.login_failed);
             }
         });
     }

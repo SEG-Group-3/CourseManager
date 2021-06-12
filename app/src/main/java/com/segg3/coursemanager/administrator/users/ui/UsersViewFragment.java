@@ -10,9 +10,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.segg3.coursemanager.Admin;
+import com.segg3.coursemanager.Instructor;
 import com.segg3.coursemanager.R;
 import com.segg3.coursemanager.Student;
 import com.segg3.coursemanager.User;
+import com.segg3.coursemanager.shared.UIUtils;
 import com.segg3.coursemanager.shared.users.UserListAdapter;
 
 import java.util.ArrayList;
@@ -23,22 +26,25 @@ public class UsersViewFragment extends Fragment {
     RecyclerView recyclerView;
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v=inflater.inflate(R.layout.fragment_admin_course_view, container, false);
+    public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
+        View v=inflater.inflate(R.layout.fragment_admin_list_view, container, false);
         recyclerView= v.findViewById(R.id.course_recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(v.getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.scrollToPosition(0);
         List<User> users= new ArrayList<>();
-        users.add(new Student("1","Jeff", "jeff_01@uni.com","just_jeff", ""));
-        users.add(new Student("2","Bob", "bob_busta@uni.com","bob_guy_05", ""));
-        users.add(new Student("3","Alice", "al1c3@uni.com","wonderland_girl_05", ""));
-        users.add(new Student("4","John", "john_f@uni.com","joe_mama_35", ""));
+        users.add(new Student("123", "Jeff", "jeff@school.com", "names_jeff", null));
+        users.add(new Admin("321", "Hackerman", "dude@wtf.com", "superuser", null));
+        users.add(new Student("132", "John Bro", "john@bro.com", "bro_bro", null));
+        users.add(new Instructor("231", "Alice", "example@mail.com", "alice_name", null));
+        users.add(new Student("312", "Felix", "fe@ad.ca", "super_soldier", null));
+
         listAdapter=new UserListAdapter(users,this::onCourseClicked);
         recyclerView.setAdapter(listAdapter);
+        UIUtils.setToolbarTitle(getActivity(), getString(R.string.users));
         return v;
     }
     public void onCourseClicked(View v){
-
+        UIUtils.swipeFragmentRight(getParentFragmentManager(), new EditUserFragment());
     }
 }

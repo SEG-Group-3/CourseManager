@@ -8,13 +8,12 @@ import android.view.View;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.segg3.coursemanager.administrator.courses.ui.CourseViewFragment;
 import com.segg3.coursemanager.administrator.users.ui.UsersViewFragment;
 import com.segg3.coursemanager.auth.login.ui.LoginActivity;
 import com.segg3.coursemanager.databinding.ActivityMainBinding;
+import com.segg3.coursemanager.shared.UIUtils;
 import com.segg3.coursemanager.shared.home.ui.HomeFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -35,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         binding.drawerLayout.addDrawerListener(actionBarToggle);
         actionBarToggle.syncState();
 
+
         // Default Navigation
         binding.navigationMenu.getMenu().clear();
         binding.navigationMenu.inflateMenu(R.menu.admin_menu);
@@ -42,24 +42,24 @@ public class MainActivity extends AppCompatActivity {
 
         binding.navigationMenu.setNavigationItemSelectedListener(item -> {
             if (item.getItemId() == R.id.nav_home){
-                swapViews(new HomeFragment());
+                UIUtils.swapViews(getSupportFragmentManager(),new HomeFragment());
             } else if (item.getItemId() == R.id.nav_log_out) {
-                // Deleted "cookies"
+                // Delete cookies and go to login "cookies"
                 ActivityOptions options = ActivityOptions.makeBasic();
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent, options.toBundle());
                 closeDrawer();
             } else if (item.getItemId()==R.id.nav_edit_courses){
-                swapViews(new CourseViewFragment());
+                UIUtils.swapViews(getSupportFragmentManager(),new CourseViewFragment());
             } else if (item.getItemId()==R.id.nav_edit_users){
-                swapViews(new UsersViewFragment());
+                UIUtils.swapViews(getSupportFragmentManager(),new UsersViewFragment());
             }
+            
             closeDrawer();
             return true;
         });
 
     }
-
 
     @Override
     protected void onStart() {
@@ -71,13 +71,10 @@ public class MainActivity extends AppCompatActivity {
 
         // else start normally
         setContentView(binding.getRoot());
-        swapViews(new HomeFragment());
+        UIUtils.swapViews(getSupportFragmentManager(), new HomeFragment());
     }
 
-    public void swapViews(Fragment next){
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, next).commit();
-    }
+
 
     public void closeDrawer(){
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)){

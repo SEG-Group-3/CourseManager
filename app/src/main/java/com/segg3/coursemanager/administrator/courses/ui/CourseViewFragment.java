@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.segg3.coursemanager.Course;
 import com.segg3.coursemanager.R;
+import com.segg3.coursemanager.shared.UIUtils;
 import com.segg3.coursemanager.shared.courses.CourseListAdapter;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class CourseViewFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
-        View v=inflater.inflate(R.layout.fragment_admin_course_view, container, false);
+        View v=inflater.inflate(R.layout.fragment_admin_list_view, container, false);
         recyclerView= v.findViewById(R.id.course_recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(v.getContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -40,9 +41,10 @@ public class CourseViewFragment extends Fragment {
         courses.add(new Course("English","END1256", now,"asd"));
         listAdapter=new CourseListAdapter(courses,this::onCourseClicked);
         recyclerView.setAdapter(listAdapter);
+        UIUtils.setToolbarTitle(getActivity(),  getString(R.string.courses));
         return v;
     }
     public void onCourseClicked(View v){
-
+        UIUtils.swipeFragmentRight(getParentFragmentManager(), new EditCourseFragment());
     }
 }

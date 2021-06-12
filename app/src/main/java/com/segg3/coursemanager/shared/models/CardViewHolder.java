@@ -1,4 +1,4 @@
-package com.segg3.coursemanager.shared;
+package com.segg3.coursemanager.shared.models;
 
 import android.view.View;
 import android.widget.ImageView;

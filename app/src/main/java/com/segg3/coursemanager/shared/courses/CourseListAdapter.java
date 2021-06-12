@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.segg3.coursemanager.Course;
 import com.segg3.coursemanager.R;
-import com.segg3.coursemanager.shared.CardViewHolder;
+import com.segg3.coursemanager.shared.models.CardViewHolder;
 
 import org.jetbrains.annotations.NotNull;
 
