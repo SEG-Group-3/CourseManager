@@ -2,7 +2,7 @@ package com.segg3.coursemanager;
 
 import java.util.Date;
 
-class Course {
+public class Course {
     public String name;
     public String code;
     public Date date;

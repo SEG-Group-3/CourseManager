@@ -11,6 +11,7 @@ import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.segg3.coursemanager.administrator.courses.ui.CourseViewFragment;
 import com.segg3.coursemanager.auth.login.ui.LoginActivity;
 import com.segg3.coursemanager.databinding.ActivityMainBinding;
 import com.segg3.coursemanager.shared.home.ui.HomeFragment;
@@ -42,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
                 closeDrawer();
             } else if (item.getItemId() == R.id.nav_home){
                 swapViews(new HomeFragment());
+            }
+            else if (item.getItemId()==R.id.nav_edit_course){
+                swapViews(new CourseViewFragment());
             }
             closeDrawer();
             return true;
