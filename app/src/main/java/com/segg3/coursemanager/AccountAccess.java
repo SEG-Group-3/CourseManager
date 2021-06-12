@@ -48,7 +48,6 @@ public class AccountAccess extends DataBaseManager{
         throw new UnsupportedOperationException();
     }
 
-    private int counter = 0;
     public User loginUser(String password, String userName)
     {
         db.whereEqualTo(PASSWORD_KEY, password).whereEqualTo(USERNAME_KEY, userName).get()
@@ -109,9 +108,7 @@ public class AccountAccess extends DataBaseManager{
                 }
             }
         );
-
         return null;
-
     }
 
     public boolean logOutUser()
