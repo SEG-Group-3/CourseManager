@@ -15,7 +15,6 @@ public abstract class DataBaseManager
 
     protected static DataBaseManager instance;
 
-    protected OnCompleteListener onCompleteListener;
     protected OnFailureListener onFailureListener;
     protected OnSuccessListener onSuccessListener;
 
@@ -43,11 +42,6 @@ public abstract class DataBaseManager
         this.listener = listener;
     }
 */
-    public DataBaseManager addOnCompleteListener(OnCompleteListener listener)
-    {
-        onCompleteListener = listener;
-        return this;
-    }
 
     public DataBaseManager addOnFailureListener(OnFailureListener listener)
     {
