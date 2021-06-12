@@ -5,16 +5,21 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class AccountAccess extends DataBaseManager{
 
@@ -28,6 +33,7 @@ public class AccountAccess extends DataBaseManager{
 
     private User user;
 
+    private Map<String, Object> userDataCache = new HashMap<String, Object>();
 
     public static DataBaseManager getInstance()
     {
@@ -122,9 +128,49 @@ public class AccountAccess extends DataBaseManager{
         return user;
     }
 
-    public void createAccount()
+    public void createAccount(String userName, String password, String type)
     {
-        throw new UnsupportedOperationException();
+        switch (type)
+        {
+            case "admin":
+            case "student":
+            case "instructor":
+                userDataCache.put(TYPE_KEY, type);
+                break;
+            default:
+                throw new IllegalArgumentException("invalid account type");
+        }
+        userDataCache.put(USERNAME_KEY, userName);
+        userDataCache.put(PASSWORD_KEY, password);
+
+        db.whereEqualTo(USERNAME_KEY, userName).whereEqualTo(PASSWORD_KEY, password).get()
+        .addOnCompleteListener
+        (
+            new OnCompleteListener<QuerySnapshot>()
+            {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task)
+                {
+                    if (task.isSuccessful())
+                    {
+                        if (task.getResult().size() == 0)
+                        {
+                            db.add(userDataCache)
+                            .addOnSuccessListener
+                            (
+                                new OnSuccessListener<DocumentReference>() {
+                                    @Override
+                                    public void onSuccess(DocumentReference documentReference) {
+                                        loginUser((String) userDataCache.get(PASSWORD_KEY), (String) userDataCache.get(USERNAME_KEY));
+                                        userDataCache.clear();
+                                    }
+                                }
+                            );
+                        }
+                    }
+                }
+            }
+        );
     }
     public void editAccount()
     {
