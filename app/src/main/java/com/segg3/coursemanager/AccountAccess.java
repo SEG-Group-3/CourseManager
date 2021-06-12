@@ -112,7 +112,7 @@ public class AccountAccess extends DataBaseManager{
                                             );
                                         break;
                                 }
-                                onSuccessListener.onSuccess(user);
+                                onSuccessListener.onSuccess("successful login");
                             }
 
                         }
@@ -120,6 +120,15 @@ public class AccountAccess extends DataBaseManager{
                         onFailureListener.onFailure(new Exception("Failed Login"));
                         Log.d("FIRE", "Error getting documents: ", task.getException());
                     }
+                }
+            }
+        )
+        .addOnFailureListener
+        (
+            new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull @NotNull Exception e) {
+                    onFailureListener.onFailure(e);
                 }
             }
         );
@@ -130,7 +139,7 @@ public class AccountAccess extends DataBaseManager{
     {
         //todo check if user is active
         user = null;
-        onCompleteListener.onComplete(null);
+        onSuccessListener.onSuccess("successful logged out");
     }
 
     public User getUser()
