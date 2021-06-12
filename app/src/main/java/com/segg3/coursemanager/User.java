@@ -1,6 +1,6 @@
 package com.segg3.coursemanager;
 
-abstract class User {
+public abstract class User {
     protected String userID;
     public String name;
     protected String email;
