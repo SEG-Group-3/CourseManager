@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.segg3.coursemanager.administrator.courses.ui.CourseViewFragment;
+import com.segg3.coursemanager.administrator.users.ui.UsersViewFragment;
 import com.segg3.coursemanager.auth.login.ui.LoginActivity;
 import com.segg3.coursemanager.databinding.ActivityMainBinding;
 import com.segg3.coursemanager.shared.home.ui.HomeFragment;
@@ -35,17 +36,23 @@ public class MainActivity extends AppCompatActivity {
         actionBarToggle.syncState();
 
         // Default Navigation
+        binding.navigationMenu.getMenu().clear();
+        binding.navigationMenu.inflateMenu(R.menu.admin_menu);
+
+
         binding.navigationMenu.setNavigationItemSelectedListener(item -> {
-            if (item.getItemId() == R.id.nav_log_in) {
+            if (item.getItemId() == R.id.nav_home){
+                swapViews(new HomeFragment());
+            } else if (item.getItemId() == R.id.nav_log_out) {
+                // Deleted "cookies"
                 ActivityOptions options = ActivityOptions.makeBasic();
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent, options.toBundle());
                 closeDrawer();
-            } else if (item.getItemId() == R.id.nav_home){
-                swapViews(new HomeFragment());
-            }
-            else if (item.getItemId()==R.id.nav_edit_course){
+            } else if (item.getItemId()==R.id.nav_edit_courses){
                 swapViews(new CourseViewFragment());
+            } else if (item.getItemId()==R.id.nav_edit_users){
+                swapViews(new UsersViewFragment());
             }
             closeDrawer();
             return true;
