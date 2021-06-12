@@ -120,6 +120,29 @@ public class Admin extends User{
         });
     }
 
+
+    //Edit course that draws from course ID rather than a course object itself.
+    public void editCourse(String courseID, String newName, String newCode) {
+        DocumentReference doc = courseDB.document(courseID);
+
+        doc.update(COURSECODE_KEY, newCode, COURSENAME_KEY, newName).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Log.d("Message:", "Course edit successful.");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull @NotNull Exception e) {
+                Log.w("Message:", "Course edit unsuccessful.");
+            }
+        });
+    }
+
+    // Edit course method that draws from the specific course that grabs actually ID from previous method
+    public void editCourse(Course course) {
+        editCourse(course.getId(), course.name, course.code);
+    }
+
     private void readCourseDatabase() {
         courseDB.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
