@@ -27,7 +27,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import org.jetbrains.annotations.NotNull;
 
-class Admin extends User{
+public class Admin extends User{
 
     public Admin(String userID, String name, String email, String username, String loginToken) {
         super(userID, name, email, username, loginToken);
