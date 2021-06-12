@@ -1,23 +1,23 @@
 package com.segg3.coursemanager;
 
-import android.renderscript.RSInvalidStateException;
-import android.util.Log;
-
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+import java.util.concurrent.Executor;
 
 public abstract class DataBaseManager
 {
     private static CollectionReference db;
+
     protected static DataBaseManager instance;
 
-    protected DataBaseManagerListener listener;
-
-    public interface DataBaseManagerListener
-    {
-        public void onFinish(String message);
-        public void onFinish(String message, Object data);
-    }
+    protected OnCompleteListener onCompleteListener;
+    protected OnFailureListener onFailureListener;
+    protected OnSuccessListener onSuccessListener;
 
 
     public static DataBaseManager getInstance()
@@ -37,9 +37,28 @@ public abstract class DataBaseManager
         readDataBase();*/
     }
 
+    /*
     public void setListener(DataBaseManagerListener listener)
     {
         this.listener = listener;
+    }
+*/
+    public DataBaseManager addOnCompleteListener(OnCompleteListener listener)
+    {
+        onCompleteListener = listener;
+        return this;
+    }
+
+    public DataBaseManager addOnFailureListener(OnFailureListener listener)
+    {
+        onFailureListener = listener;
+        return this;
+    }
+
+    public DataBaseManager addOnSuccessListener(OnSuccessListener listener)
+    {
+        onSuccessListener = listener;
+        return this;
     }
 
     protected String get(QueryDocumentSnapshot document, String key)
