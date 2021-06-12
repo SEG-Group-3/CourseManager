@@ -163,6 +163,10 @@ public class Admin extends User{
         });
     }
 
+    public List<Course> getListOfCourses() {
+        return listOfCourses;
+    }
+
     public void deleteUser(String userId) {
 
         userDB.document(userId).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
