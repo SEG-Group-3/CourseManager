@@ -14,17 +14,18 @@ import androidx.fragment.app.Fragment;
 
 import com.segg3.coursemanager.R;
 import com.segg3.coursemanager.databinding.FragmentEditCourseBinding;
+import com.segg3.coursemanager.databinding.FragmentEditUserBinding;
 import com.segg3.coursemanager.shared.UIUtils;
 
 import org.jetbrains.annotations.NotNull;
 
 public class EditUserFragment extends Fragment {
-    FragmentEditCourseBinding binding;
+    FragmentEditUserBinding binding;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view =inflater.inflate(R.layout.fragment_edit_course, container, false);
-        binding = FragmentEditCourseBinding.bind(view);
+        View view =inflater.inflate(R.layout.fragment_edit_user, container, false);
+        binding = FragmentEditUserBinding.bind(view);
 
         binding.cancelCourseEditButton.setOnClickListener(this::onCancelEdit);
         binding.applyCourseEditButton.setOnClickListener(this::onApplyEdit);
