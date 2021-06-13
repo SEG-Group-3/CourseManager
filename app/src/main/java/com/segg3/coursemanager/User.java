@@ -1,5 +1,7 @@
 package com.segg3.coursemanager;
 
+import org.jetbrains.annotations.NotNull;
+
 public abstract class User {
     protected String userID;
     public String name;
@@ -18,7 +20,7 @@ public abstract class User {
     public abstract String getType();
 
 
-    //Setters:
+    //Getters:
 
     public String getUserID() {
         return userID;
@@ -37,6 +39,7 @@ public abstract class User {
     }
 
 
+    @NotNull
     public String toString()
     {
         return "userID:" + userID + "\tname:" + name + "\temail:" + email + "\tusername:";
