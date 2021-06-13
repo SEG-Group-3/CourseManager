@@ -1,5 +1,7 @@
 package com.segg3.coursemanager.auth.register.ui;
 
+import android.accounts.Account;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -16,8 +18,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.segg3.coursemanager.AccountAccess;
+import com.segg3.coursemanager.DataBaseManager;
+import com.segg3.coursemanager.MainActivity;
 import com.segg3.coursemanager.R;
 import com.segg3.coursemanager.databinding.ActivityRegisterBinding;
+import com.segg3.coursemanager.shared.UIUtils;
 
 import java.util.Objects;
 
@@ -86,22 +92,18 @@ public class RegisterActivity extends AppCompatActivity {
             if(!ok)
                 return;
 
-            // Call authentication code authenticate Here!!!
-
-
-            // if (authentication passes)
-            {
-                Toast.makeText(getApplicationContext(),
-                        R.string.account_created,
-                        Toast.LENGTH_LONG).show();
-            }
-            // go to the "main logged in user" activity
-            // else
-//            {
-//                Toast.makeText(getApplicationContext(),
-//                        R.string.login_failed,
-//                        Toast.LENGTH_LONG).show();
-//            }
+            // Create an account Here!!!
+            ((AccountAccess) AccountAccess.getInstance()).createAccount(getFieldText(binding.usernameInput),
+                    getFieldText(binding.passwordInput),
+                    getFieldText(binding.accountTypeMenu).toLowerCase(), new DataBaseManager.DataBaseManagerListener() {
+                        @Override
+                        public void onSuccess(Object result) {
+                            UIUtils.createToast(getApplicationContext(), "Account Created!");
+                            Intent mainActivity = new Intent(RegisterActivity.this, MainActivity.class);
+                            mainActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(mainActivity);
+                        }
+                    });
         });
 
     }
