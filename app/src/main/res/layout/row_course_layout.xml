@@ -32,7 +32,8 @@
             <TextView
                 android:id="@+id/card_title"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0sp"
+                android:layout_weight="2"
                 android:autoSizeTextType="uniform"
                 android:text="@string/title"
                 android:textAppearance="?attr/textAppearanceHeadline4" />
@@ -40,7 +41,8 @@
             <TextView
                 android:id="@+id/card_subtitle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0sp"
+                android:layout_weight="1"
                 android:autoSizeTextType="uniform"
                 android:text="@string/subtitle"
                 android:textAppearance="?attr/textAppearanceBody1" />
@@ -48,7 +50,8 @@
             <TextView
                 android:id="@+id/card_subsubtitle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0sp"
+                android:layout_weight="1"
                 android:autoSizeTextType="uniform"
                 android:text="@string/subsubtitle"
                 android:textAppearance="?attr/textAppearanceBody1" />

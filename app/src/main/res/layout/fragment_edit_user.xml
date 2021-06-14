@@ -7,7 +7,7 @@
 
 
     <TextView
-        android:id="@+id/course_uid_text"
+        android:id="@+id/uid_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -16,38 +16,9 @@
         app:autoSizeMaxTextSize="20px"
         app:autoSizeMinTextSize="8px" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/user_name_id"
-
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Name"
-            android:singleLine="true" />
-    </com.google.android.material.textfield.TextInputLayout>
-
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/user_email_id"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Email"
-            android:inputType="numberDecimal" />
-    </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/user_username_id"
+        android:id="@+id/input_username"
 
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
@@ -61,6 +32,42 @@
             android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_password"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:passwordToggleEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/prompt_password"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/account_type_menu"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10sp">
+
+        <AutoCompleteTextView
+            android:id="@+id/account_type_dropdown"
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/white"
+            android:hint="@string/prompt_account_type"
+            android:inputType="none"
+            android:textColor="@color/black" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -69,7 +76,7 @@
 
         <com.google.android.material.button.MaterialButton
 
-            android:id="@+id/cancel_course_edit_button"
+            android:id="@+id/cancel_button"
             android:layout_width="wrap_content"
             android:layout_height="75dp"
             android:layout_margin="12sp"
@@ -85,7 +92,7 @@
 
         <com.google.android.material.button.MaterialButton
 
-            android:id="@+id/apply_course_edit_button"
+            android:id="@+id/apply_button"
             android:layout_width="wrap_content"
             android:layout_height="75dp"
             android:layout_margin="12sp"
