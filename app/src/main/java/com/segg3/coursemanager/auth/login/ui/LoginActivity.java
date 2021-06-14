@@ -3,9 +3,6 @@ package com.segg3.coursemanager.auth.login.ui;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 
@@ -32,28 +29,8 @@ public class LoginActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-
-        Objects.requireNonNull(binding.usernameInput.getEditText()).addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
-            @Override
-            public void afterTextChanged(Editable s) {
-                binding.usernameInput.setErrorEnabled(false);
-                }
-            });
-
-        Objects.requireNonNull(binding.passwordInput.getEditText()).addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
-            @Override
-            public void afterTextChanged(Editable s) {
-                binding.passwordInput.setErrorEnabled(false);
-            }
-        });
+        binding.passwordInput.getEditText().addTextChangedListener(UIUtils.createTextErrorRemover(binding.passwordInput));
+        binding.usernameInput.getEditText().addTextChangedListener(UIUtils.createTextErrorRemover(binding.usernameInput));
 
 
         binding.signUpButton.setOnClickListener((v -> {
@@ -79,33 +56,23 @@ public class LoginActivity extends AppCompatActivity {
             if (!ok)
                 return;
 
-
-
             // Call authentication code authenticate Here!!!
             ((AccountAccess) AccountAccess.getInstance()).loginUser(getFieldText(binding.passwordInput), getFieldText(binding.usernameInput),
                     new DataBaseManager.DataBaseManagerListener() {
                         @Override
                         public void onFailure(Exception e) {
-                            UIUtils.createToast(getApplicationContext(), "Error logging in");
+                            UIUtils.createToast(getApplicationContext(), "The user name or password is incorrect");
                             binding.logInButton.setEnabled(true);
                         }
 
                         @Override
                         public void onSuccess(Object result) {
-                            UIUtils.createToast(getApplicationContext(), "Logged in?");
                             binding.logInButton.setEnabled(true);
                             finish();
                         }
                 });
 
-
             binding.logInButton.setEnabled(false);
-
-
-            // if (authentication passes)
-            // go to the "main logged in user" activity
-            // else
-
         });
     }
 

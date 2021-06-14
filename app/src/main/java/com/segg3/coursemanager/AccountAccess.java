@@ -1,10 +1,8 @@
 package com.segg3.coursemanager;
 
-import android.app.Activity;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -14,17 +12,13 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 public class AccountAccess extends DataBaseManager{
@@ -65,10 +59,7 @@ public class AccountAccess extends DataBaseManager{
         db.whereEqualTo(PASSWORD_KEY, password).whereEqualTo(USERNAME_KEY, userName).get()
         .addOnCompleteListener
         (
-            new OnCompleteListener<QuerySnapshot>()
-            {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                task -> {
                     if (task.isSuccessful()) {
 
                         Iterator<QueryDocumentSnapshot> i = task.getResult().iterator();
@@ -78,7 +69,7 @@ public class AccountAccess extends DataBaseManager{
                             QueryDocumentSnapshot document = i.next();
                             if(document.contains(TYPE_KEY))
                             {
-                                switch (document.get(TYPE_KEY, String.class))
+                                switch (document.get(TYPE_KEY, String.class).toLowerCase())
                                 {
                                     case "admin":
                                         user = new Admin
@@ -111,6 +102,11 @@ public class AccountAccess extends DataBaseManager{
                                                 null
                                             );
                                         break;
+                                    default:
+                                        Log.w("FIRE", "Unknown user type found for document " + document.getId());
+                                        callback.onFailure(new Exception("Failed Login due to server error"));
+                                        return;
+
                                 }
                                 callback.onSuccess(user);
 
@@ -126,7 +122,6 @@ public class AccountAccess extends DataBaseManager{
                         Log.d("FIRE", "Error getting documents: ", task.getException());
                     }
                 }
-            }
         )
         .addOnFailureListener
         (

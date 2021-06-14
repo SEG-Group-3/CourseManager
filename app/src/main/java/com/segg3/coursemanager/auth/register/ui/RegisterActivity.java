@@ -1,20 +1,14 @@
 package com.segg3.coursemanager.auth.register.ui;
 
-import android.accounts.Account;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.View;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputLayout;
@@ -53,8 +47,6 @@ public class RegisterActivity extends AppCompatActivity {
 
 
         String[] items = {"Student", "Instructor"};
-
-
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.dropdown_item, items);
         binding.accountTypeDropdown.setAdapter(adapter);
