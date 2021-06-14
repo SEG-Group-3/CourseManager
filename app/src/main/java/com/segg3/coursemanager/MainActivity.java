@@ -3,7 +3,9 @@ package com.segg3.coursemanager;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,7 +15,6 @@ import com.segg3.coursemanager.administrator.courses.ui.CourseViewFragment;
 import com.segg3.coursemanager.administrator.users.ui.UsersViewFragment;
 import com.segg3.coursemanager.auth.login.ui.LoginActivity;
 import com.segg3.coursemanager.databinding.ActivityMainBinding;
-import com.segg3.coursemanager.databinding.NavHeaderBinding;
 import com.segg3.coursemanager.shared.UIUtils;
 import com.segg3.coursemanager.shared.home.ui.HomeFragment;
 
@@ -24,8 +25,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
 
-        View view = binding.getRoot();
-        setContentView(view);
 
         setSupportActionBar(binding.toolbar);
         ActionBarDrawerToggle actionBarToggle = new ActionBarDrawerToggle(
@@ -38,8 +37,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Default Navigation
-        binding.navigationMenu.getMenu().clear();
-        binding.navigationMenu.inflateMenu(R.menu.admin_menu);
 
 
         binding.navigationMenu.setNavigationItemSelectedListener(item -> {
@@ -67,13 +64,32 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         // If credentials were not stored go to login screen
-//         ActivityOptions options = ActivityOptions.makeBasic();
-//         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-//         startActivity(intent, options.toBundle());
+        User u = ((AccountAccess) AccountAccess.getInstance()).getUser();
 
-        // else start normally
+        if (u == null) {
+            Log.v("ACCOUNT", "User is not logged in, redirecting to Login");
+            ActivityOptions options = ActivityOptions.makeBasic();
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent, options.toBundle());
+            return;
+        }
+
+        View nav_header =  binding.navigationMenu.getHeaderView(0);
+        ((TextView)nav_header.findViewById(R.id.nav_head_username)).setText(u.getUsername());
+        ((TextView)nav_header.findViewById(R.id.nav_head_usertype)).setText(u.getType());
+
+        binding.navigationMenu.getMenu().clear();
+        binding.navigationMenu.inflateMenu(R.menu.base_menu);
+        if(u.getType().toLowerCase().equals("admin"))
+            binding.navigationMenu.inflateMenu(R.menu.admin_menu);
+
+
+
         setContentView(binding.getRoot());
         UIUtils.swapViews(getSupportFragmentManager(), new HomeFragment());
+
+
+
     }
 
 
