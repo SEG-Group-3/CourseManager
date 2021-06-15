@@ -192,6 +192,10 @@ public class AccountAccess extends DataBaseManager{
                                 }
                             );
                         }
+                        else
+                        {
+                            callback.onFailure(new Exception("account must have unique user name"));
+                        }
                     }
                 }
             }
