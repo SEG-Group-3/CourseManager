@@ -5,25 +5,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.segg3.coursemanager.AccountAccess;
+import com.segg3.coursemanager.Admin;
 import com.segg3.coursemanager.Course;
 import com.segg3.coursemanager.R;
 import com.segg3.coursemanager.shared.UIUtils;
 import com.segg3.coursemanager.shared.courses.CourseListAdapter;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import com.segg3.coursemanager.shared.home.ui.HomeFragment;
+import com.segg3.coursemanager.shared.models.CoursesViewModel;
 
 
 public class CourseViewFragment extends Fragment {
-    CourseListAdapter listAdapter;
+    CourseListAdapter courseListAdapter;
+    CoursesViewModel coursesViewModel;
     RecyclerView recyclerView;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
@@ -32,19 +36,45 @@ public class CourseViewFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(v.getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.scrollToPosition(0);
-        List<Course> courses= new ArrayList<>();
-        Date now= Calendar.getInstance().getTime();
-        courses.add(new Course("Math","MAT1222", now,"ABkCD"));
-        courses.add(new Course("Chemistry","CHM1222", now,"AlBCD"));
-        courses.add(new Course("Physics","PHY1222", now,"ABpCD"));
-        courses.add(new Course("History","HIS1234", now,"ff"));
-        courses.add(new Course("English","END1256", now,"asd"));
-        listAdapter=new CourseListAdapter(courses,this::onCourseClicked);
-        recyclerView.setAdapter(listAdapter);
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                UIUtils.swipeFragmentLeft(getParentFragmentManager(), new HomeFragment());
+            }
+        });
+
+        coursesViewModel = new ViewModelProvider(requireActivity()).get(CoursesViewModel.class);
+
+        // Set Initial State
+        courseListAdapter = new CourseListAdapter(coursesViewModel.getCourses().getValue(), this::onCourseClicked);
+        recyclerView.setAdapter(courseListAdapter);
+        v.findViewById(R.id.floatingActionButton).setOnClickListener(this::onAddClicked);
+        // Update UI on change
+        coursesViewModel.getCourses().observe(getViewLifecycleOwner(), courses -> {
+            courseListAdapter = new CourseListAdapter(courses, this::onCourseClicked);
+            recyclerView.setAdapter(courseListAdapter);
+        });
+
         UIUtils.setToolbarTitle(getActivity(),  getString(R.string.courses));
         return v;
     }
+
+    public void onAddClicked(View v) {
+        Fragment edit_course_frag = new EditCourseFragment();
+        Bundle args = new Bundle();
+        edit_course_frag.setArguments(args);
+        UIUtils.swipeFragmentRight(getParentFragmentManager(), edit_course_frag);
+    }
+
     public void onCourseClicked(View v){
-        UIUtils.swipeFragmentRight(getParentFragmentManager(), new EditCourseFragment());
+        // Finds the selected item
+        int position = recyclerView.getChildLayoutPosition(v);
+        // Setup Fragment arguments
+        Fragment edit_course_frag = new EditCourseFragment();
+        Bundle args = new Bundle();
+        args.putInt("position", position);
+        edit_course_frag.setArguments(args);
+        UIUtils.swipeFragmentRight(getParentFragmentManager(), edit_course_frag);
     }
 }

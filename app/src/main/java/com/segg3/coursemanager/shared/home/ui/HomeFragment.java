@@ -42,8 +42,6 @@ public class HomeFragment extends Fragment {
             binding.userNameField.setText(u.getUsername());
             binding.userTypeField.setText(u.getType());
         }
-
-
     }
 }
 

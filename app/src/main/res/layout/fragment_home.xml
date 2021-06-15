@@ -37,6 +37,21 @@
         android:text="User Name"
         android:textAppearance="?attr/textAppearanceHeadline3" />
 
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="2" />
+
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="fill_parent"
+        android:layout_height="0sp"
+        android:layout_weight="1"
+        android:contentDescription="User Picture"
+        app:srcCompat="@android:drawable/ic_lock_lock"
+        app:tint="@color/black" />
+
     <TextView
         android:id="@+id/user_type_field"
         android:layout_width="match_parent"
@@ -47,30 +62,6 @@
         android:gravity="center|top"
         android:text="User type"
         android:textAppearance="?attr/textAppearanceCaption" />
-
-    <Space
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" />
-
-
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="fill_parent"
-        android:layout_height="0sp"
-        android:layout_weight="1"
-        android:tint="@color/black"
-        app:srcCompat="@android:drawable/ic_lock_lock" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="0sp"
-        android:layout_margin="12dp"
-        android:layout_weight="1"
-        android:autoSizeTextType="uniform"
-        android:gravity="center"
-        android:text="@string/home_tutorial"
-        android:textAppearance="?attr/textAppearanceHeadline4" />
 
     <Space
         android:layout_width="wrap_content"
