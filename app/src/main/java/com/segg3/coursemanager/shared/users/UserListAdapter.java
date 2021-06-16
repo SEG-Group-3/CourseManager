@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.segg3.coursemanager.R;
 import com.segg3.coursemanager.User;
 import com.segg3.coursemanager.shared.models.CardViewHolder;
@@ -19,10 +18,10 @@ import java.util.List;
 
 public class UserListAdapter extends RecyclerView.Adapter<CardViewHolder> {
     private final List<User> userList;
-    private View.OnClickListener onClickListener;
+    private final View.OnClickListener onClickListener;
 
     public UserListAdapter(List<User> users, View.OnClickListener listener) {
-        onClickListener=listener;
+        onClickListener = listener;
         userList = users;
     }
 
@@ -30,7 +29,7 @@ public class UserListAdapter extends RecyclerView.Adapter<CardViewHolder> {
     @NotNull
     @Override
     public CardViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.row_course_layout,parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_course_layout, parent, false);
         v.setOnClickListener(onClickListener);
 
         return new CardViewHolder(v);
@@ -38,20 +37,18 @@ public class UserListAdapter extends RecyclerView.Adapter<CardViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull CardViewHolder holder, int position) {
-        User user=userList.get(position);
+        User user = userList.get(position);
         holder.title.setText(user.getUsername());
         holder.subtitle.setText(user.getUserID());
-        holder.subsubtitle.setText(user.getType());
-        if (user.getType().equals("Student")){
-            holder.imageView.setImageDrawable(AppCompatResources.getDrawable(holder.imageView.getContext(),R.drawable.ic_student));
+        holder.heading.setText(user.getType());
+        if (user.getType().equals("Student")) {
+            holder.imageView.setImageDrawable(AppCompatResources.getDrawable(holder.imageView.getContext(), R.drawable.ic_student));
+        } else if (user.getType().equals("Instructor")) {
+            holder.imageView.setImageDrawable(AppCompatResources.getDrawable(holder.imageView.getContext(), R.drawable.ic_instructor));
+        } else {
+            holder.imageView.setImageDrawable(AppCompatResources.getDrawable(holder.imageView.getContext(), R.drawable.ic_admin));
         }
-        else if(user.getType().equals("Instructor")){
-            holder.imageView.setImageDrawable(AppCompatResources.getDrawable(holder.imageView.getContext(),R.drawable.ic_instructor));
-        }
-        else{
-            holder.imageView.setImageDrawable(AppCompatResources.getDrawable(holder.imageView.getContext(),R.drawable.ic_admin));
-        }
-        }
+    }
 
     @Override
     public int getItemCount() {

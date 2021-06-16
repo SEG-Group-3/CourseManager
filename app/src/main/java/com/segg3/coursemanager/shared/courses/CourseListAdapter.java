@@ -18,10 +18,10 @@ import java.util.List;
 
 public class CourseListAdapter extends RecyclerView.Adapter<CardViewHolder> {
     private final List<Course> courseList;
-    private View.OnClickListener onClickListener;
+    private final View.OnClickListener onClickListener;
 
     public CourseListAdapter(List<Course> courses, View.OnClickListener listener) {
-        onClickListener=listener;
+        onClickListener = listener;
         courseList = courses;
     }
 
@@ -29,7 +29,7 @@ public class CourseListAdapter extends RecyclerView.Adapter<CardViewHolder> {
     @NotNull
     @Override
     public CardViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.row_course_layout,parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_course_layout, parent, false);
         v.setOnClickListener(onClickListener);
         return new CardViewHolder(v);
     }
@@ -38,8 +38,8 @@ public class CourseListAdapter extends RecyclerView.Adapter<CardViewHolder> {
     public void onBindViewHolder(@NonNull @NotNull CardViewHolder holder, int position) {
         holder.title.setText(courseList.get(position).name);
         holder.subtitle.setText(courseList.get(position).code);
-        holder.subsubtitle.setText(courseList.get(position).getId());
-        holder.imageView.setImageDrawable(AppCompatResources.getDrawable(holder.imageView.getContext(),R.drawable.ic_book));
+        holder.heading.setText(courseList.get(position).getId());
+        holder.imageView.setImageDrawable(AppCompatResources.getDrawable(holder.imageView.getContext(), R.drawable.ic_book));
     }
 
     @Override

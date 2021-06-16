@@ -3,8 +3,8 @@ package com.segg3.coursemanager;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class User {
-    protected String userID;
     public String name;
+    protected String userID;
     protected String email;
     protected String username;
     protected String loginToken;
@@ -40,8 +40,7 @@ public abstract class User {
 
 
     @NotNull
-    public String toString()
-    {
+    public String toString() {
         return "userID:" + userID + "\tname:" + name + "\temail:" + email + "\tusername:";
     }
 }

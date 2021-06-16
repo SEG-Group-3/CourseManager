@@ -8,11 +8,12 @@ import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
-import com.segg3.coursemanager.AccountAccess;
 import com.segg3.coursemanager.R;
 import com.segg3.coursemanager.User;
 import com.segg3.coursemanager.databinding.FragmentHomeBinding;
+import com.segg3.coursemanager.shared.models.UsersViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -30,7 +31,8 @@ public class HomeFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        User u = ((AccountAccess) AccountAccess.getInstance()).getUser();
+        UsersViewModel users = new ViewModelProvider(requireActivity()).get(UsersViewModel.class);
+        User u = users.getLoggedUser();
         if (u != null) {
             if (u.getType().equals("Student")) {
                 binding.imageView3.setImageDrawable(AppCompatResources.getDrawable(binding.imageView3.getContext(), R.drawable.ic_student));

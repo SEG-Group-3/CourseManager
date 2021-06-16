@@ -12,10 +12,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.segg3.coursemanager.AccountAccess;
-import com.segg3.coursemanager.Admin;
-import com.segg3.coursemanager.Course;
 import com.segg3.coursemanager.R;
 import com.segg3.coursemanager.shared.UIUtils;
 import com.segg3.coursemanager.shared.courses.CourseListAdapter;
@@ -30,9 +26,9 @@ public class CourseViewFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
-        View v=inflater.inflate(R.layout.fragment_admin_list_view, container, false);
-        recyclerView= v.findViewById(R.id.course_recycler_view);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_admin_list_view, container, false);
+        recyclerView = v.findViewById(R.id.course_recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(v.getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.scrollToPosition(0);
@@ -56,7 +52,7 @@ public class CourseViewFragment extends Fragment {
             recyclerView.setAdapter(courseListAdapter);
         });
 
-        UIUtils.setToolbarTitle(getActivity(),  getString(R.string.courses));
+        UIUtils.setToolbarTitle(getActivity(), getString(R.string.courses));
         return v;
     }
 
@@ -67,7 +63,7 @@ public class CourseViewFragment extends Fragment {
         UIUtils.swipeFragmentRight(getParentFragmentManager(), edit_course_frag);
     }
 
-    public void onCourseClicked(View v){
+    public void onCourseClicked(View v) {
         // Finds the selected item
         int position = recyclerView.getChildLayoutPosition(v);
         // Setup Fragment arguments

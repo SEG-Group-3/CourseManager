@@ -30,10 +30,11 @@ public class EditUserFragment extends Fragment {
     UsersViewModel usersViewModel;
     String selectedRole = null;
     int position = -1;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view =inflater.inflate(R.layout.fragment_edit_user, container, false);
+        View view = inflater.inflate(R.layout.fragment_edit_user, container, false);
         binding = FragmentEditUserBinding.bind(view);
         usersViewModel = new ViewModelProvider(requireActivity()).get(UsersViewModel.class);
 
@@ -65,8 +66,7 @@ public class EditUserFragment extends Fragment {
         UIUtils.setToolbarTitle(getActivity(), "Edit User");
 
         position = getArguments().getInt("position", -1);
-        if (position != -1)
-        {
+        if (position != -1) {
             // Editing existing item
             User beingEdited = usersViewModel.getUsers().getValue().get(position);
             binding.inputUsername.getEditText().setText(beingEdited.getUsername());
@@ -79,11 +79,10 @@ public class EditUserFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull @NotNull MenuItem item) {
         UIUtils.createYesNoMenu("Delete Item", "Do you really want to delete this user?", getActivity(), (dialog, which) -> {
             // Delete user here
-            if (position != -1){
-                usersViewModel.deleteUser(position);
+            if (usersViewModel.deleteUser(position)) {
                 UIUtils.createToast(getActivity().getApplicationContext(), "User deleted");
-            } else{
-                UIUtils.createToast(getActivity().getApplicationContext(), "No item to be deleted");
+            } else {
+                UIUtils.createToast(getActivity().getApplicationContext(), "Nothing to be deleted");
             }
             UIUtils.swipeFragmentLeft(getParentFragmentManager(), new UsersViewFragment());
         });
@@ -97,22 +96,20 @@ public class EditUserFragment extends Fragment {
     }
 
 
-
-
-    private void onCancelEdit(View v){
+    private void onCancelEdit(View v) {
         UIUtils.swipeFragmentLeft(getParentFragmentManager(), new UsersViewFragment());
     }
 
-    private void onApplyEdit(View v){
+    private void onApplyEdit(View v) {
         String name = binding.inputUsername.getEditText().getText().toString();
         String password = binding.inputPassword.getEditText().getText().toString();
 
 
         TextInputLayout[] emptyCheckedFields = {binding.inputUsername};
         boolean ok = true;
-        for (TextInputLayout field:
-                emptyCheckedFields ) {
-            if (field.getEditText().getText().toString().isEmpty()){
+        for (TextInputLayout field :
+                emptyCheckedFields) {
+            if (field.getEditText().getText().toString().isEmpty()) {
                 field.setError(getString(R.string.error_empty_field));
                 field.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.shake));
                 ok = false;
@@ -125,9 +122,18 @@ public class EditUserFragment extends Fragment {
 
 
         if (position != -1)
-            usersViewModel.editUser(position, name, password, selectedRole);  // Edit existing item
-        else
-            usersViewModel.addUser(name, password, selectedRole); // Add new item
+            if (usersViewModel.editUser(position, name, password, selectedRole)) {  // Edit existing item
+                UIUtils.createToast(getActivity().getApplicationContext(), "User Edited");
+            } else {
+                UIUtils.createToast(getActivity().getApplicationContext(), "Error editing user");
+            }
+        else {
+            if (usersViewModel.addUser(name, password, selectedRole)) { // Add new item
+                UIUtils.createToast(getActivity().getApplicationContext(), "User Added");
+            } else {
+                UIUtils.createToast(getActivity().getApplicationContext(), "An user with the same name already exists!");
+            }
+        }
 
         UIUtils.swipeFragmentLeft(getParentFragmentManager(), new UsersViewFragment());
     }
