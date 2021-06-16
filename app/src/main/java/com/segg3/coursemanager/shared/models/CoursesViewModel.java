@@ -75,7 +75,7 @@ public class CoursesViewModel extends ViewModel {
     }
 
     private Course deserializeCourse(QueryDocumentSnapshot doc){
-        return new Course(doc.get(NAME_KEY, String.class), doc.get(CODE_KEY, String.class), null, null );
+        return new Course(doc.get(NAME_KEY, String.class), doc.get(CODE_KEY, String.class), null, doc.getId() );
     }
 
     public void addCourse(String name, String code) {
