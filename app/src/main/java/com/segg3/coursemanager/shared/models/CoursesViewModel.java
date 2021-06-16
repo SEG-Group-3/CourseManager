@@ -17,15 +17,14 @@ import java.util.HashMap;
 import java.util.List;
 
 public class CoursesViewModel extends ViewModel {
-    private MutableLiveData<HashMap<String, Course>> courses_impl;
-    private MutableLiveData<List<Course>> courses;
-    private static final CollectionReference courseDB = FirebaseFirestore.getInstance().collection("Courses");
     public static final String NAME_KEY = "name";
     public static final String CODE_KEY = "code";
+    private static final CollectionReference courseDB = FirebaseFirestore.getInstance().collection("Courses");
+    private MutableLiveData<HashMap<String, Course>> courses_impl;
+    private MutableLiveData<List<Course>> courses;
 
-
-    public LiveData<List<Course>> getCourses(){
-        if (courses_impl == null){
+    public LiveData<List<Course>> getCourses() {
+        if (courses_impl == null) {
             courses_impl = new MutableLiveData<>();
             courses_impl.setValue(new HashMap<>());
             courses = new MutableLiveData<>();
@@ -35,14 +34,14 @@ public class CoursesViewModel extends ViewModel {
         return courses;
     }
 
-    public void loadCourses(){
+    public void loadCourses() {
         courseDB.addSnapshotListener((snapshots, e) -> {
             if (e != null)
                 return;
             for (DocumentChange dc : snapshots.getDocumentChanges()) {
                 QueryDocumentSnapshot doc = dc.getDocument();
                 Course courseTmp = deserializeCourse(doc);
-                if (courseTmp == null){
+                if (courseTmp == null) {
                     Log.w("FIRE", "Object: " + doc.getId() + " doesn't match course signature");
                     continue;
                 }
@@ -62,30 +61,49 @@ public class CoursesViewModel extends ViewModel {
         });
     }
 
-    public void deleteCourse(int position) {
+    public boolean deleteCourse(int position) {
+        if (position < 0 || position >= courses.getValue().size())
+            return false;
         courseDB.document(courses.getValue().get(position).getId()).delete();
+        return true;
     }
 
 
-    private HashMap<String, Object> serializeCourse(String code, String name){
+    private HashMap<String, Object> serializeCourse(String code, String name) {
         HashMap<String, Object> serialized = new HashMap<>();
         serialized.put(NAME_KEY, name);
         serialized.put(CODE_KEY, code);
         return serialized;
     }
 
-    private Course deserializeCourse(QueryDocumentSnapshot doc){
-        return new Course(doc.get(NAME_KEY, String.class), doc.get(CODE_KEY, String.class), null, null );
+    private Course deserializeCourse(QueryDocumentSnapshot doc) {
+        return new Course(doc.get(NAME_KEY, String.class), doc.get(CODE_KEY, String.class), null, doc.getId());
     }
 
-    public void addCourse(String name, String code) {
-        courseDB.add(serializeCourse(name,code));
+    public boolean addCourse(String name, String code) {
+        for (Course c : courses.getValue())
+            if (c.code.equals(code))
+                return false;
+
+        courseDB.add(serializeCourse(code, name));
+        return true;
     }
 
-    public void editCourse(int position, String code, String name) {
-        HashMap<String, Object> serialized = new HashMap<>();
-        serialized.put(NAME_KEY, name);
-        serialized.put(CODE_KEY, code);
+    public boolean editCourse(int position, String code, String name) {
+        if (position < 0 || position >= courses.getValue().size())
+            return false;
+
+        String originalName = courses.getValue().get(position).name;
+        HashMap<String, Object> serialized = serializeCourse(code, name);
+        if (name == null || name.isEmpty())
+            serialized.remove(NAME_KEY, name);
+        if (code == null || code.isEmpty()) {
+            serialized.remove(CODE_KEY, code);
+        }
+        for (Course c : courses.getValue())  // Check for repeated course codes
+            if (c.code.equals(code) && !c.name.equals(originalName))
+                return false;
         courseDB.document(courses.getValue().get(position).getId()).update(serialized);
+        return true;
     }
 }
