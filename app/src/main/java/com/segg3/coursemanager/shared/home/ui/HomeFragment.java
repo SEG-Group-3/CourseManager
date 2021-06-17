@@ -14,6 +14,11 @@ import com.segg3.coursemanager.R;
 import com.segg3.coursemanager.User;
 import com.segg3.coursemanager.databinding.FragmentHomeBinding;
 
+import com.segg3.coursemanager.shared.UIUtils;
+import com.segg3.coursemanager.shared.models.User;
+import com.segg3.coursemanager.shared.viewmodels.AuthViewModel;
+import com.segg3.coursemanager.shared.viewmodels.UsersViewModel;
+
 import org.jetbrains.annotations.NotNull;
 
 public class HomeFragment extends Fragment {
@@ -24,6 +29,8 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
 
+        auth = new ViewModelProvider(requireActivity()).get(AuthViewModel.class);
+        UIUtils.setToolbarTitle(getActivity(), getString(R.string.home));
         return binding.getRoot();
     }
 
@@ -33,15 +40,17 @@ public class HomeFragment extends Fragment {
         User u = ((AccountAccess) AccountAccess.getInstance()).getUser();
         if (u != null) {
             if (u.getType().equals("Student")) {
-                binding.imageView3.setImageDrawable(AppCompatResources.getDrawable(binding.imageView3.getContext(), R.drawable.ic_student));
+                binding.imageView3.setImageDrawable(
+                        AppCompatResources.getDrawable(binding.imageView3.getContext(), R.drawable.ic_student));
             } else if (u.getType().equals("Instructor")) {
-                binding.imageView3.setImageDrawable(AppCompatResources.getDrawable(binding.imageView3.getContext(), R.drawable.ic_instructor));
+                binding.imageView3.setImageDrawable(
+                        AppCompatResources.getDrawable(binding.imageView3.getContext(), R.drawable.ic_instructor));
             } else {
-                binding.imageView3.setImageDrawable(AppCompatResources.getDrawable(binding.imageView3.getContext(), R.drawable.ic_admin));
+                binding.imageView3.setImageDrawable(
+                        AppCompatResources.getDrawable(binding.imageView3.getContext(), R.drawable.ic_admin));
             }
             binding.userNameField.setText(u.getUsername());
             binding.userTypeField.setText(u.getType());
         }
     }
 }
-

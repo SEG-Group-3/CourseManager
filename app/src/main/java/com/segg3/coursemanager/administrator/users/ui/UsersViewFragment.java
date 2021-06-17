@@ -27,19 +27,20 @@ public class UsersViewFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
-        View v=inflater.inflate(R.layout.fragment_list_view, container, false);
-        recyclerView= v.findViewById(R.id.course_recycler_view);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_list_view, container, false);
+        recyclerView = v.findViewById(R.id.course_recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(v.getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.scrollToPosition(0);
 
-        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                UIUtils.swipeFragmentLeft(getParentFragmentManager(), new HomeFragment());
-            }
-        });
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(),
+                new OnBackPressedCallback(true) {
+                    @Override
+                    public void handleOnBackPressed() {
+                        UIUtils.swipeFragmentLeft(getParentFragmentManager(), new HomeFragment());
+                    }
+                });
 
         usersViewModel = new ViewModelProvider(requireActivity()).get(UsersViewModel.class);
 
@@ -53,7 +54,8 @@ public class UsersViewFragment extends Fragment {
             recyclerView.setAdapter(userListAdapter);
         });
 
-        UIUtils.setToolbarTitle(getActivity(),  getString(R.string.courses));
+        UIUtils.setToolbarTitle(getActivity(), getString(R.string.users));
+
         return v;
     }
 
@@ -64,7 +66,7 @@ public class UsersViewFragment extends Fragment {
         UIUtils.swipeFragmentRight(getParentFragmentManager(), edit_user_frag);
     }
 
-    public void onUserClicked(View v){
+    public void onUserClicked(View v) {
         // Finds the selected item
         int position = recyclerView.getChildLayoutPosition(v);
         // Setup Fragment arguments

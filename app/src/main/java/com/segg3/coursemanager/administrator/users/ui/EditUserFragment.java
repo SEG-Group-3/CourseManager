@@ -62,7 +62,7 @@ public class EditUserFragment extends Fragment {
         binding.inputPassword.getEditText().addTextChangedListener(UIUtils.createTextErrorRemover(binding.inputPassword));
 
         setHasOptionsMenu(true);
-        UIUtils.setToolbarTitle(getActivity(), "Edit User");
+        UIUtils.setToolbarTitle(getActivity(), getString(R.string.edit_users));
 
         position = getArguments().getInt("position", -1);
         if (position != -1)
