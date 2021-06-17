@@ -44,7 +44,7 @@
 
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/roleImage"
         android:layout_width="fill_parent"
         android:layout_height="0sp"
         android:layout_weight="1"

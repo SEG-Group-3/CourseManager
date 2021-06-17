@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CourseManager"
         android:fullBackupContent="false">
-<!--        Declaration of all activities in our app-->
+        <!--        Declaration of all activities in our app-->
         <activity android:name=".MainActivity" android:screenOrientation="nosensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
