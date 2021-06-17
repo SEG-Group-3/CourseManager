@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.segg3.coursemanager.R;
 import com.segg3.coursemanager.databinding.FragmentHomeBinding;
+import com.segg3.coursemanager.shared.UIUtils;
 import com.segg3.coursemanager.shared.models.User;
 import com.segg3.coursemanager.shared.viewmodels.AuthViewModel;
 import com.segg3.coursemanager.shared.viewmodels.UsersViewModel;
@@ -27,6 +28,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         auth = new ViewModelProvider(requireActivity()).get(AuthViewModel.class);
+        UIUtils.setToolbarTitle(getActivity(), getString(R.string.home));
         return binding.getRoot();
     }
 

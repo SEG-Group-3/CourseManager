@@ -52,7 +52,7 @@ public class EditCourseFragment extends Fragment {
         binding.courseNameInput.getEditText().addTextChangedListener(UIUtils.createTextErrorRemover(binding.courseNameInput));
 
         setHasOptionsMenu(true);
-        UIUtils.setToolbarTitle(getActivity(), "Edit Course");
+        UIUtils.setToolbarTitle(getActivity(), getString(R.string.edit_course));
 
         position = getArguments().getInt("position", -1);
         if (position != -1) {

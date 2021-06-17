@@ -50,7 +50,7 @@ public class UsersViewFragment extends Fragment {
         // Update UI on change
         usersViewModel.getUsers().observe(getViewLifecycleOwner(), users -> userListAdapter.submitList(users));
 
-        UIUtils.setToolbarTitle(getActivity(), getString(R.string.courses));
+        UIUtils.setToolbarTitle(getActivity(), getString(R.string.users));
         return v;
     }
 
