@@ -8,29 +8,33 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.segg3.coursemanager.R;
-import com.segg3.coursemanager.User;
 import com.segg3.coursemanager.shared.models.CardViewHolder;
+import com.segg3.coursemanager.shared.models.User;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public class UserListAdapter extends RecyclerView.Adapter<CardViewHolder> {
-    private final List<User> userList;
-    private View.OnClickListener onClickListener;
+    private final View.OnClickListener onClickListener;
+    private List<User> userList;
 
     public UserListAdapter(List<User> users, View.OnClickListener listener) {
-        onClickListener=listener;
+        onClickListener = listener;
         userList = users;
+    }
+
+    public void submitList(List<User> users) {
+        userList = users;
+        notifyDataSetChanged();
     }
 
     @NonNull
     @NotNull
     @Override
     public CardViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.row_course_layout,parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_course_layout, parent, false);
         v.setOnClickListener(onClickListener);
 
         return new CardViewHolder(v);
@@ -38,20 +42,24 @@ public class UserListAdapter extends RecyclerView.Adapter<CardViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull CardViewHolder holder, int position) {
-        User user=userList.get(position);
-        holder.title.setText(user.getUsername());
-        holder.subtitle.setText(user.getUserID());
-        holder.subsubtitle.setText(user.getType());
-        if (user.getType().equals("Student")){
-            holder.imageView.setImageDrawable(AppCompatResources.getDrawable(holder.imageView.getContext(),R.drawable.ic_student));
+        User user = userList.get(position);
+        holder.title.setText(user.userName);
+        holder.subtitle.setText(user.type);
+        holder.heading.setText(user.id);
+        switch (user.type.toLowerCase()) {
+            case "student":
+                holder.imageView.setImageDrawable(AppCompatResources.getDrawable(holder.imageView.getContext(), R.drawable.ic_student));
+                break;
+            case "instructor":
+                holder.imageView.setImageDrawable(AppCompatResources.getDrawable(holder.imageView.getContext(), R.drawable.ic_instructor));
+                break;
+            case "admin":
+                holder.imageView.setImageDrawable(AppCompatResources.getDrawable(holder.imageView.getContext(), R.drawable.ic_admin));
+                break;
+            default:
+                break;
         }
-        else if(user.getType().equals("Instructor")){
-            holder.imageView.setImageDrawable(AppCompatResources.getDrawable(holder.imageView.getContext(),R.drawable.ic_instructor));
-        }
-        else{
-            holder.imageView.setImageDrawable(AppCompatResources.getDrawable(holder.imageView.getContext(),R.drawable.ic_admin));
-        }
-        }
+    }
 
     @Override
     public int getItemCount() {
