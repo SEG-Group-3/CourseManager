@@ -12,21 +12,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.segg3.coursemanager.Admin;
-import com.segg3.coursemanager.Instructor;
 import com.segg3.coursemanager.R;
-import com.segg3.coursemanager.Student;
-import com.segg3.coursemanager.User;
-import com.segg3.coursemanager.administrator.courses.ui.EditCourseFragment;
 import com.segg3.coursemanager.shared.UIUtils;
-import com.segg3.coursemanager.shared.courses.CourseListAdapter;
 import com.segg3.coursemanager.shared.home.ui.HomeFragment;
-import com.segg3.coursemanager.shared.models.CoursesViewModel;
-import com.segg3.coursemanager.shared.models.UsersViewModel;
 import com.segg3.coursemanager.shared.users.UserListAdapter;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.segg3.coursemanager.shared.viewmodels.UsersViewModel;
 
 public class UsersViewFragment extends Fragment {
     UserListAdapter listAdapter;
@@ -37,9 +27,9 @@ public class UsersViewFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
-        View v=inflater.inflate(R.layout.fragment_admin_list_view, container, false);
-        recyclerView= v.findViewById(R.id.course_recycler_view);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_admin_list_view, container, false);
+        recyclerView = v.findViewById(R.id.course_recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(v.getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.scrollToPosition(0);
@@ -58,12 +48,9 @@ public class UsersViewFragment extends Fragment {
         recyclerView.setAdapter(userListAdapter);
         v.findViewById(R.id.floatingActionButton).setOnClickListener(this::onAddClicked);
         // Update UI on change
-        usersViewModel.getUsers().observe(getViewLifecycleOwner(), users -> {
-            userListAdapter = new UserListAdapter(users, this::onUserClicked);
-            recyclerView.setAdapter(userListAdapter);
-        });
+        usersViewModel.getUsers().observe(getViewLifecycleOwner(), users -> userListAdapter.submitList(users));
 
-        UIUtils.setToolbarTitle(getActivity(),  getString(R.string.courses));
+        UIUtils.setToolbarTitle(getActivity(), getString(R.string.courses));
         return v;
     }
 
@@ -74,7 +61,7 @@ public class UsersViewFragment extends Fragment {
         UIUtils.swipeFragmentRight(getParentFragmentManager(), edit_user_frag);
     }
 
-    public void onUserClicked(View v){
+    public void onUserClicked(View v) {
         // Finds the selected item
         int position = recyclerView.getChildLayoutPosition(v);
         // Setup Fragment arguments

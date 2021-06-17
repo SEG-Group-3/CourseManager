@@ -46,6 +46,7 @@ public class UserListAdapter extends RecyclerView.Adapter<CardViewHolder> {
         holder.title.setText(user.userName);
         holder.subtitle.setText(user.type);
         holder.heading.setText(user.id);
+
         switch (user.type.toLowerCase()) {
             case "student":
                 holder.imageView.setImageDrawable(AppCompatResources.getDrawable(holder.imageView.getContext(), R.drawable.ic_student));

@@ -7,9 +7,9 @@ public class User implements DataObject {
     @JsonIgnore
     public String id;
 
-    public String type;
-    public String userName;
-    public String password;
+    public String type = "";
+    public String userName = "ERROR";
+    public String password = "123";
 
     @Override
     public String getPrimaryKey() {

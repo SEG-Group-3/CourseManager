@@ -16,11 +16,12 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.textfield.TextInputLayout;
-import com.segg3.coursemanager.Course;
 import com.segg3.coursemanager.R;
 import com.segg3.coursemanager.databinding.FragmentEditCourseBinding;
 import com.segg3.coursemanager.shared.UIUtils;
-import com.segg3.coursemanager.shared.models.CoursesViewModel;
+import com.segg3.coursemanager.shared.dao.CoursesDao;
+import com.segg3.coursemanager.shared.models.Course;
+import com.segg3.coursemanager.shared.viewmodels.CoursesViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -28,10 +29,12 @@ public class EditCourseFragment extends Fragment {
     FragmentEditCourseBinding binding;
     CoursesViewModel coursesViewModel;
     int position = -1;
+    Course beingEdited;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view =inflater.inflate(R.layout.fragment_edit_course, container, false);
+        View view = inflater.inflate(R.layout.fragment_edit_course, container, false);
         binding = FragmentEditCourseBinding.bind(view);
         coursesViewModel = new ViewModelProvider(requireActivity()).get(CoursesViewModel.class);
 
@@ -52,31 +55,30 @@ public class EditCourseFragment extends Fragment {
         UIUtils.setToolbarTitle(getActivity(), "Edit Course");
 
         position = getArguments().getInt("position", -1);
-        if (position != -1)
-        {
+        if (position != -1) {
             // Editing existing item
-            Course beingEdited =coursesViewModel.getCourses().getValue().get(position);
+            beingEdited = coursesViewModel.getCourses().getValue().get(position);
             binding.courseNameInput.getEditText().setText(beingEdited.name);
             binding.courseCodeInput.getEditText().setText(beingEdited.code);
-            binding.uidText.setText(beingEdited.getId());
+            binding.uidText.setText(beingEdited.id);
         }
         return view;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(@NonNull @NotNull MenuItem item) {
-        UIUtils.createYesNoMenu("Delete Item", "Do you really want to delete this item?", getActivity(), (dialog, which) -> {
+        UIUtils.createYesNoMenu("Delete Item", "Do you really want to delete this course?", getActivity(), (dialog, which) -> {
             // Delete user here
-            if (position != -1){
-                coursesViewModel.deleteCourse(position);
-                UIUtils.createToast(getActivity().getApplicationContext(), "Course deleted");
-            } else{
-                UIUtils.createToast(getActivity().getApplicationContext(), "No item to be deleted");
-            }
+            String code = binding.courseCodeInput.getEditText().getText().toString();
+            CoursesDao.getInstance().deleteCourse(code).
+                    onSuccess(o -> UIUtils.createToast(getActivity().getApplicationContext(), "Course deleted")).
+                    onFailure(e -> UIUtils.createToast(getActivity().getApplicationContext(), "Nothing to be deleted"));
             UIUtils.swipeFragmentLeft(getParentFragmentManager(), new CourseViewFragment());
         });
         return super.onOptionsItemSelected(item);
     }
+
 
     @Override
     public void onCreateOptionsMenu(@NonNull @NotNull Menu menu, @NonNull @NotNull MenuInflater inflater) {
@@ -85,21 +87,17 @@ public class EditCourseFragment extends Fragment {
     }
 
 
-
-
-    private void onCancelEdit(View v){
+    private void onCancelEdit(View v) {
         UIUtils.swipeFragmentLeft(getParentFragmentManager(), new CourseViewFragment());
     }
 
-    private void onApplyEdit(View v){
-        String name = binding.courseNameInput.getEditText().getText().toString();
-        String code = binding.courseCodeInput.getEditText().getText().toString();
+    private void onApplyEdit(View v) {
 
         TextInputLayout[] emptyCheckedFields = {binding.courseNameInput, binding.courseCodeInput};
         boolean ok = true;
-        for (TextInputLayout field:
-                emptyCheckedFields ) {
-            if (field.getEditText().getText().toString().isEmpty()){
+        for (TextInputLayout field :
+                emptyCheckedFields) {
+            if (field.getEditText() == null || field.getEditText().getText().toString().isEmpty()) {
                 field.setError(getString(R.string.error_empty_field));
                 field.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.shake));
                 ok = false;
@@ -109,10 +107,23 @@ public class EditCourseFragment extends Fragment {
         if (!ok)
             return;
 
+        String name = binding.courseNameInput.getEditText().getText().toString();
+        String code = binding.courseCodeInput.getEditText().getText().toString();
+
+        Course course = new Course();
+        course.name = name;
+        course.code = code;
+
         if (position != -1)
-            coursesViewModel.editCourse(position, name, code);  // Edit existing item
-        else
-            coursesViewModel.addCourse(name, code); // Add new item
+            CoursesDao.getInstance().editCourse(beingEdited.code, course).
+                    onSuccess(o -> UIUtils.createToast(getActivity().getApplicationContext(), "Course Edited")).
+                    onFailure(e -> UIUtils.createToast(getActivity().getApplicationContext(), "Error editing course"));
+        else {
+            CoursesDao.getInstance().addCourse(course).
+                    onSuccess(o -> UIUtils.createToast(getActivity().getApplicationContext(), "Course Added")).
+                    onFailure(e -> UIUtils.createToast(getActivity().getApplicationContext(), "A course with the same name already exists!"));
+        }
+
 
         UIUtils.swipeFragmentLeft(getParentFragmentManager(), new CourseViewFragment());
     }

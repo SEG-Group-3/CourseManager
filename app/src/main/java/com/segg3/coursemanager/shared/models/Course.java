@@ -8,8 +8,8 @@ public class Course implements DataObject {
     @JsonIgnore
     public String id;
 
-    public String code;
-    public String name;
+    public String code = "ERR 0000";
+    public String name = "ERROR";
 
     @Override
     public String getPrimaryKey() {

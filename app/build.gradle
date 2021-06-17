@@ -1,14 +1,9 @@
 plugins {
     id 'com.android.application'
-    id 'kotlin-android'
 }
-
 
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
-
-apply plugin: 'kotlin-kapt'
-
 
 android {
     compileSdkVersion 30
