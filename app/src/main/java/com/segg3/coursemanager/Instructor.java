@@ -79,6 +79,9 @@ public class Instructor extends User{
         });
     }
 
+    public void setCapacity(Course course) {
+        setCapacity(course.getId(), course.capacity);
+    }
 
     /**
      * Set Course hours of a course
