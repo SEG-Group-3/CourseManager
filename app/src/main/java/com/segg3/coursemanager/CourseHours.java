@@ -5,9 +5,16 @@ import java.util.Date;
 
 public class CourseHours {
 
-    DayOfWeek weekDay;
+    public final DayOfWeek weekDay;
 
-    Date start;
+    public final Date start;
 
-    float durations;
+    public final float durations;
+
+    public CourseHours(DayOfWeek weekDay, Date start, float durations)
+    {
+        this.weekDay = weekDay;
+        this.start = start;
+        this. durations = durations;
+    }
 }
