@@ -1,7 +1,23 @@
 package com.segg3.coursemanager;
 
-public class Instructor extends User{
+import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import org.jetbrains.annotations.NotNull;
+
+public class Instructor extends User{
+    private static final CollectionReference courseDB = FirebaseFirestore.getInstance().collection("Courses");
+
+    public Instructor(String userID, String name, String email, String username, String loginToken) {
+        super(userID, name, email, username, loginToken);
+    }
 
     //Attribute names for database
     public static final String COURSENAME_KEY = "name";
@@ -11,11 +27,6 @@ public class Instructor extends User{
     public static final String COURSEHOURS_KEY = "courseHours";
     public static final String DECS_KEY = "description";
     public static final String INSTRUCTOR_KEY = "instructor";
-
-    public Instructor(String userID, String name, String email, String username, String loginToken) {
-        super(userID, name, email, username, loginToken);
-    }
-
 
     /**
      * Get an array courses based on a filter
@@ -56,6 +67,22 @@ public class Instructor extends User{
     public void setDesc(Course course, String desc)
     {
         throw new UnsupportedOperationException();
+    }
+
+    public void setInstructor(Course course, Instructor newInstructor) {
+        DocumentReference doc = courseDB.document(course.code);
+
+        doc.update(String.valueOf(course.instructor), newInstructor).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Log.d("Message:", "Instructor successfully assigned to course.");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull @NotNull Exception e) {
+                Log.w("Message:", "Instructor was not assigned to course.");
+            }
+        });
     }
 
     @Override
