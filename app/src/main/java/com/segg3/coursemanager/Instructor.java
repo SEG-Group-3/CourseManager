@@ -67,7 +67,19 @@ public class Instructor extends User{
      */
     public void setDesc(Course course, String desc)
     {
-        throw new UnsupportedOperationException();
+        DocumentReference doc = courseDB.document(course.code);
+
+        doc.update(course.description, desc).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Log.d("Message", "Description successfully added to course.");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull @NotNull Exception e) {
+                Log.w("Message:", "Description was not added to course.");
+            }
+        });
     }
 
     public void setInstructor(Course course, Instructor newInstructor) {
