@@ -32,10 +32,10 @@ public class Instructor extends User{
     /**
      * Get an array courses based on a filter
      * @param name String that is used to filter names
-     * @param feild firebase document feild that is used for filter
+     * @param field firebase document field that is used for filter
      * @return
      */
-    public Course[] searchCourses(String name, String feild)
+    public Course[] searchCourses(String name, String field)
     {
         throw new UnsupportedOperationException();
     }
