@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <group android:id="@+id/group_admin">
+
+        <item
+            android:id="@+id/nav_instructor_edit_courses"
+            android:title="@string/courses" />
+        <item
+            android:id="@+id/nav_instructor_my_courses"
+            android:title="My Courses"
+            />
+    </group>
+
+
+</menu>
