@@ -5,10 +5,14 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Date;
 
 public class Course {
+    private final String id;
     public String name;
     public String code;
     public Date date;
-    private final String id;
+    public Instructor instructor;
+    public String description;
+    public int capacity;
+    public int registeredStudents;
 
     public Course(String name, String code, Date date, String id) {
         this.name = name;
@@ -28,6 +32,22 @@ public class Course {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setInstructor(Instructor instructor) {
+        this.instructor = instructor;
+    }
+
+    public void setRegisteredStudents(int registeredStudents) {
+        this.registeredStudents = registeredStudents;
     }
 
     //Getters
