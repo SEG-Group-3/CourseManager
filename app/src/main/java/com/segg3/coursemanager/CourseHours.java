@@ -17,4 +17,9 @@ public class CourseHours {
         this.start = start;
         this. durations = durations;
     }
+
+    public CourseHours (String CourseHoursRaw)
+    {
+        throw new UnsupportedOperationException();
+    }
 }
