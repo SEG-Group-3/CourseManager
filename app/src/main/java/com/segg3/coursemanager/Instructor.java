@@ -2,9 +2,20 @@ package com.segg3.coursemanager;
 
 public class Instructor extends User{
 
+
+    //Attribute names for database
+    public static final String COURSENAME_KEY = "name";
+    public static final String COURSECODE_KEY = "code";
+
+    public static final String CAPACITY_KEY = "capacity";
+    public static final String COURSEHOURS_KEY = "courseHours";
+    public static final String DECS_KEY = "description";
+    public static final String INSTRUCTOR_KEY = "instructor";
+
     public Instructor(String userID, String name, String email, String username, String loginToken) {
         super(userID, name, email, username, loginToken);
     }
+
 
     /**
      * Get an array courses based on a filter
