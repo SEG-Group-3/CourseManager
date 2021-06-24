@@ -13,12 +13,24 @@ public class Course {
     public String description;
     public int capacity;
     public int registeredStudents;
+    public CourseHours courseHours;
 
     public Course(String name, String code, Date date, String id) {
         this.name = name;
         this.code = code;
         this.date = date;
         this.id = id;
+    }
+
+    public Course(String id, Instructor instructor, String description, int capacity, int registeredStudents, CourseHours courseHours, String name, String code) {
+        this.id = id;
+        this.description = description;
+        this.instructor = instructor;
+        this.capacity = capacity;
+        this.registeredStudents = registeredStudents;
+        this.courseHours = courseHours;
+        this.name = name;
+        this.code = code;
     }
 
     //Setters
