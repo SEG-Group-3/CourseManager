@@ -16,7 +16,7 @@ import com.segg3.coursemanager.R;
 import com.segg3.coursemanager.shared.UIUtils;
 import com.segg3.coursemanager.shared.courses.CourseListAdapter;
 import com.segg3.coursemanager.shared.home.ui.HomeFragment;
-import com.segg3.coursemanager.shared.models.CoursesViewModel;
+import com.segg3.coursemanager.shared.viewmodels.CoursesViewModel;
 
 
 public class CourseViewFragment extends Fragment {

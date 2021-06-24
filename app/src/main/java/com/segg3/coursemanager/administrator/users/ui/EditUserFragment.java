@@ -21,7 +21,8 @@ import com.segg3.coursemanager.R;
 import com.segg3.coursemanager.User;
 import com.segg3.coursemanager.databinding.FragmentEditUserBinding;
 import com.segg3.coursemanager.shared.UIUtils;
-import com.segg3.coursemanager.shared.models.UsersViewModel;
+import com.segg3.coursemanager.shared.dao.UsersDao;
+import com.segg3.coursemanager.shared.viewmodels.UsersViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -80,7 +81,8 @@ public class EditUserFragment extends Fragment {
         UIUtils.createYesNoMenu("Delete Item", "Do you really want to delete this user?", getActivity(), (dialog, which) -> {
             // Delete user here
             if (position != -1){
-                usersViewModel.deleteUser(position);
+                // TODO Get username to delete
+                // UsersDao.getInstance().deleteUser();
                 UIUtils.createToast(getActivity().getApplicationContext(), "User deleted");
             } else{
                 UIUtils.createToast(getActivity().getApplicationContext(), "No item to be deleted");
@@ -124,10 +126,17 @@ public class EditUserFragment extends Fragment {
             return;
 
 
-        if (position != -1)
-            usersViewModel.editUser(position, name, password, selectedRole);  // Edit existing item
-        else
-            usersViewModel.addUser(name, password, selectedRole); // Add new item
+        if (position != -1){
+            // TODO Create new edited user
+            // UsersDao.getInstance().editUser()
+            // Old function for reference
+            // usersViewModel.editUser(position, name, password, selectedRole);  // Edit existing item
+        }
+        else{
+            // ## Add user here
+            // UsersDao.getInstance().addUser(userhere)
+            // usersViewModel.addUser(name, password, selectedRole); // Add new item
+        }
 
         UIUtils.swipeFragmentLeft(getParentFragmentManager(), new UsersViewFragment());
     }

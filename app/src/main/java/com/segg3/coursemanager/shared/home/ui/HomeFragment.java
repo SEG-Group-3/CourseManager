@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.segg3.coursemanager.AccountAccess;
 import com.segg3.coursemanager.R;
@@ -15,9 +16,7 @@ import com.segg3.coursemanager.User;
 import com.segg3.coursemanager.databinding.FragmentHomeBinding;
 
 import com.segg3.coursemanager.shared.UIUtils;
-import com.segg3.coursemanager.shared.models.User;
 import com.segg3.coursemanager.shared.viewmodels.AuthViewModel;
-import com.segg3.coursemanager.shared.viewmodels.UsersViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -29,7 +28,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
 
-        auth = new ViewModelProvider(requireActivity()).get(AuthViewModel.class);
+
         UIUtils.setToolbarTitle(getActivity(), getString(R.string.home));
         return binding.getRoot();
     }

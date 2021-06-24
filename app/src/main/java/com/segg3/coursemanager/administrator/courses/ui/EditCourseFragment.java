@@ -20,7 +20,8 @@ import com.segg3.coursemanager.Course;
 import com.segg3.coursemanager.R;
 import com.segg3.coursemanager.databinding.FragmentEditCourseBinding;
 import com.segg3.coursemanager.shared.UIUtils;
-import com.segg3.coursemanager.shared.models.CoursesViewModel;
+import com.segg3.coursemanager.shared.dao.CoursesDao;
+import com.segg3.coursemanager.shared.viewmodels.CoursesViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -68,7 +69,9 @@ public class EditCourseFragment extends Fragment {
         UIUtils.createYesNoMenu("Delete Item", "Do you really want to delete this item?", getActivity(), (dialog, which) -> {
             // Delete user here
             if (position != -1){
-                coursesViewModel.deleteCourse(position);
+                // TODO Pass course code to delete the course
+                // CoursesDao.getInstance().deleteCourse()
+
                 UIUtils.createToast(getActivity().getApplicationContext(), "Course deleted");
             } else{
                 UIUtils.createToast(getActivity().getApplicationContext(), "No item to be deleted");
@@ -109,10 +112,20 @@ public class EditCourseFragment extends Fragment {
         if (!ok)
             return;
 
-        if (position != -1)
-            coursesViewModel.editCourse(position, name, code);  // Edit existing item
-        else
-            coursesViewModel.addCourse(name, code); // Add new item
+        // TODO create new course object to update
+        if (position != -1){
+            // ## Implement Here
+            // CoursesDao.getInstance().editCourse()
+            // ##  Old function for reference
+            // coursesViewModel.editCourse(position, name, code);  // Edit existing item
+        }
+        else{
+            // ## Implement Here
+            // CoursesDao.getInstance().addCourse()
+            // ##  Old function for reference
+            // coursesViewModel.addCourse(name, code); // Add new item
+        }
+
 
         UIUtils.swipeFragmentLeft(getParentFragmentManager(), new CourseViewFragment());
     }

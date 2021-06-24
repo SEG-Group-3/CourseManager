@@ -1,8 +1,17 @@
 package com.segg3.coursemanager;
 
+import com.segg3.coursemanager.shared.dao.DataObject;
+
 import org.jetbrains.annotations.NotNull;
 
-public abstract class User {
+public abstract class User implements DataObject {
+
+
+    @Override
+    public String getPrimaryKey() {
+        return username;
+    }
+
     protected String userID;
     public String name;
     protected String email;

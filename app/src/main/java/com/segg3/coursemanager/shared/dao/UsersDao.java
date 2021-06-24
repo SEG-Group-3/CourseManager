@@ -2,8 +2,8 @@ package com.segg3.coursemanager.shared.dao;
 
 import androidx.lifecycle.LiveData;
 
+import com.segg3.coursemanager.User;
 import com.segg3.coursemanager.shared.TaskCallback;
-import com.segg3.coursemanager.shared.models.User;
 
 import java.util.HashMap;
 
@@ -45,11 +45,11 @@ public class UsersDao extends DataAccessObject<User> {
         }
 
         // If the userName (the key) is the same just update it
-        if (oldUserName.equals(user.userName) || user.userName == null)
+        if (oldUserName.equals(user.getUsername()) || user.getUsername() == null)
             return put(user); // Overrides last user only with non-null fields
 
         // We probably want to change our name and fields so we check if we can change userNames
-        if (this.get(user.userName) != null) {
+        if (this.get(user.getUsername()) != null) {
             callback.lazyError(new Exception("Username is already taken!"));
             return callback;
         }

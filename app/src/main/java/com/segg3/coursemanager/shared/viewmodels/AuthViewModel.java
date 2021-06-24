@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.segg3.coursemanager.User;
 import com.segg3.coursemanager.shared.dao.UsersDao;
-import com.segg3.coursemanager.shared.models.User;
 
 public class AuthViewModel extends ViewModel {
     private MutableLiveData<User> user;
@@ -26,13 +26,16 @@ public class AuthViewModel extends ViewModel {
     public boolean login(String name, String password) {
         logout();
 
-        User u = UsersDao.getInstance().getUser(name);
-        if (u == null)
-            return false;
-        boolean loggedIn = u.password.equals(password);
-        if (loggedIn)
-            user.setValue(u);
-        return loggedIn;
+        // TODO expose user password to enable login
 
+        // Old method
+        //                User u = UsersDao.getInstance().getUser(name);
+        //                if (u == null)
+        //                    return false;
+        //                boolean loggedIn = u.password.equals(password);
+        //                if (loggedIn)
+        //                    user.setValue(u);
+        //                return loggedIn;
+        return  false;
     }
 }

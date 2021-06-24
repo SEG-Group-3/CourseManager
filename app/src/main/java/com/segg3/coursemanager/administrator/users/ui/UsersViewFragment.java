@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.segg3.coursemanager.R;
 import com.segg3.coursemanager.shared.UIUtils;
 import com.segg3.coursemanager.shared.home.ui.HomeFragment;
-import com.segg3.coursemanager.shared.models.UsersViewModel;
 import com.segg3.coursemanager.shared.users.UserListAdapter;
+import com.segg3.coursemanager.shared.viewmodels.UsersViewModel;
 
 public class UsersViewFragment extends Fragment {
     UserListAdapter listAdapter;

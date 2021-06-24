@@ -1,10 +1,12 @@
 package com.segg3.coursemanager;
 
+import com.segg3.coursemanager.shared.dao.DataObject;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
 
-public class Course {
+public class Course implements DataObject {
     private final String id;
     public String name;
     public String code;
@@ -77,5 +79,10 @@ public class Course {
                 ", date=" + date +
                 ", id='" + id + '\'' +
                 '}';
+    }
+
+    @Override
+    public String getPrimaryKey() {
+        return code;
     }
 }
