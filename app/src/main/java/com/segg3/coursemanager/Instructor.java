@@ -131,6 +131,22 @@ public class Instructor extends User{
         });
     }
 
+    public void setInstructor(String courseID, Instructor newInstructor) {
+        DocumentReference doc = courseDB.document(courseID);
+
+        doc.update(INSTRUCTOR_KEY, newInstructor).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Log.d("Message:", "Instructor successfully assigned to course.");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull @NotNull Exception e) {
+                Log.w("Message:", "Instructor was not assigned to course.");
+            }
+        });
+    }
+
     @Override
     public String getType() {
         return "Instructor";
