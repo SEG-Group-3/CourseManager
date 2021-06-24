@@ -37,4 +37,9 @@ public class CourseHours {
 
         this.durations = duration.floatValue();
     }
+
+    public String toString()
+    {
+        return weekDay.name() + "|" + start.toString() + "|" + durations;
+    }
 }
