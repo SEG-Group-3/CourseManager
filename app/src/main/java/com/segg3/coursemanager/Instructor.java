@@ -47,7 +47,19 @@ public class Instructor extends User{
      */
     public void setCapacity(Course course, int capacity)
     {
-        throw new UnsupportedOperationException();
+        DocumentReference doc = courseDB.document(course.code);
+
+        doc.update(String.valueOf(course.capacity), capacity).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Log.d("Message:", "Course capacity was successfully updated");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull @NotNull Exception e) {
+                Log.w("Message:", "Course capacity was not updated.");
+            }
+        });
     }
 
     /**
