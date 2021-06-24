@@ -111,6 +111,10 @@ public class Instructor extends User{
         });
     }
 
+    public void setDesc(Course course) {
+        setDesc(course.getId(), course.description);
+    }
+
     public void setInstructor(Course course, Instructor newInstructor) {
         DocumentReference doc = courseDB.document(course.code);
 
