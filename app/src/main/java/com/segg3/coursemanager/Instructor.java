@@ -32,10 +32,10 @@ public class Instructor extends User{
     /**
      * Get an array courses based on a filter
      * @param name String that is used to filter names
-     * @param feild firebase document feild that is used for filter
+     * @param field firebase document field that is used for filter
      * @return
      */
-    public Course[] searchCourses(String name, String feild)
+    public Course[] searchCourses(String name, String field)
     {
         throw new UnsupportedOperationException();
     }
@@ -47,7 +47,40 @@ public class Instructor extends User{
      */
     public void setCapacity(Course course, int capacity)
     {
-        throw new UnsupportedOperationException();
+        DocumentReference doc = courseDB.document(course.code);
+
+        doc.update(String.valueOf(course.capacity), capacity).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Log.d("Message:", "Course capacity was successfully updated");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull @NotNull Exception e) {
+                Log.w("Message:", "Course capacity was not updated.");
+            }
+        });
+    }
+
+    public void setCapacity(String courseID, int capacity)
+    {
+        DocumentReference doc = courseDB.document(courseID);
+
+        doc.update(CAPACITY_KEY, capacity).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Log.d("Message:", "Course capacity was successfully updated");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull @NotNull Exception e) {
+                Log.w("Message:", "Course capacity was not updated.");
+            }
+        });
+    }
+
+    public void setCapacity(Course course) {
+        setCapacity(course.getId(), course.capacity);
     }
 
     /**
@@ -82,6 +115,27 @@ public class Instructor extends User{
         });
     }
 
+    public void setDesc(String courseID, String desc)
+    {
+        DocumentReference doc = courseDB.document(courseID);
+
+        doc.update(DECS_KEY, desc).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Log.d("Message", "Description successfully added to course.");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull @NotNull Exception e) {
+                Log.w("Message:", "Description was not added to course.");
+            }
+        });
+    }
+
+    public void setDesc(Course course) {
+        setDesc(course.getId(), course.description);
+    }
+
     public void setInstructor(Course course, Instructor newInstructor) {
         DocumentReference doc = courseDB.document(course.code);
 
@@ -96,6 +150,26 @@ public class Instructor extends User{
                 Log.w("Message:", "Instructor was not assigned to course.");
             }
         });
+    }
+
+    public void setInstructor(String courseID, Instructor newInstructor) {
+        DocumentReference doc = courseDB.document(courseID);
+
+        doc.update(INSTRUCTOR_KEY, newInstructor).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Log.d("Message:", "Instructor successfully assigned to course.");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull @NotNull Exception e) {
+                Log.w("Message:", "Instructor was not assigned to course.");
+            }
+        });
+    }
+
+    public void setInstructor(Course course) {
+        setInstructor(course.getId(), course.instructor);
     }
 
     @Override
