@@ -62,6 +62,24 @@ public class Instructor extends User{
         });
     }
 
+    public void setCapacity(String courseID, int capacity)
+    {
+        DocumentReference doc = courseDB.document(courseID);
+
+        doc.update(CAPACITY_KEY, capacity).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Log.d("Message:", "Course capacity was successfully updated");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull @NotNull Exception e) {
+                Log.w("Message:", "Course capacity was not updated.");
+            }
+        });
+    }
+
+
     /**
      * Set Course hours of a course
      * @param course course that will edited
