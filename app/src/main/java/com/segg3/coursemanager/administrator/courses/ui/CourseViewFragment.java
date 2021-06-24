@@ -12,10 +12,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.segg3.coursemanager.AccountAccess;
-import com.segg3.coursemanager.Admin;
-import com.segg3.coursemanager.Course;
 import com.segg3.coursemanager.R;
 import com.segg3.coursemanager.shared.UIUtils;
 import com.segg3.coursemanager.shared.courses.CourseListAdapter;
@@ -31,7 +27,7 @@ public class CourseViewFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
-        View v=inflater.inflate(R.layout.fragment_admin_list_view, container, false);
+        View v=inflater.inflate(R.layout.fragment_list_view, container, false);
         recyclerView= v.findViewById(R.id.course_recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(v.getContext());
         recyclerView.setLayoutManager(layoutManager);

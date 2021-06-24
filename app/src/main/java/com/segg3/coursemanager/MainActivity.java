@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
         binding.navigationMenu.inflateMenu(R.menu.base_menu);
         if(u.getType().toLowerCase().equals("admin"))
             binding.navigationMenu.inflateMenu(R.menu.admin_menu);
+        //TODO inflate menus for other user types
 
 
 

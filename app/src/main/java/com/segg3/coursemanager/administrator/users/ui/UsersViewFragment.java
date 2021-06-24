@@ -12,21 +12,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.segg3.coursemanager.Admin;
-import com.segg3.coursemanager.Instructor;
 import com.segg3.coursemanager.R;
-import com.segg3.coursemanager.Student;
-import com.segg3.coursemanager.User;
-import com.segg3.coursemanager.administrator.courses.ui.EditCourseFragment;
 import com.segg3.coursemanager.shared.UIUtils;
-import com.segg3.coursemanager.shared.courses.CourseListAdapter;
 import com.segg3.coursemanager.shared.home.ui.HomeFragment;
-import com.segg3.coursemanager.shared.models.CoursesViewModel;
 import com.segg3.coursemanager.shared.models.UsersViewModel;
 import com.segg3.coursemanager.shared.users.UserListAdapter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class UsersViewFragment extends Fragment {
     UserListAdapter listAdapter;
@@ -38,7 +28,7 @@ public class UsersViewFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
-        View v=inflater.inflate(R.layout.fragment_admin_list_view, container, false);
+        View v=inflater.inflate(R.layout.fragment_list_view, container, false);
         recyclerView= v.findViewById(R.id.course_recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(v.getContext());
         recyclerView.setLayoutManager(layoutManager);
