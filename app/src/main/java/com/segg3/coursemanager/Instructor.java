@@ -13,7 +13,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import org.jetbrains.annotations.NotNull;
 
 public class Instructor extends User{
-    private static final CollectionReference courseDB = FirebaseFirestore.getInstance().collection("Courses");
 
     public Instructor(String userID, String name, String email, String username, String loginToken) {
         super(userID, name, email, username, loginToken);
@@ -27,6 +26,8 @@ public class Instructor extends User{
     public static final String COURSEHOURS_KEY = "courseHours";
     public static final String DECS_KEY = "description";
     public static final String INSTRUCTOR_KEY = "instructor";
+
+    private static final CollectionReference courseDB = FirebaseFirestore.getInstance().collection("Courses");
 
     /**
      * Get an array courses based on a filter
