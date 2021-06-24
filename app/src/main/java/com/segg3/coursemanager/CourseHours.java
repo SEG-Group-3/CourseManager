@@ -10,5 +10,4 @@ public class CourseHours {
     Date start;
 
     float durations;
-
 }
