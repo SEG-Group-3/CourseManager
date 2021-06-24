@@ -6,6 +6,8 @@ public class Instructor extends User{
         super(userID, name, email, username, loginToken);
     }
 
+
+
     @Override
     public String getType() {
         return "Instructor";
