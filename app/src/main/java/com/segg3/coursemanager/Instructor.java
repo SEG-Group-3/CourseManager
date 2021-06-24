@@ -94,6 +94,23 @@ public class Instructor extends User{
         });
     }
 
+    public void setDesc(String courseID, String desc)
+    {
+        DocumentReference doc = courseDB.document(courseID);
+
+        doc.update(DECS_KEY, desc).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Log.d("Message", "Description successfully added to course.");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull @NotNull Exception e) {
+                Log.w("Message:", "Description was not added to course.");
+            }
+        });
+    }
+
     public void setInstructor(Course course, Instructor newInstructor) {
         DocumentReference doc = courseDB.document(course.code);
 
