@@ -9,7 +9,6 @@ import java.util.Date;
 public class Course extends DataObject {
     public String name = "ERROR";
     public String code = "ERR 0000";
-    public Date date;
     public Instructor instructor;
     public String description;
     public int capacity;
@@ -24,7 +23,6 @@ public class Course extends DataObject {
     public Course(String name, String code, Date date, String id) {
         this.name = name;
         this.code = code;
-        this.date = date;
         this.id = id;
     }
 
@@ -83,13 +81,32 @@ public class Course extends DataObject {
     @NotNull
     @Override
     public String toString() {
-        return "Course{" +
-                "name='" + name + '\'' +
-                ", code='" + code + '\'' +
-                ", date=" + date +
-                ", id='" + id + '\'' +
-                '}';
+
+        String tmp = "Course{";
+
+        tmp+="name='" + name + '\'';
+        tmp+="\tcode='" + code + '\'';
+        tmp+="\tid='" + id + '\'';
+
+        tmp+="\tcourseHours{";
+
+        for(CourseHours c: courseHours)
+        {
+
+            tmp+= c.toString();
+            if(c != courseHours[courseHours.length - 1])
+            {
+                tmp+=", ";
+            }
+        }
+
+        tmp+="}";
+        tmp="}";
+
+        return tmp;
     }
+
+
 
     @Override
     public String getPrimaryKey() {
