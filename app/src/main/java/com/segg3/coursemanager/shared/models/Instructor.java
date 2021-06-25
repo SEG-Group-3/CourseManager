@@ -164,7 +164,7 @@ public class Instructor extends User{
     }
 
     public void setCourseHours(Course course) {
-        setCourseHours(course.getId(), course.courseHours);
+        //setCourseHours(course.getId(), course.courseHours);
     }
 
     /**
