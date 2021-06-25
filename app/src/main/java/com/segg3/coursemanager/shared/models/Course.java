@@ -34,9 +34,6 @@ public class Course extends DataObject {
         this.instructor = instructor;
         this.capacity = capacity;
         this.registeredStudents = registeredStudents;
-
-
-        this.courseHours = new CourseHours(courseHours);
         this.name = name;
         this.code = code;
 
