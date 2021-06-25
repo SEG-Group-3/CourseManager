@@ -14,7 +14,7 @@ public class Course extends DataObject {
     public String description;
     public int capacity;
     public int registeredStudents;
-    public CourseHours courseHours;
+    public CourseHours[] courseHours;
 
     public Course(){
 
@@ -28,15 +28,24 @@ public class Course extends DataObject {
         this.id = id;
     }
 
-    public Course(String id, Instructor instructor, String description, int capacity, int registeredStudents, CourseHours courseHours, String name, String code) {
+    public Course(String id, Instructor instructor, String description, int capacity, int registeredStudents, String[] courseHoursRaw, String name, String code) {
         this.id = id;
         this.description = description;
         this.instructor = instructor;
         this.capacity = capacity;
         this.registeredStudents = registeredStudents;
-        this.courseHours = courseHours;
+
+
+        this.courseHours = new CourseHours(courseHours);
         this.name = name;
         this.code = code;
+
+        courseHours = new CourseHours[courseHoursRaw.length];
+
+        for(int i1 = 0; i1 < courseHoursRaw.length; i1++)
+        {
+            courseHours[i1] = new CourseHours(courseHoursRaw[i1]);
+        }
     }
 
     //Setters
