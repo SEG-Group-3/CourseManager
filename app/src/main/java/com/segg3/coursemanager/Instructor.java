@@ -90,7 +90,40 @@ public class Instructor extends User{
      */
     public void setCourseHours (Course course,  CourseHours date)
     {
-        throw new UnsupportedOperationException();
+        DocumentReference doc = courseDB.document(course.code);
+
+        doc.update(String.valueOf(course.courseHours), date).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Log.d("Message:", "Course hours have been updated.");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull @NotNull Exception e) {
+                Log.w("Message:", "Course hours could not be updated.");
+            }
+        });
+
+    }
+
+    public void setCourseHours(String courseID, CourseHours date) {
+        DocumentReference doc = courseDB.document(courseID);
+
+        doc.update(COURSEHOURS_KEY, date).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Log.d("Message:", "Course hours have been updated.");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull @NotNull Exception e) {
+                Log.w("Message:", "Course hours could not be updated.");
+            }
+        });
+    }
+
+    public void setCourseHours(Course course) {
+        setCourseHours(course.getId(), course.courseHours);
     }
 
     /**
