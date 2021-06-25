@@ -18,7 +18,6 @@ public class CourseHours {
     public final int durations;//minutes
 
     public int compare(CourseHours courseHours) {
-        return 0;
 
         if(this.weekDay.compareTo(courseHours.weekDay) != 0)
         {
