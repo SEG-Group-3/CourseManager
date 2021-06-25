@@ -3,6 +3,8 @@ package com.segg3.coursemanager.shared.models;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.DayOfWeek;
+import java.time.Duration;
+import java.util.Comparator;
 import java.util.Date;
 
 import kotlin.collections.IntIterator;
@@ -13,7 +15,36 @@ public class CourseHours {
 
     public final Time start;
 
-    public final float durations;
+    public final int durations;//minutes
+
+    public int compare(CourseHours courseHours) {
+        return 0;
+
+        if(this.weekDay.compareTo(courseHours.weekDay) != 0)
+        {
+            return this.weekDay.compareTo(courseHours.weekDay);
+        }
+
+        Time startTmp1 = start.clone();
+        Time startTmp2 = courseHours.start.clone();
+
+        Time endTmp1 = start.clone();
+        boolean endTmp1Overflow = endTmp1.addMinute(this.durations);
+
+        Time endTmp2 = courseHours.start.clone();
+        boolean endTmp2Overflow = endTmp2.addMinute(courseHours.durations);
+
+        if(endTmp1.compare(startTmp2) == -1)
+        {
+            return -1;
+        }
+        else if(endTmp2.compare(startTmp1) == -1)
+        {
+            return 1;
+        }
+
+        return 0;
+    }
 
     public class Time
     {
@@ -61,17 +92,76 @@ public class CourseHours {
             }
         }
 
+        private boolean addHour(int hour)
+        {
+            boolean overFlow = this.hour+hour>24;
+
+            this.hour = (this.hour+hour) % 24;
+
+            return overFlow;
+        }
+
+        private boolean addMinute(int minute)
+        {
+            boolean overflow = false;
+
+            if(minute >= 60)
+            {
+                overflow = addHour(minute/60);
+                addMinute(minute%60);
+            }
+            else
+            {
+                this.minute = this.minute+minute;
+            }
+
+            return overflow;
+        }
+
+        public Time clone()
+        {
+            return new Time(hour,minute);
+        }
+
         @Override
         public String toString() {
             return hour+":"+minute;
         }
+
+        public int compare(Time t) {
+
+            if(t == null)
+            {
+                throw new NullPointerException();
+            }
+
+            if(this.hour < t.hour)
+            {
+                return -1;
+            }
+            else if(this.hour > t.hour)
+            {
+                return 1;
+            }
+
+            if(this.minute < t.minute)
+            {
+                return -1;
+            }
+            else if(this.minute > t.minute)
+            {
+                return 1;
+            }
+
+            return 0;
+        }
     }
 
-    public CourseHours(DayOfWeek weekDay, Time start, float durations)
+    public CourseHours(DayOfWeek weekDay, Time start, Integer durations)
     {
         this.weekDay = weekDay;
         this.start = start;
-        this. durations = durations;
+        this.durations = durations;
     }
 
     public CourseHours(String CourseHoursRaw)
@@ -82,9 +172,9 @@ public class CourseHours {
 
         this.start = new Time(tmpParam[1]);
 
-        Float duration = new Float(tmpParam[2]);
+        Integer duration = new Integer(tmpParam[2]);
 
-        this.durations = duration.floatValue();
+        this.durations = duration.intValue();
     }
 
     @NotNull
