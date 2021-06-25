@@ -3,6 +3,7 @@ package com.segg3.coursemanager.shared.dao;
 import androidx.lifecycle.LiveData;
 
 import com.segg3.coursemanager.shared.models.Course;
+import com.segg3.coursemanager.shared.models.User;
 import com.segg3.coursemanager.shared.utils.TaskCallback;
 
 import java.util.ArrayList;
@@ -63,6 +64,9 @@ public class CoursesDao extends DataAccessObject<Course> {
         return put(merged);
     }
 
+
+
+
     public List<Course> searchCourse(String query)
     {
         List<Course> filtered = new ArrayList<>();
@@ -75,4 +79,19 @@ public class CoursesDao extends DataAccessObject<Course> {
         return filtered;
     }
 
+    public boolean assignInstructor(String userName, String code) {
+        User u = UsersDao.getInstance().get(userName);
+        Course c = get(code);
+        if (u.type.toLowerCase().equals("instructor") && c.instructor.equals("")){
+            c.instructor = u.userName;
+            c.courseHours = new ArrayList<>();
+            c.capacity = -1;
+            c.description = "";
+            c.registeredStudents = 0;
+            put(c);
+            return  true;
+        } else{
+            return false;
+        }
+    }
 }

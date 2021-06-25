@@ -64,10 +64,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent, options.toBundle());
                 closeDrawer();
-            } else if (item.getItemId() == R.id.nav_edit_courses) {
-                UIUtils.swapViews(getSupportFragmentManager(), new CourseViewFragment());
-            } else if (item.getItemId() == R.id.nav_edit_users) {
-                UIUtils.swapViews(getSupportFragmentManager(), new UsersViewFragment());
             }
 
             closeDrawer();
@@ -96,8 +92,54 @@ public class MainActivity extends AppCompatActivity {
             View nav_header = binding.navigationMenu.getHeaderView(0);
             ((TextView) nav_header.findViewById(R.id.nav_head_username)).setText(u.userName);
             ((TextView) nav_header.findViewById(R.id.nav_head_usertype)).setText(u.type);
-            if (u.type.toLowerCase().equals("admin"))
+            if (u.type.toLowerCase().equals("admin")){
                 binding.navigationMenu.inflateMenu(R.menu.admin_menu);
+
+                // Admin navigation
+                binding.navigationMenu.setNavigationItemSelectedListener(item -> {
+                    if (item.getItemId() == R.id.nav_home) {
+                        UIUtils.swapViews(getSupportFragmentManager(), new HomeFragment());
+                    } else if (item.getItemId() == R.id.nav_log_out) {
+                        // Delete cookies and go to login "cookies"
+                        ActivityOptions options = ActivityOptions.makeBasic();
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(intent, options.toBundle());
+                        closeDrawer();
+                    } else if (item.getItemId() == R.id.nav_edit_courses) {
+                        UIUtils.swapViews(getSupportFragmentManager(), new CourseViewFragment());
+                    } else if (item.getItemId() == R.id.nav_edit_users) {
+                        UIUtils.swapViews(getSupportFragmentManager(), new UsersViewFragment());
+                    }
+
+                    closeDrawer();
+                    return true;
+                });
+            }
+            else  if (u.type.toLowerCase().equals("instructor")){
+                binding.navigationMenu.inflateMenu(R.menu.instructor_menu);
+
+                // Admin navigation
+                binding.navigationMenu.setNavigationItemSelectedListener(item -> {
+                    if (item.getItemId() == R.id.nav_home) {
+                        UIUtils.swapViews(getSupportFragmentManager(), new HomeFragment());
+                    } else if (item.getItemId() == R.id.nav_log_out) {
+                        // Delete cookies and go to login "cookies"
+                        ActivityOptions options = ActivityOptions.makeBasic();
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(intent, options.toBundle());
+                        closeDrawer();
+                    } else if (item.getItemId() == R.id.nav_instructor_edit_courses) {
+                        UIUtils.swapViews(getSupportFragmentManager(), new com.segg3.coursemanager.instructor.courses.ui.CourseViewFragment());
+                    } else if (item.getItemId() == R.id.nav_instructor_my_courses) {
+                        UIUtils.swapViews(getSupportFragmentManager(), new UsersViewFragment());
+                    }
+
+                    closeDrawer();
+                    return true;
+                });
+
+
+            }
         }
 
         setContentView(binding.getRoot());

@@ -4,44 +4,32 @@ import com.segg3.coursemanager.shared.dao.DataObject;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Course extends DataObject {
     public String name = "ERROR";
     public String code = "ERR 0000";
-    public Instructor instructor;
-    public String description;
-    public int capacity;
-    public int registeredStudents;
-    public CourseHours[] courseHours;
+    public String instructor = "";
+    public String description = "";
+    public int capacity = -1;
+    public int registeredStudents = 0;
+    public List<String> courseHours = new ArrayList<>();
 
     public Course(){
-
+        courseHours.add("1|10:00|30");
+        courseHours.add("2|16:00|50");
         this.id = "";
     }
 
-    public Course(String name, String code, Date date, String id) {
+    public Course(String name, String code, String id) {
         this.name = name;
         this.code = code;
         this.id = id;
     }
 
-    public Course(String id, Instructor instructor, String description, int capacity, int registeredStudents, String[] courseHoursRaw, String name, String code) {
-        this.id = id;
-        this.description = description;
-        this.instructor = instructor;
-        this.capacity = capacity;
-        this.registeredStudents = registeredStudents;
-        this.name = name;
-        this.code = code;
 
-        courseHours = new CourseHours[courseHoursRaw.length];
-
-        for(int i1 = 0; i1 < courseHoursRaw.length; i1++)
-        {
-            courseHours[i1] = new CourseHours(courseHoursRaw[i1]);
-        }
-    }
 
     //Setters
     public void setName(String name) {
@@ -56,17 +44,6 @@ public class Course extends DataObject {
         this.capacity = capacity;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setInstructor(Instructor instructor) {
-        this.instructor = instructor;
-    }
-
-    public void setRegisteredStudents(int registeredStudents) {
-        this.registeredStudents = registeredStudents;
-    }
 
     //Getters
 
@@ -86,15 +63,7 @@ public class Course extends DataObject {
 
         tmp+="\tcourseHours{";
 
-        for(CourseHours c: courseHours)
-        {
 
-            tmp+= c.toString();
-            if(c != courseHours[courseHours.length - 1])
-            {
-                tmp+=", ";
-            }
-        }
 
         tmp+="}";
         tmp="}";

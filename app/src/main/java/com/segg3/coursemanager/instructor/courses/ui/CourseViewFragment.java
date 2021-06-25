@@ -12,16 +12,23 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.segg3.coursemanager.MainActivity;
 import com.segg3.coursemanager.R;
+import com.segg3.coursemanager.administrator.courses.ui.EditCourseFragment;
+import com.segg3.coursemanager.shared.dao.CoursesDao;
+import com.segg3.coursemanager.shared.models.Course;
+import com.segg3.coursemanager.shared.models.User;
 import com.segg3.coursemanager.shared.utils.UIUtils;
 import com.segg3.coursemanager.shared.adapters.CourseListAdapter;
 import com.segg3.coursemanager.shared.fragments.HomeFragment;
+import com.segg3.coursemanager.shared.viewmodels.AuthViewModel;
 import com.segg3.coursemanager.shared.viewmodels.CoursesViewModel;
 
 public class CourseViewFragment extends Fragment {
     CourseListAdapter courseListAdapter;
     CoursesViewModel coursesViewModel;
     RecyclerView recyclerView;
+    private AuthViewModel auth;
 
     @Nullable
     @Override
@@ -31,6 +38,8 @@ public class CourseViewFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(v.getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.scrollToPosition(0);
+
+        auth = new ViewModelProvider(MainActivity.instance).get(AuthViewModel.class);
 
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
@@ -60,6 +69,30 @@ public class CourseViewFragment extends Fragment {
     }
 
     public void onCourseClicked(View v){
+        // Finds the selected item
+        int position = recyclerView.getChildLayoutPosition(v);
+        Course clicked = coursesViewModel.getCourses().getValue().get(position);
 
+
+        if(clicked.instructor.equals("")){
+            UIUtils.createYesNoMenu("Enter course", "Do you want to assign yourself to this course?",
+                    getContext(),
+                    (dialog, which) -> {
+                         if (CoursesDao.getInstance().assignInstructor(auth.getUser().getValue().userName, clicked.code)){
+                             UIUtils.createToast(getContext(), "You have been assigned to this course");
+                         } else{
+                             UIUtils.createToast(getContext(), "An error has occurred");
+                         }
+                    });
+        } else{
+            UIUtils.createToast(getContext(), "This course is already taken!");
+        }
+
+        // Setup Fragment arguments
+//        Fragment edit_course_frag = new EditCourseFragment();
+//        Bundle args = new Bundle();
+//        args.putInt("position", position);
+//        edit_course_frag.setArguments(args);
+//        UIUtils.swipeFragmentRight(getParentFragmentManager(), edit_course_frag);
     }
 }

@@ -36,12 +36,9 @@ public class CourseListAdapter extends RecyclerView.Adapter<CardViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull CardViewHolder holder, int position) {
-// TODO set instructor name to cards
-// if course has instructor
-// set subtitle to instructor
-// else leave empty
         holder.title.setText(courseList.get(position).name);
         holder.subtitle.setText(courseList.get(position).code);
+        holder.subsubtitle.setText(courseList.get(position).instructor);
         holder.imageView.setImageDrawable(AppCompatResources.getDrawable(holder.imageView.getContext(),R.drawable.ic_book));
 
     }

@@ -36,7 +36,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        UsersViewModel users = new ViewModelProvider(requireActivity()).get(UsersViewModel.class);
         User u = auth.getUser().getValue();
         if (u != null) {
             switch (u.type.toLowerCase()) {

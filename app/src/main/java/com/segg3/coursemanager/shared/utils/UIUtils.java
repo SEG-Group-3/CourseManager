@@ -54,6 +54,21 @@ public class UIUtils {
                 .show();
     }
 
+    public static void createYesNoMenu(
+            String title,
+            String message,
+            Context ctx,
+            DialogInterface.OnClickListener onYesListener,
+            DialogInterface.OnClickListener onNoListener) {
+
+        new MaterialAlertDialogBuilder(ctx)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton("Yes", onYesListener)
+                .setNegativeButton("No", onNoListener)
+                .show();
+    }
+
     public static void createToast(Context applicationContext, CharSequence msg) {
         Toast.makeText(applicationContext,
                 msg,
