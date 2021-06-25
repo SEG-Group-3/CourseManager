@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Date;
 
 public class Course implements DataObject {
-    private final String id;
+    public final String id;
     public String name;
     public String code;
     public Date date;
@@ -16,6 +16,11 @@ public class Course implements DataObject {
     public int capacity;
     public int registeredStudents;
     public CourseHours courseHours;
+
+    public Course(){
+
+        this.id = "";
+    }
 
     public Course(String name, String code, Date date, String id) {
         this.name = name;

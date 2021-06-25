@@ -12,11 +12,15 @@ public abstract class User implements DataObject {
         return username;
     }
 
-    protected String userID;
+    public String userID;
     public String name;
-    protected String email;
-    protected String username;
-    protected String loginToken;
+    public String email;
+    public String username;
+    public String loginToken;
+
+    public User(){
+
+    }
 
     public User(String userID, String name, String email, String username, String loginToken) {
         this.userID = userID;
