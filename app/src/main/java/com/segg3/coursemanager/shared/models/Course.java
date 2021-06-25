@@ -52,10 +52,6 @@ public class Course extends DataObject {
         this.code = code;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
     public void setCapacity(int capacity) {
         this.capacity = capacity;
     }
