@@ -18,38 +18,39 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.segg3.coursemanager.R;
 
 public class UIUtils {
-    public static void swapViews(FragmentManager manager, Fragment next){
+    public static void swapViews(FragmentManager manager, Fragment next) {
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(R.id.fragment_container, next);
         transaction.commit();
     }
 
-    public static void swipeFragmentLeft(FragmentManager manager, Fragment next){
+    public static void swipeFragmentLeft(FragmentManager manager, Fragment next) {
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
         transaction.replace(R.id.fragment_container, next);
         transaction.commit();
     }
 
-    public static void swipeFragmentRight(FragmentManager manager, Fragment next){
+    public static void swipeFragmentRight(FragmentManager manager, Fragment next) {
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
         transaction.replace(R.id.fragment_container, next);
         transaction.commit();
     }
 
-    public static void setToolbarTitle(Activity activity, String title){
-        ActionBar bar  = ((AppCompatActivity)activity).getSupportActionBar();
+    public static void setToolbarTitle(Activity activity, String title) {
+        ActionBar bar = ((AppCompatActivity) activity).getSupportActionBar();
         if (bar != null)
             bar.setTitle(title);
     }
 
-    public static void createYesNoMenu(String title, String message, Context ctx, DialogInterface.OnClickListener onYesListener){
+    public static void createYesNoMenu(String title, String message, Context ctx, DialogInterface.OnClickListener onYesListener) {
         new MaterialAlertDialogBuilder(ctx)
                 .setTitle(title)
                 .setMessage(message)
                 .setPositiveButton("Yes", onYesListener)
-                .setNegativeButton("No", (dialog, which) -> {})
+                .setNegativeButton("No", (dialog, which) -> {
+                })
                 .show();
     }
 
@@ -66,18 +67,24 @@ public class UIUtils {
                 Toast.LENGTH_LONG).show();
     }
 
-    public static TextWatcher createTextErrorRemover(TextInputLayout inputLayout){
+    public static TextWatcher createTextErrorRemover(TextInputLayout inputLayout) {
         return new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
+
             @Override
             public void afterTextChanged(Editable s) {
                 inputLayout.setErrorEnabled(false);
             }
         };
+    }
+
+    public static String getFieldText(TextInputLayout inputLayout) {
+        return (inputLayout.getEditText()).getText().toString();
     }
 }

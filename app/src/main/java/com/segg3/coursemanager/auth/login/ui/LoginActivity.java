@@ -7,19 +7,19 @@ import android.view.View;
 import android.view.animation.AnimationUtils;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.textfield.TextInputLayout;
-import com.segg3.coursemanager.AccountAccess;
-import com.segg3.coursemanager.DataBaseManager;
+import com.segg3.coursemanager.MainActivity;
 import com.segg3.coursemanager.R;
 import com.segg3.coursemanager.auth.register.ui.RegisterActivity;
 import com.segg3.coursemanager.databinding.ActivityLoginBinding;
 import com.segg3.coursemanager.shared.utils.UIUtils;
-
-import java.util.Objects;
+import com.segg3.coursemanager.shared.viewmodels.AuthViewModel;
 
 public class LoginActivity extends AppCompatActivity {
     private ActivityLoginBinding binding;
+    private AuthViewModel auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,9 +29,11 @@ public class LoginActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
+
         binding.passwordInput.getEditText().addTextChangedListener(UIUtils.createTextErrorRemover(binding.passwordInput));
         binding.usernameInput.getEditText().addTextChangedListener(UIUtils.createTextErrorRemover(binding.usernameInput));
 
+        auth = new ViewModelProvider(MainActivity.instance).get(AuthViewModel.class);
 
         binding.signUpButton.setOnClickListener((v -> {
             ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this);
@@ -44,9 +46,8 @@ public class LoginActivity extends AppCompatActivity {
 
             TextInputLayout[] emptyCheckedFields = {binding.passwordInput, binding.usernameInput};
             boolean ok = true;
-            for (TextInputLayout field:
-                    emptyCheckedFields ) {
-                if (getFieldText(field).isEmpty()){
+            for (TextInputLayout field : emptyCheckedFields) {
+                if (UIUtils.getFieldText(field) == null || UIUtils.getFieldText(field).isEmpty()) {
                     field.setError(getString(R.string.error_empty_field));
                     field.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake));
                     ok = false;
@@ -56,30 +57,19 @@ public class LoginActivity extends AppCompatActivity {
             if (!ok)
                 return;
 
-            // Call authentication code authenticate Here!!!
-            ((AccountAccess) AccountAccess.getInstance()).loginUser(getFieldText(binding.passwordInput), getFieldText(binding.usernameInput),
-                    new DataBaseManager.DataBaseManagerListener() {
-                        @Override
-                        public void onFailure(Exception e) {
-                            UIUtils.createToast(getApplicationContext(), "The user name or password is incorrect");
-                            binding.logInButton.setEnabled(true);
-                        }
-
-                        @Override
-                        public void onSuccess(Object result) {
-                            binding.logInButton.setEnabled(true);
-                            finish();
-                        }
-                });
-
             binding.logInButton.setEnabled(false);
+
+            // Call authentication code authenticate Here!!!
+            if (auth.login(UIUtils.getFieldText(binding.usernameInput), UIUtils.getFieldText(binding.passwordInput))) {
+                UIUtils.createToast(getApplicationContext(), "Welcome!");
+                finish();
+            } else
+                UIUtils.createToast(getApplicationContext(), "The user name or password is incorrect");
+
+            binding.logInButton.setEnabled(true);
         });
     }
 
-
-    String getFieldText(TextInputLayout inputLayout){
-        return  Objects.requireNonNull(inputLayout.getEditText()).getText().toString();
-    }
 
     @Override
     public void onBackPressed() {
