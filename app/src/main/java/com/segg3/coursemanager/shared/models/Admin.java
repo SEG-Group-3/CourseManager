@@ -128,23 +128,23 @@ public class Admin extends User{
         editCourse(course.getId(), course.name, course.code);
     }
 
-    private void readCourseDatabase() {
-        courseDB.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                        Course courseTmp = new Course(document.get(COURSENAME_KEY, String.class), document.get(COURSECODE_KEY, String.class), null, document.getId());
-                        listOfCourses.add(courseTmp);
-                    }
-                    listener.accept(listOfCourses);
-                    Log.d("Message:", toString());
-                } else {
-                    Log.w("Message:", "Error getting courses", task.getException());
-                }
-            }
-        });
-    }
+//    private void readCourseDatabase() {
+//        courseDB.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+//                        Course courseTmp = new Course(document.get(COURSENAME_KEY, String.class), document.get(COURSECODE_KEY, String.class), null, document.getId());
+//                        listOfCourses.add(courseTmp);
+//                    }
+//                    listener.accept(listOfCourses);
+//                    Log.d("Message:", toString());
+//                } else {
+//                    Log.w("Message:", "Error getting courses", task.getException());
+//                }
+//            }
+//        });
+//    }
 
     public List<Course> getListOfCourses() {
         return listOfCourses;

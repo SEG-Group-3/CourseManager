@@ -242,8 +242,8 @@ public class Instructor extends User{
         });
     }
 
-    public void setInstructor(Course course) {
-        setInstructor(course.getId(), course.instructor);
-    }
+//    public void setInstructor(Course course) {
+//        setInstructor(course.getId(), course.instructor);
+//    }
 
 }
