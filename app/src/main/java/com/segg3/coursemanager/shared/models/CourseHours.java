@@ -43,6 +43,6 @@ public class CourseHours {
     @NotNull
     public String toString()
     {
-        return weekDay.name() + "|" + start.toString() + "|" + durations;
+        return weekDay.name() + "|" + start.getHours() + ":" + start.getMinutes() + "|" + durations;
     }
 }
