@@ -15,8 +15,9 @@ import com.segg3.coursemanager.administrator.courses.ui.CourseViewFragment;
 import com.segg3.coursemanager.administrator.users.ui.UsersViewFragment;
 import com.segg3.coursemanager.auth.login.ui.LoginActivity;
 import com.segg3.coursemanager.databinding.ActivityMainBinding;
-import com.segg3.coursemanager.shared.UIUtils;
-import com.segg3.coursemanager.shared.home.ui.HomeFragment;
+import com.segg3.coursemanager.shared.utils.UIUtils;
+import com.segg3.coursemanager.shared.fragments.HomeFragment;
+import com.segg3.coursemanager.shared.models.User;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;

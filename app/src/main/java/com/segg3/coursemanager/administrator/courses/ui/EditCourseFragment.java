@@ -16,11 +16,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.textfield.TextInputLayout;
-import com.segg3.coursemanager.Course;
+import com.segg3.coursemanager.shared.models.Course;
 import com.segg3.coursemanager.R;
 import com.segg3.coursemanager.databinding.FragmentEditCourseBinding;
-import com.segg3.coursemanager.shared.UIUtils;
-import com.segg3.coursemanager.shared.dao.CoursesDao;
+import com.segg3.coursemanager.shared.utils.UIUtils;
 import com.segg3.coursemanager.shared.viewmodels.CoursesViewModel;
 
 import org.jetbrains.annotations.NotNull;

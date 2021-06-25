@@ -2,8 +2,8 @@ package com.segg3.coursemanager.shared.dao;
 
 import androidx.lifecycle.LiveData;
 
-import com.segg3.coursemanager.User;
-import com.segg3.coursemanager.shared.TaskCallback;
+import com.segg3.coursemanager.shared.models.User;
+import com.segg3.coursemanager.shared.utils.TaskCallback;
 
 import java.util.HashMap;
 

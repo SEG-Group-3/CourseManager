@@ -1,4 +1,4 @@
-package com.segg3.coursemanager.shared;
+package com.segg3.coursemanager.shared.utils;
 
 import android.app.Activity;
 import android.content.Context;

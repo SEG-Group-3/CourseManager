@@ -1,4 +1,4 @@
-package com.segg3.coursemanager;
+package com.segg3.coursemanager.shared.models;
 
 import org.jetbrains.annotations.NotNull;
 

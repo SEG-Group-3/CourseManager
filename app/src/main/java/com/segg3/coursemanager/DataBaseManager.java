@@ -1,11 +1,7 @@
 package com.segg3.coursemanager;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-
-import java.util.concurrent.Executor;
 
 public abstract class DataBaseManager
 {

@@ -1,4 +1,4 @@
-package com.segg3.coursemanager.shared.users;
+package com.segg3.coursemanager.shared.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.segg3.coursemanager.R;
-import com.segg3.coursemanager.User;
+import com.segg3.coursemanager.shared.models.User;
 import com.segg3.coursemanager.shared.models.CardViewHolder;
 
 import org.jetbrains.annotations.NotNull;

@@ -18,9 +18,9 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.segg3.coursemanager.R;
-import com.segg3.coursemanager.User;
+import com.segg3.coursemanager.shared.models.User;
 import com.segg3.coursemanager.databinding.FragmentEditUserBinding;
-import com.segg3.coursemanager.shared.UIUtils;
+import com.segg3.coursemanager.shared.utils.UIUtils;
 import com.segg3.coursemanager.shared.viewmodels.UsersViewModel;
 
 import org.jetbrains.annotations.NotNull;

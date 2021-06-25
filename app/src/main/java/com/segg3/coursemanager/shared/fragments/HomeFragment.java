@@ -1,4 +1,4 @@
-package com.segg3.coursemanager.shared.home.ui;
+package com.segg3.coursemanager.shared.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,10 +11,10 @@ import androidx.fragment.app.Fragment;
 
 import com.segg3.coursemanager.AccountAccess;
 import com.segg3.coursemanager.R;
-import com.segg3.coursemanager.User;
+import com.segg3.coursemanager.shared.models.User;
 import com.segg3.coursemanager.databinding.FragmentHomeBinding;
 
-import com.segg3.coursemanager.shared.UIUtils;
+import com.segg3.coursemanager.shared.utils.UIUtils;
 
 import org.jetbrains.annotations.NotNull;
 

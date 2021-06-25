@@ -13,9 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.segg3.coursemanager.R;
-import com.segg3.coursemanager.shared.UIUtils;
-import com.segg3.coursemanager.shared.courses.CourseListAdapter;
-import com.segg3.coursemanager.shared.home.ui.HomeFragment;
+import com.segg3.coursemanager.shared.utils.UIUtils;
+import com.segg3.coursemanager.shared.adapters.CourseListAdapter;
+import com.segg3.coursemanager.shared.fragments.HomeFragment;
 import com.segg3.coursemanager.shared.viewmodels.CoursesViewModel;
 
 public class CourseViewFragment extends Fragment {

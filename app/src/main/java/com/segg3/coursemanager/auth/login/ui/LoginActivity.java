@@ -14,7 +14,7 @@ import com.segg3.coursemanager.DataBaseManager;
 import com.segg3.coursemanager.R;
 import com.segg3.coursemanager.auth.register.ui.RegisterActivity;
 import com.segg3.coursemanager.databinding.ActivityLoginBinding;
-import com.segg3.coursemanager.shared.UIUtils;
+import com.segg3.coursemanager.shared.utils.UIUtils;
 
 import java.util.Objects;
 

@@ -1,4 +1,4 @@
-package com.segg3.coursemanager.shared.courses;
+package com.segg3.coursemanager.shared.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.segg3.coursemanager.Course;
+import com.segg3.coursemanager.shared.models.Course;
 import com.segg3.coursemanager.R;
 import com.segg3.coursemanager.shared.models.CardViewHolder;
 

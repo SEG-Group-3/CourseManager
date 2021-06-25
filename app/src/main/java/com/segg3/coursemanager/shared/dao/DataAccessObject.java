@@ -9,7 +9,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.segg3.coursemanager.shared.TaskCallback;
+import com.segg3.coursemanager.shared.utils.TaskCallback;
 
 import java.security.KeyException;
 import java.util.HashMap;
