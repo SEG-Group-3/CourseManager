@@ -1,5 +1,7 @@
 package com.segg3.coursemanager;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.time.DayOfWeek;
 import java.util.Date;
 
@@ -38,6 +40,7 @@ public class CourseHours {
         this.durations = duration.floatValue();
     }
 
+    @NotNull
     public String toString()
     {
         return weekDay.name() + "|" + start.toString() + "|" + durations;
