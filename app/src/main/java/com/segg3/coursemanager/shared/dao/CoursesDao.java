@@ -28,7 +28,6 @@ public class CoursesDao extends DataAccessObject<Course> {
         return get(courseCode);
     }
 
-
     public TaskCallback<?> deleteCourse(String code) {
         return this.delete(code);
     }

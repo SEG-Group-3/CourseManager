@@ -12,6 +12,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 public class Instructor extends User{
 
 
@@ -26,15 +30,55 @@ public class Instructor extends User{
 
     private static final CollectionReference courseDB = FirebaseFirestore.getInstance().collection("Courses");
 
+    private HashMap<String, Course> courses = new HashMap<String, Course>();
+
     /**
      * Get an array courses based on a filter
-     * @param name String that is used to filter names
+     * @param filter String that is used to filter names
      * @param field firebase document field that is used for filter
      * @return course
      */
-    public Course[] searchCourses(String name, String field)
+    public Course[] searchCourses(String filter, String field)
     {
-        throw new UnsupportedOperationException();
+        switch (field)
+        {
+            case "name":
+                return searchByName(filter);
+            case "code":
+                return searchByCode(filter);
+            default:
+                throw new IllegalArgumentException("Illegal feild");
+        }
+    }
+
+    private Course[] searchByName(String name)
+    {
+        List<Course> tmpCourses = new ArrayList<Course>();
+
+        for(Course c : courses.values())
+        {
+            if(c.name.toLowerCase().contains(name.toLowerCase()))
+            {
+                tmpCourses.add(c);
+            }
+        }
+
+        return (Course[]) tmpCourses.toArray();
+    }
+
+    private Course[] searchByCode(String code)
+    {
+        List<Course> tmpCourses = new ArrayList<Course>();
+
+        for(Course c : courses.values())
+        {
+            if(c.code.toLowerCase().contains(code.toLowerCase()))
+            {
+                tmpCourses.add(c);
+            }
+        }
+
+        return (Course[]) tmpCourses.toArray();
     }
 
     /**
