@@ -38,6 +38,7 @@ public class DataAccessObject<T extends DataObject >  {
                 T newObject;
                 try {
                     newObject = doc.toObject(valueType);
+                    newObject.id = doc.getId();
                 } catch (Exception ignore){
                     // TODO Log an error here
                     continue;

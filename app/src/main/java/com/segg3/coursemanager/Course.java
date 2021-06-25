@@ -7,10 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
 
-public class Course implements DataObject {
-    @JsonIgnore
-    public String id;
-
+public class Course extends DataObject {
     public String name = "ERROR";
     public String code = "ERR 0000";
     public Date date;

@@ -3,7 +3,11 @@ package com.segg3.coursemanager.shared.dao;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public interface DataObject {
+public abstract class DataObject {
     @JsonIgnore
-    String getPrimaryKey();
+    public String id;
+
+
+    @JsonIgnore
+    public abstract String getPrimaryKey();
 }
