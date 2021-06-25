@@ -5,7 +5,10 @@ import androidx.lifecycle.LiveData;
 import com.segg3.coursemanager.shared.models.Course;
 import com.segg3.coursemanager.shared.utils.TaskCallback;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 public class CoursesDao extends DataAccessObject<Course> {
     private static CoursesDao instance;
@@ -58,6 +61,18 @@ public class CoursesDao extends DataAccessObject<Course> {
         delete(oldCode);
 
         return put(merged);
+    }
+
+    public List<Course> searchCourse(String query)
+    {
+        List<Course> filtered = new ArrayList<>();
+
+        Collection<Course> unfiltered = cache.getValue().values();
+        for (Course c:unfiltered)
+            if (c.name.contains(query) || c.code.contains(query))
+                filtered.add(c);
+
+        return filtered;
     }
 
 }
