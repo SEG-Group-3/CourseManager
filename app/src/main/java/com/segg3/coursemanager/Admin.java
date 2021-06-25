@@ -32,9 +32,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class Admin extends User{
 
-    public Admin(String userID, String name, String email, String username, String loginToken) {
-        super(userID, name, email, username, loginToken);
-    }
+
 
     //Attribute names for database
     public static final String COURSENAME_KEY = "name";
@@ -50,13 +48,6 @@ public class Admin extends User{
 
     // for adding course
     HashMap<String, Object> courseDatabase = new HashMap<>();
-
-    @Override
-    public String getType()
-    {
-        return "Admin";
-    }
-
 
     public void setListener(Consumer<List<Course>> listener) {
         this.listener = listener;
@@ -184,7 +175,7 @@ public class Admin extends User{
 
     public void deleteUser(User delUser) {
 
-        userDB.document(delUser.getUserID()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+        userDB.document(delUser.id).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 Log.d("Message:", "User successfully deleted.");

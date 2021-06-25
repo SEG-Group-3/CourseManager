@@ -21,7 +21,6 @@ import com.segg3.coursemanager.R;
 import com.segg3.coursemanager.User;
 import com.segg3.coursemanager.databinding.FragmentEditUserBinding;
 import com.segg3.coursemanager.shared.UIUtils;
-import com.segg3.coursemanager.shared.dao.UsersDao;
 import com.segg3.coursemanager.shared.viewmodels.UsersViewModel;
 
 import org.jetbrains.annotations.NotNull;
@@ -70,8 +69,8 @@ public class EditUserFragment extends Fragment {
         {
             // Editing existing item
             User beingEdited = usersViewModel.getUsers().getValue().get(position);
-            binding.inputUsername.getEditText().setText(beingEdited.getUsername());
-            binding.uidText.setText(beingEdited.getUserID());
+            binding.inputUsername.getEditText().setText(beingEdited.userName);
+            binding.uidText.setText(beingEdited.id);
         }
         return view;
     }

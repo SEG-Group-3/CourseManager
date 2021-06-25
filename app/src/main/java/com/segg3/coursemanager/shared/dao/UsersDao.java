@@ -45,11 +45,11 @@ public class UsersDao extends DataAccessObject<User> {
         }
 
         // If the userName (the key) is the same just update it
-        if (oldUserName.equals(user.getUsername()) || user.getUsername() == null)
+        if (oldUserName.equals(user.userName) || user.userName == null)
             return put(user); // Overrides last user only with non-null fields
 
         // We probably want to change our name and fields so we check if we can change userNames
-        if (this.get(user.getUsername()) != null) {
+        if (this.get(user.userName) != null) {
             callback.lazyError(new Exception("Username is already taken!"));
             return callback;
         }

@@ -39,13 +39,13 @@ public class UserListAdapter extends RecyclerView.Adapter<CardViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull @NotNull CardViewHolder holder, int position) {
         User user=userList.get(position);
-        holder.title.setText(user.getUsername());
-        holder.subtitle.setText(user.getUserID());
-        holder.subsubtitle.setText(user.getType());
-        if (user.getType().equals("Student")){
+        holder.title.setText(user.userName);
+        holder.subtitle.setText(user.id);
+        holder.subsubtitle.setText(user.type);
+        if (user.type.equals("Student")){
             holder.imageView.setImageDrawable(AppCompatResources.getDrawable(holder.imageView.getContext(),R.drawable.ic_student));
         }
-        else if(user.getType().equals("Instructor")){
+        else if(user.type.equals("Instructor")){
             holder.imageView.setImageDrawable(AppCompatResources.getDrawable(holder.imageView.getContext(),R.drawable.ic_instructor));
         }
         else{

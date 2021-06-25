@@ -75,12 +75,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         View nav_header =  binding.navigationMenu.getHeaderView(0);
-        ((TextView)nav_header.findViewById(R.id.nav_head_username)).setText(u.getUsername());
-        ((TextView)nav_header.findViewById(R.id.nav_head_usertype)).setText(u.getType());
+        ((TextView)nav_header.findViewById(R.id.nav_head_username)).setText(u.userName);
+        ((TextView)nav_header.findViewById(R.id.nav_head_usertype)).setText(u.type);
 
         binding.navigationMenu.getMenu().clear();
         binding.navigationMenu.inflateMenu(R.menu.base_menu);
-        if(u.getType().toLowerCase().equals("admin"))
+        if(u.type.toLowerCase().equals("admin"))
             binding.navigationMenu.inflateMenu(R.menu.admin_menu);
         //TODO inflate menus for other user types
 

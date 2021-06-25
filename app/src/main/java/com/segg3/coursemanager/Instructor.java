@@ -14,9 +14,6 @@ import org.jetbrains.annotations.NotNull;
 
 public class Instructor extends User{
 
-    public Instructor(String userID, String name, String email, String username, String loginToken) {
-        super(userID, name, email, username, loginToken);
-    }
 
     //Attribute names for database
     public static final String COURSENAME_KEY = "name";
@@ -205,8 +202,4 @@ public class Instructor extends User{
         setInstructor(course.getId(), course.instructor);
     }
 
-    @Override
-    public String getType() {
-        return "Instructor";
-    }
 }

@@ -1,5 +1,6 @@
 package com.segg3.coursemanager;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.segg3.coursemanager.shared.dao.DataObject;
 
 import org.jetbrains.annotations.NotNull;
@@ -7,9 +8,11 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Date;
 
 public class Course implements DataObject {
-    public final String id;
-    public String name;
-    public String code;
+    @JsonIgnore
+    public String id;
+
+    public String name = "ERROR";
+    public String code = "ERR 0000";
     public Date date;
     public Instructor instructor;
     public String description;

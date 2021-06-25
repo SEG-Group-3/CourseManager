@@ -67,51 +67,17 @@ public class AccountAccess extends DataBaseManager{
                         if(i.hasNext())
                         {
                             QueryDocumentSnapshot document = i.next();
-                            if(document.contains(TYPE_KEY))
-                            {
-                                switch (document.get(TYPE_KEY, String.class).toLowerCase())
-                                {
-                                    case "admin":
-                                        user = new Admin
-                                            (
-                                                document.getId(),
-                                                get(document, NAME_KEY),
-                                                get(document, EMAIL_KEY),
-                                                get(document, USERNAME_KEY),
-                                                null
-                                            );
-                                        break;
-                                    case "student":
-                                        user = new Student
-                                            (
-                                                document.getId(),
-                                                get(document, NAME_KEY),
-                                                get(document, EMAIL_KEY),
-                                                get(document, USERNAME_KEY),
-                                                null
-                                            );
+                            user = new User();
 
-                                        break;
-                                    case "instructor":
-                                        user = new Instructor
-                                            (
-                                                document.getId(),
-                                                get(document, NAME_KEY),
-                                                get(document, EMAIL_KEY),
-                                                get(document, USERNAME_KEY),
-                                                null
-                                            );
-                                        break;
-                                    default:
-                                        Log.w("FIRE", "Unknown user type found for document " + document.getId());
-                                        callback.onFailure(new Exception("Failed Login due to server error"));
-                                        return;
+                            // try
+                            user.type = document.get(TYPE_KEY, String.class).toLowerCase();
+                            user.userName = get(document, USERNAME_KEY);
+                            user.password = get(document, "password");
+                            // catch
+                            // Log.w("FIRE", "Unknown user type found for document " + document.getId());
+                            // callback.onFailure(new Exception("Failed Login due to server error"));
 
-                                }
-                                callback.onSuccess(user);
-
-                                return;
-                            }
+                            callback.onSuccess(user);
                         }
                         else
                         {
@@ -225,7 +191,7 @@ public class AccountAccess extends DataBaseManager{
 
         if(user != null)
         {
-            db.document(user.getUserID()).get()
+            db.document(user.id).get()
             .addOnCompleteListener(
                 new OnCompleteListener<DocumentSnapshot>()
                 {
@@ -240,12 +206,12 @@ public class AccountAccess extends DataBaseManager{
                             {
                                 if(document.contains((String) userDataCache.get("key")))
                                 {
-                                    db.document(user.getUserID()).update((String) userDataCache.get("key"),(String) userDataCache.get(userDataCache.get("key")));
+                                    db.document(user.id).update((String) userDataCache.get("key"),(String) userDataCache.get(userDataCache.get("key")));
                                 }
                                 else
                                 {
                                     userDataCache.remove("key");
-                                    db.document(user.getUserID()).set(userDataCache.get(userDataCache.get("key")));
+                                    db.document(user.id).set(userDataCache.get(userDataCache.get("key")));
                                 }
                                 callback.onSuccess(user);
                             }

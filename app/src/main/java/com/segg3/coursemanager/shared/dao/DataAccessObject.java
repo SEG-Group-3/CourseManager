@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class DataAccessObject<T extends DataObject> {
+public class DataAccessObject<T extends DataObject >  {
     protected final HashMap<String, String> keyToIdMap = new HashMap<>();
     private final CollectionReference collectionRef;
     private final Class<T> valueType;
@@ -35,7 +35,13 @@ public class DataAccessObject<T extends DataObject> {
             for (DocumentChange dc : snapshots.getDocumentChanges()) {
                 QueryDocumentSnapshot doc = dc.getDocument();
 
-                T newObject = doc.toObject(valueType);
+                T newObject;
+                try {
+                    newObject = doc.toObject(valueType);
+                } catch (Exception ignore){
+                    // TODO Log an error here
+                    continue;
+                }
 
                 switch (dc.getType()) {
                     case ADDED:
