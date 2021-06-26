@@ -70,10 +70,10 @@ public class CoursesDao extends DataAccessObject<Course> {
     public List<Course> searchCourse(String query)
     {
         List<Course> filtered = new ArrayList<>();
-
+        query=query.toLowerCase();
         Collection<Course> unfiltered = cache.getValue().values();
         for (Course c:unfiltered)
-            if (c.name.contains(query) || c.code.contains(query))
+            if (c.name.toLowerCase().contains(query) || c.code.toLowerCase().contains(query))
                 filtered.add(c);
 
         return filtered;
