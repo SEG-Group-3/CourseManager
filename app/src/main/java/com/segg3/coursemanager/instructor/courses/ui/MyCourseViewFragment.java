@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.segg3.coursemanager.MainActivity;
 import com.segg3.coursemanager.R;
+import com.segg3.coursemanager.administrator.courses.ui.EditCourseFragment;
 import com.segg3.coursemanager.databinding.FragmentListViewBinding;
 import com.segg3.coursemanager.shared.adapters.CourseListAdapter;
 import com.segg3.coursemanager.shared.dao.CoursesDao;
@@ -25,12 +26,13 @@ import com.segg3.coursemanager.shared.viewmodels.CoursesViewModel;
 
 import java.util.List;
 
-public class MyCouresViewFragment extends Fragment {
+public class MyCourseViewFragment extends Fragment {
     CourseListAdapter courseListAdapter;
     CoursesViewModel coursesViewModel;
     RecyclerView recyclerView;
     private AuthViewModel auth;
     FragmentListViewBinding binding;
+    List<Course> courses;
 
 
     @Nullable
@@ -45,6 +47,7 @@ public class MyCouresViewFragment extends Fragment {
 
         auth = new ViewModelProvider(MainActivity.instance).get(AuthViewModel.class);
         binding.floatingActionButton.setVisibility(View.GONE);
+        binding.searchBar.setVisibility(View.GONE);
 
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
@@ -56,14 +59,14 @@ public class MyCouresViewFragment extends Fragment {
         coursesViewModel = new ViewModelProvider(requireActivity()).get(CoursesViewModel.class);
 
         // Set Initial State
-        List<Course> c=CoursesDao.getInstance().getInstructorCourses(auth.getUser().getValue().userName);
-        courseListAdapter = new CourseListAdapter(c, this::onCourseClicked);
+       courses=CoursesDao.getInstance().getInstructorCourses(auth.getUser().getValue().userName);
+        courseListAdapter = new CourseListAdapter(courses, this::onCourseClicked);
         recyclerView.setAdapter(courseListAdapter);
         // Update UI on change
 
         coursesViewModel.getCourses().observe(getViewLifecycleOwner(), courses -> {
-            List<Course> co=CoursesDao.getInstance().getInstructorCourses(auth.getUser().getValue().userName);
-            courseListAdapter = new CourseListAdapter(co, this::onCourseClicked);
+            courses=CoursesDao.getInstance().getInstructorCourses(auth.getUser().getValue().userName);
+            courseListAdapter = new CourseListAdapter(courses, this::onCourseClicked);
             recyclerView.setAdapter(courseListAdapter);
         });
 
@@ -76,5 +79,14 @@ public class MyCouresViewFragment extends Fragment {
     }
 
     public void onCourseClicked(View v) {
+        // Finds the selected item
+        int position = recyclerView.getChildLayoutPosition(v);
+        // Setup Fragment arguments
+
+        Fragment instructor_edit_course = new InstructorEditCourseFragment();
+        Bundle args = new Bundle();
+        args.putString("code",courses.get(position).code );
+        instructor_edit_course.setArguments(args);
+        UIUtils.swipeFragmentRight(getParentFragmentManager(), instructor_edit_course);
     }
 }
