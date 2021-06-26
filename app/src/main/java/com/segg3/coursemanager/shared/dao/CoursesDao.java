@@ -63,6 +63,11 @@ public class CoursesDao extends DataAccessObject<Course> {
 
         return put(merged);
     }
+    public void unAssignInstructor(String courseCode){
+        Course c=get(courseCode);
+        c.instructor="";
+        editCourse(c.code,c);
+    }
 
     public List<Course> getInstructorCourses(String userName){
         List<Course> filtered= new ArrayList<>();
