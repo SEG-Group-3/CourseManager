@@ -15,37 +15,38 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.segg3.coursemanager.MainActivity;
 import com.segg3.coursemanager.R;
-import com.segg3.coursemanager.administrator.courses.ui.EditCourseFragment;
 import com.segg3.coursemanager.databinding.FragmentListViewBinding;
-import com.segg3.coursemanager.shared.dao.CoursesDao;
-import com.segg3.coursemanager.shared.dao.UsersDao;
-import com.segg3.coursemanager.shared.models.Course;
-import com.segg3.coursemanager.shared.models.User;
-import com.segg3.coursemanager.shared.utils.UIUtils;
 import com.segg3.coursemanager.shared.adapters.CourseListAdapter;
+import com.segg3.coursemanager.shared.dao.CoursesDao;
 import com.segg3.coursemanager.shared.fragments.HomeFragment;
+import com.segg3.coursemanager.shared.models.Course;
+import com.segg3.coursemanager.shared.utils.UIUtils;
 import com.segg3.coursemanager.shared.viewmodels.AuthViewModel;
 import com.segg3.coursemanager.shared.viewmodels.CoursesViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CourseViewFragment extends Fragment {
     CourseListAdapter courseListAdapter;
     RecyclerView recyclerView;
-    private AuthViewModel auth;
     FragmentListViewBinding binding;
-    List<Course> courses;
+    CoursesViewModel coursesViewModel;
+    List<Course> currentList;
+    String query = "";
+    private AuthViewModel auth;
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
-        binding= FragmentListViewBinding.inflate(inflater);
-        View v=binding.getRoot();
-        recyclerView=binding.courseRecyclerView;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = FragmentListViewBinding.inflate(inflater);
+        View v = binding.getRoot();
+        recyclerView = binding.courseRecyclerView;
         LinearLayoutManager layoutManager = new LinearLayoutManager(v.getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.scrollToPosition(0);
+
+        coursesViewModel = new ViewModelProvider(requireActivity()).get(CoursesViewModel.class);
+
 
         auth = new ViewModelProvider(MainActivity.instance).get(AuthViewModel.class);
         binding.floatingActionButton.setVisibility(View.GONE);
@@ -59,10 +60,7 @@ public class CourseViewFragment extends Fragment {
 
 
         // Set Initial State
-        courses=CoursesDao.getInstance().searchCourse("");
-        courseListAdapter = new CourseListAdapter(courses, this::onCourseClicked);
-        recyclerView.setAdapter(courseListAdapter);
-        CourseViewFragment fragment=this;
+        updateCourses();
         // Update UI on change
         binding.searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -72,39 +70,41 @@ public class CourseViewFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                courses=CoursesDao.getInstance().searchCourse(newText);
-                courseListAdapter = new CourseListAdapter(courses, fragment::onCourseClicked);
-                recyclerView.setAdapter(courseListAdapter);
-
+                query = newText;
+                updateCourses();
                 return false;
             }
         });
-
-        UIUtils.setToolbarTitle(getActivity(),  getString(R.string.courses));
+        coursesViewModel.getCourses().observe(getViewLifecycleOwner(), courses -> {
+            updateCourses();
+        });
+        UIUtils.setToolbarTitle(getActivity(), getString(R.string.courses));
         return v;
     }
 
-    public void onAddClicked(View v) {
-
+    public void updateCourses() {
+        currentList = CoursesDao.getInstance().searchCourse(query);
+        courseListAdapter = new CourseListAdapter(currentList, this::onCourseClicked);
+        recyclerView.setAdapter(courseListAdapter);
     }
 
     public void onCourseClicked(View v) {
-         //Finds the selected item
+        //Finds the selected item
         int position = recyclerView.getChildLayoutPosition(v);
-        Course clicked = courses.get(position);
+        Course clicked = currentList.get(position);
 
 
-        if(clicked.instructor.equals("")){
+        if (clicked.instructor.equals("")) {
             UIUtils.createYesNoMenu("Enter course", "Do you want to assign yourself to this course?",
                     getContext(),
                     (dialog, which) -> {
-                         if (CoursesDao.getInstance().assignInstructor(auth.getUser().getValue().userName, clicked.code)){
-                             UIUtils.createToast(getContext(), "You have been assigned to this course");
-                         } else{
-                             UIUtils.createToast(getContext(), "An error has occurred");
-                         }
+                        if (CoursesDao.getInstance().assignInstructor(auth.getUser().getValue().userName, clicked.code)) {
+                            UIUtils.createToast(getContext(), "You have been assigned to this course");
+                        } else {
+                            UIUtils.createToast(getContext(), "An error has occurred");
+                        }
                     });
-        } else{
+        } else {
             UIUtils.createToast(getContext(), "This course is already taken!");
         }
     }
