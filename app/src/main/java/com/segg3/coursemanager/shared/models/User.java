@@ -1,6 +1,5 @@
 package com.segg3.coursemanager.shared.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.segg3.coursemanager.shared.dao.DataObject;
 
 public class User extends DataObject {

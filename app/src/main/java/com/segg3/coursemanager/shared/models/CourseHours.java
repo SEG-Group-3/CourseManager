@@ -3,11 +3,6 @@ package com.segg3.coursemanager.shared.models;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.DayOfWeek;
-import java.time.Duration;
-import java.util.Comparator;
-import java.util.Date;
-
-import kotlin.collections.IntIterator;
 
 public class CourseHours {
 

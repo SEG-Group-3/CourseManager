@@ -8,10 +8,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.segg3.coursemanager.R;
-import com.segg3.coursemanager.shared.models.User;
 import com.segg3.coursemanager.shared.models.CardViewHolder;
+import com.segg3.coursemanager.shared.models.User;
 
 import org.jetbrains.annotations.NotNull;
 

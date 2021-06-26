@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.segg3.coursemanager.MainActivity;
 import com.segg3.coursemanager.R;
-import com.segg3.coursemanager.administrator.courses.ui.EditCourseFragment;
 import com.segg3.coursemanager.databinding.FragmentListViewBinding;
 import com.segg3.coursemanager.shared.adapters.CourseListAdapter;
 import com.segg3.coursemanager.shared.dao.CoursesDao;

@@ -5,7 +5,6 @@ import com.segg3.coursemanager.shared.dao.DataObject;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Course extends DataObject {

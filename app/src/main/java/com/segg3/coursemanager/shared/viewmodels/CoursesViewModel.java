@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
-import com.segg3.coursemanager.shared.models.Course;
 import com.segg3.coursemanager.shared.dao.CoursesDao;
+import com.segg3.coursemanager.shared.models.Course;
 
 import java.util.ArrayList;
 import java.util.HashMap;

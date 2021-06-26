@@ -11,12 +11,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.segg3.coursemanager.R;
-import com.segg3.coursemanager.shared.models.User;
 import com.segg3.coursemanager.databinding.FragmentHomeBinding;
-
+import com.segg3.coursemanager.shared.models.User;
 import com.segg3.coursemanager.shared.utils.UIUtils;
 import com.segg3.coursemanager.shared.viewmodels.AuthViewModel;
-import com.segg3.coursemanager.shared.viewmodels.UsersViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
