@@ -35,6 +35,7 @@ public class CourseViewFragment extends Fragment {
     RecyclerView recyclerView;
     private AuthViewModel auth;
     FragmentListViewBinding binding;
+    List<Course> courses;
 
     @Nullable
     @Override
@@ -58,7 +59,7 @@ public class CourseViewFragment extends Fragment {
 
 
         // Set Initial State
-        List<Course> courses=CoursesDao.getInstance().searchCourse("");
+        courses=CoursesDao.getInstance().searchCourse("");
         courseListAdapter = new CourseListAdapter(courses, this::onCourseClicked);
         recyclerView.setAdapter(courseListAdapter);
         CourseViewFragment fragment=this;
@@ -71,7 +72,7 @@ public class CourseViewFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                List<Course> courses=CoursesDao.getInstance().searchCourse(newText);
+                courses=CoursesDao.getInstance().searchCourse(newText);
                 courseListAdapter = new CourseListAdapter(courses, fragment::onCourseClicked);
                 recyclerView.setAdapter(courseListAdapter);
 
@@ -88,31 +89,23 @@ public class CourseViewFragment extends Fragment {
     }
 
     public void onCourseClicked(View v) {
-        // Finds the selected item
-//        int position = recyclerView.getChildLayoutPosition(v);
-//        Course clicked = coursesViewModel.getCourses().getValue().get(position);
-//
-//
-//        if(clicked.instructor.equals("")){
-//            UIUtils.createYesNoMenu("Enter course", "Do you want to assign yourself to this course?",
-//                    getContext(),
-//                    (dialog, which) -> {
-//                         if (CoursesDao.getInstance().assignInstructor(auth.getUser().getValue().userName, clicked.code)){
-//                             UIUtils.createToast(getContext(), "You have been assigned to this course");
-//                         } else{
-//                             UIUtils.createToast(getContext(), "An error has occurred");
-//                         }
-//                    });
-//        } else{
-//            UIUtils.createToast(getContext(), "This course is already taken!");
-//        }
-//
-//        // Setup Fragment arguments
-////        Fragment edit_course_frag = new EditCourseFragment();
-////        Bundle args = new Bundle();
-////        args.putInt("position", position);
-////        edit_course_frag.setArguments(args);
-////        UIUtils.swipeFragmentRight(getParentFragmentManager(), edit_course_frag);
+         //Finds the selected item
+        int position = recyclerView.getChildLayoutPosition(v);
+        Course clicked = courses.get(position);
 
+
+        if(clicked.instructor.equals("")){
+            UIUtils.createYesNoMenu("Enter course", "Do you want to assign yourself to this course?",
+                    getContext(),
+                    (dialog, which) -> {
+                         if (CoursesDao.getInstance().assignInstructor(auth.getUser().getValue().userName, clicked.code)){
+                             UIUtils.createToast(getContext(), "You have been assigned to this course");
+                         } else{
+                             UIUtils.createToast(getContext(), "An error has occurred");
+                         }
+                    });
+        } else{
+            UIUtils.createToast(getContext(), "This course is already taken!");
+        }
     }
 }

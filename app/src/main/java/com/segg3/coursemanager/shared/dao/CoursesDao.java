@@ -64,7 +64,15 @@ public class CoursesDao extends DataAccessObject<Course> {
         return put(merged);
     }
 
-
+    public List<Course> getInstructorCourses(String userName){
+        List<Course> filtered= new ArrayList<>();
+        for (Course c:cache.getValue().values()){
+            if (c.instructor.equals(userName)){
+                filtered.add(c);
+            }
+        }
+        return filtered;
+    }
 
 
     public List<Course> searchCourse(String query)

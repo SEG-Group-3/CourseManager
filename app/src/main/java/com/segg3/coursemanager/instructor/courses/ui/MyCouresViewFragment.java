@@ -23,6 +23,8 @@ import com.segg3.coursemanager.shared.utils.UIUtils;
 import com.segg3.coursemanager.shared.viewmodels.AuthViewModel;
 import com.segg3.coursemanager.shared.viewmodels.CoursesViewModel;
 
+import java.util.List;
+
 public class MyCouresViewFragment extends Fragment {
     CourseListAdapter courseListAdapter;
     CoursesViewModel coursesViewModel;
@@ -54,12 +56,14 @@ public class MyCouresViewFragment extends Fragment {
         coursesViewModel = new ViewModelProvider(requireActivity()).get(CoursesViewModel.class);
 
         // Set Initial State
-        courseListAdapter = new CourseListAdapter(coursesViewModel.getCourses().getValue(), this::onCourseClicked);
+        List<Course> c=CoursesDao.getInstance().getInstructorCourses(auth.getUser().getValue().userName);
+        courseListAdapter = new CourseListAdapter(c, this::onCourseClicked);
         recyclerView.setAdapter(courseListAdapter);
-        v.findViewById(R.id.floatingActionButton).setOnClickListener(this::onAddClicked);
         // Update UI on change
+
         coursesViewModel.getCourses().observe(getViewLifecycleOwner(), courses -> {
-            courseListAdapter = new CourseListAdapter(courses, this::onCourseClicked);
+            List<Course> co=CoursesDao.getInstance().getInstructorCourses(auth.getUser().getValue().userName);
+            courseListAdapter = new CourseListAdapter(co, this::onCourseClicked);
             recyclerView.setAdapter(courseListAdapter);
         });
 
