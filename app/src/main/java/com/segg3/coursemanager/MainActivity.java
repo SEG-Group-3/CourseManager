@@ -16,7 +16,7 @@ import com.segg3.coursemanager.administrator.courses.ui.CourseViewFragment;
 import com.segg3.coursemanager.administrator.users.ui.UsersViewFragment;
 import com.segg3.coursemanager.auth.login.ui.LoginActivity;
 import com.segg3.coursemanager.databinding.ActivityMainBinding;
-import com.segg3.coursemanager.instructor.courses.ui.MyCouresViewFragment;
+import com.segg3.coursemanager.instructor.courses.ui.MyCourseViewFragment;
 import com.segg3.coursemanager.shared.utils.UIUtils;
 import com.segg3.coursemanager.shared.fragments.HomeFragment;
 import com.segg3.coursemanager.shared.models.User;
@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
                     } else if (item.getItemId() == R.id.nav_instructor_edit_courses) {
                         UIUtils.swapViews(getSupportFragmentManager(), new com.segg3.coursemanager.instructor.courses.ui.CourseViewFragment());
                     } else if (item.getItemId() == R.id.nav_instructor_my_courses) {
-                        UIUtils.swapViews(getSupportFragmentManager(), new MyCouresViewFragment());
+                        UIUtils.swapViews(getSupportFragmentManager(), new MyCourseViewFragment());
                     }
 
                     closeDrawer();
