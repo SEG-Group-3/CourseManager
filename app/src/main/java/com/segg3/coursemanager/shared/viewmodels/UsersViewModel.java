@@ -15,11 +15,10 @@ import java.util.List;
 
 public class UsersViewModel extends ViewModel {
     private LiveData<List<User>> users;
-    private final UsersDao dao = UsersDao.getInstance();
 
     public LiveData<List<User>> getUsers() {
         if (users == null) {
-            users = Transformations.switchMap(dao.getUsers(), this::loadUsers);
+            users = Transformations.switchMap(UsersDao.getInstance().getUsers(), this::loadUsers);
         }
         return users;
     }

@@ -14,11 +14,10 @@ import java.util.List;
 
 public class CoursesViewModel extends ViewModel {
     private LiveData<List<Course>> courses;
-    private final CoursesDao dao = CoursesDao.getInstance();
 
     public LiveData<List<Course>> getCourses() {
         if (courses == null) {
-            courses = Transformations.switchMap(dao.getCourses(), this::loadCourses);
+            courses = Transformations.switchMap(CoursesDao.getInstance().getCourses(), this::loadCourses);
         }
         return courses;
     }
