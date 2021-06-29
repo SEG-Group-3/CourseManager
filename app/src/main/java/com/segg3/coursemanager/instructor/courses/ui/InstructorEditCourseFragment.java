@@ -1,18 +1,21 @@
 package com.segg3.coursemanager.instructor.courses.ui;
 
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.segg3.coursemanager.R;
 import com.segg3.coursemanager.databinding.FragmentInstructorEditCourseBinding;
 import com.segg3.coursemanager.shared.dao.CoursesDao;
@@ -20,6 +23,8 @@ import com.segg3.coursemanager.shared.models.Course;
 import com.segg3.coursemanager.shared.utils.UIUtils;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public class InstructorEditCourseFragment extends Fragment {
     FragmentInstructorEditCourseBinding binding;
@@ -37,6 +42,14 @@ public class InstructorEditCourseFragment extends Fragment {
                 UIUtils.swipeFragmentLeft(getParentFragmentManager(), new MyCourseViewFragment());
             }
         });
+
+        TextInputLayout[] emptyCheckedFields = {binding.courseDescriptionInput, binding.courseCapacityInput};
+
+        for (TextInputLayout field :
+                emptyCheckedFields) {
+            UIUtils.setRemoveErrorOnChange(field);
+        }
+
 
         binding.cancelButton.setOnClickListener(this::onCancelEdit);
         binding.applyButton.setOnClickListener(this::onApplyEdit);
@@ -77,38 +90,42 @@ public class InstructorEditCourseFragment extends Fragment {
     }
 
     private void onApplyEdit(View v){
-//        String name = binding.courseNameInput.getEditText().getText().toString();
-//        String code = binding.courseCodeInput.getEditText().getText().toString();
-//
-//        TextInputLayout[] emptyCheckedFields = {binding.courseNameInput, binding.courseCodeInput};
-//        boolean ok = true;
-//        for (TextInputLayout field:
-//                emptyCheckedFields ) {
-//            if (field.getEditText().getText().toString().isEmpty()){
-//                field.setError(getString(R.string.error_empty_field));
-//                field.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.shake));
-//                ok = false;
-//            }
-//        }
-//
-//        if (!ok)
-//            return;
-//
-//        // TODO create new course object to update
-//        if (position != -1){
-//            // ## Implement Here
-//            // CoursesDao.getInstance().editCourse()
-//            // ##  Old function for reference
-//            // coursesViewModel.editCourse(position, name, code);  // Edit existing item
-//        }
-//        else{
-//            // ## Implement Here
-//            // CoursesDao.getInstance().addCourse()
-//            // ##  Old function for reference
-//            // coursesViewModel.addCourse(name, code); // Add new item
-//        }
-//
-//
-//        UIUtils.swipeFragmentLeft(getParentFragmentManager(), new CourseViewFragment());
+        // If invalid username or password, shake!
+        boolean ok = true;
+        TextInputLayout[] emptyCheckedFields = {binding.courseDescriptionInput, binding.courseCapacityInput};
+
+        for (TextInputLayout field :
+                emptyCheckedFields) {
+            if (UIUtils.getFieldText(field).isEmpty()) {
+                field.setError(getString(R.string.error_empty_field));
+                field.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.shake));
+                ok = false;
+            }
+        }
+
+        String capacity = binding.courseCapacityInput.getEditText().getText().toString();
+        try {
+            if(Integer.parseUnsignedInt(capacity) <= 0){
+                binding.courseCapacityInput.setError("Course capacity should be greater than one!");
+                binding.courseCapacityInput.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.shake));
+            }
+        } catch (NumberFormatException exception){
+            ok = false;
+            binding.courseCapacityInput.setError("Not a number! exception");
+            binding.courseCapacityInput.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.shake));
+        }
+
+
+
+
+        if (!ok)
+            return;
+
+
+        // TODO Update course date
+        beingEdited.description = binding.courseDescriptionInput.getEditText().getText().toString();
+        beingEdited.capacity = Integer.parseUnsignedInt(capacity);
+        CoursesDao.getInstance().editCourse(beingEdited.code, beingEdited);
+        UIUtils.swipeFragmentLeft(getParentFragmentManager(), new MyCourseViewFragment());
     }
 }
