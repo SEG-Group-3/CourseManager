@@ -64,6 +64,9 @@ public class InstructorEditCourseFragment extends Fragment {
         binding.courseCapacityInput.getEditText().setText(String.valueOf(beingEdited.capacity));
         binding.courseDescriptionInput.getEditText().setText(beingEdited.description);
 
+        // TODO Populate course hours recycler view
+        // binding.courseHoursRecyclerView...
+
         return view;
     }
 
@@ -82,8 +85,9 @@ public class InstructorEditCourseFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-
-
+    private void onCourseHourClicked(View v){
+        // TODO Update some course hour (maybe a popup menu?)
+    }
 
     private void onCancelEdit(View v){
         UIUtils.swipeFragmentLeft(getParentFragmentManager(), new MyCourseViewFragment());
