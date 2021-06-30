@@ -16,14 +16,14 @@
         app:autoSizeMaxTextSize="20px"
         app:autoSizeMinTextSize="8px" />
 
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/course_description_input"
 
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp">
+        android:layout_height="0sp"
+        android:layout_margin="10dp"
+        android:layout_weight="1">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -32,13 +32,16 @@
             android:singleLine="true" />
 
     </com.google.android.material.textfield.TextInputLayout>
+
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/course_capacity_input"
 
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp">
+        android:layout_height="0sp"
+        android:layout_margin="10dp"
+        android:layout_weight="1">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -51,8 +54,33 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="bottom"
+        android:layout_height="0sp"
+        android:layout_margin="10sp"
+        android:layout_weight="6"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoSizeTextType="uniform"
+            android:gravity="bottom"
+            android:text="Schedule"
+            android:textAppearance="?textAppearanceCaption"
+            app:autoSizeMaxTextSize="10px"
+            app:autoSizeMinTextSize="8px" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:layout_weight="5"
+            android:background="@color/gallery_grey" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <com.google.android.material.button.MaterialButton
