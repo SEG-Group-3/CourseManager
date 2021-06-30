@@ -71,10 +71,11 @@
             app:autoSizeMinTextSize="8px" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/course_hours_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="0sp"
             android:layout_weight="5"
-            android:background="@color/gallery_grey" />
+            android:background="@color/white" />
     </LinearLayout>
 
     <LinearLayout
