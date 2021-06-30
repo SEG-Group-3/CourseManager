@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.time.DayOfWeek;
 
-public class CourseHours {
+public class CourseHours implements  Comparable<CourseHours>{
 
     public final DayOfWeek weekDay;
 
@@ -12,8 +12,8 @@ public class CourseHours {
 
     public final int durations;//minutes
 
-    public int compare(CourseHours courseHours) {
-
+    @Override
+    public int compareTo(CourseHours courseHours) {
         if(this.weekDay.compareTo(courseHours.weekDay) != 0)
         {
             return this.weekDay.compareTo(courseHours.weekDay);
