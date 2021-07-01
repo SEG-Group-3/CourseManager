@@ -18,15 +18,19 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.textfield.TextInputLayout;
 import com.segg3.coursemanager.R;
 import com.segg3.coursemanager.databinding.FragmentEditCourseBinding;
+import com.segg3.coursemanager.shared.dao.CoursesDao;
 import com.segg3.coursemanager.shared.models.Course;
 import com.segg3.coursemanager.shared.utils.UIUtils;
 import com.segg3.coursemanager.shared.viewmodels.CoursesViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+
 public class EditCourseFragment extends Fragment {
     FragmentEditCourseBinding binding;
     CoursesViewModel coursesViewModel;
+    Course beingEdited;
     int position = -1;
     @Nullable
     @Override
@@ -55,7 +59,7 @@ public class EditCourseFragment extends Fragment {
         if (position != -1)
         {
             // Editing existing item
-            Course beingEdited =coursesViewModel.getCourses().getValue().get(position);
+            beingEdited =coursesViewModel.getCourses().getValue().get(position);
             binding.courseNameInput.getEditText().setText(beingEdited.name);
             binding.courseCodeInput.getEditText().setText(beingEdited.code);
             binding.uidText.setText(beingEdited.getId());
@@ -68,8 +72,7 @@ public class EditCourseFragment extends Fragment {
         UIUtils.createYesNoMenu("Delete Item", "Do you really want to delete this item?", getActivity(), (dialog, which) -> {
             // Delete user here
             if (position != -1){
-                // TODO Pass course code to delete the course
-                // CoursesDao.getInstance().deleteCourse()
+                 CoursesDao.getInstance().deleteCourse(beingEdited.code);
 
                 UIUtils.createToast(getActivity().getApplicationContext(), "Course deleted");
             } else{
@@ -111,18 +114,14 @@ public class EditCourseFragment extends Fragment {
         if (!ok)
             return;
 
-        // TODO create new course object to update
+        Course c = new Course();
+        c.name = name;
+        c.code = code;
         if (position != -1){
-            // ## Implement Here
-            // CoursesDao.getInstance().editCourse()
-            // ##  Old function for reference
-            // coursesViewModel.editCourse(position, name, code);  // Edit existing item
+             CoursesDao.getInstance().editCourse(beingEdited.code, c);
         }
         else{
-            // ## Implement Here
-            // CoursesDao.getInstance().addCourse()
-            // ##  Old function for reference
-            // coursesViewModel.addCourse(name, code); // Add new item
+             CoursesDao.getInstance().addCourse(c);
         }
 
 

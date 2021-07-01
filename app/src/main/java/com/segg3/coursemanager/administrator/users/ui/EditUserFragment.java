@@ -19,6 +19,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.textfield.TextInputLayout;
 import com.segg3.coursemanager.R;
 import com.segg3.coursemanager.databinding.FragmentEditUserBinding;
+import com.segg3.coursemanager.shared.dao.UsersDao;
 import com.segg3.coursemanager.shared.models.User;
 import com.segg3.coursemanager.shared.utils.UIUtils;
 import com.segg3.coursemanager.shared.viewmodels.UsersViewModel;
@@ -29,6 +30,7 @@ public class EditUserFragment extends Fragment {
     FragmentEditUserBinding binding;
     UsersViewModel usersViewModel;
     String selectedRole = null;
+    User beingEdited;
     int position = -1;
     @Nullable
     @Override
@@ -68,7 +70,8 @@ public class EditUserFragment extends Fragment {
         if (position != -1)
         {
             // Editing existing item
-            User beingEdited = usersViewModel.getUsers().getValue().get(position);
+            beingEdited = usersViewModel.getUsers().getValue().get(position);
+
             binding.inputUsername.getEditText().setText(beingEdited.userName);
             binding.uidText.setText(beingEdited.id);
         }
@@ -80,8 +83,7 @@ public class EditUserFragment extends Fragment {
         UIUtils.createYesNoMenu("Delete Item", "Do you really want to delete this user?", getActivity(), (dialog, which) -> {
             // Delete user here
             if (position != -1){
-                // TODO Get username to delete
-                // UsersDao.getInstance().deleteUser();
+                 UsersDao.getInstance().deleteUser(beingEdited.userName);
                 UIUtils.createToast(getActivity().getApplicationContext(), "User deleted");
             } else{
                 UIUtils.createToast(getActivity().getApplicationContext(), "No item to be deleted");
@@ -125,16 +127,17 @@ public class EditUserFragment extends Fragment {
             return;
 
 
+        User u = new User();
+        u.password = password;
+        u.type = selectedRole;
+        u.userName = name;
+
         if (position != -1){
-            // TODO Create new edited user
-            // UsersDao.getInstance().editUser()
-            // Old function for reference
-            // usersViewModel.editUser(position, name, password, selectedRole);  // Edit existing item
+            UsersDao.getInstance().editUser(beingEdited.userName, u);
         }
         else{
             // ## Add user here
-            // UsersDao.getInstance().addUser(userhere)
-            // usersViewModel.addUser(name, password, selectedRole); // Add new item
+            UsersDao.getInstance().addUser(u); // Add new item
         }
 
         UIUtils.swipeFragmentLeft(getParentFragmentManager(), new UsersViewFragment());

@@ -85,7 +85,6 @@ public class InstructorEditCourseFragment extends Fragment {
 
         // Add an hour when button is clicked
         binding.courseHoursFab.setOnClickListener(this::onAddCourseClicked);
-        // TODO Populate course hours recycler view
         recyclerView = binding.courseHoursRecyclerView;
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -136,10 +135,6 @@ public class InstructorEditCourseFragment extends Fragment {
                             10 * courseHourBinding.minutePicker.getValue(),
                             30 + 5 * courseHourBinding.durationPicker.getValue());
 
-
-                    // TODO check if cw intersect with preexisting course hours
-                    // if it intersects show error
-                    // if its ok, replace previous value
                     boolean intersect=CourseHours.courseHoursIntersect(cw,mutCourseHours);
                     if (!intersect) {
                         mutCourseHours.add(cw);
@@ -241,9 +236,6 @@ public class InstructorEditCourseFragment extends Fragment {
                             30 + 5 * courseHourBinding.durationPicker.getValue());
 
 
-                    // TODO check if cw intersect with preexisting course hours
-                    // if it intersects show error
-                    // if its ok, replace previous value
                     boolean intersect=CourseHours.courseHoursIntersect(cw,mutCourseHours);
                     if (!intersect) {
                         int position = recyclerView.getChildLayoutPosition(v);
@@ -294,11 +286,8 @@ public class InstructorEditCourseFragment extends Fragment {
             return;
 
 
-        // TODO Update course date
         beingEdited.description = binding.courseDescriptionInput.getEditText().getText().toString();
         beingEdited.capacity = Integer.parseUnsignedInt(capacity);
-
-
         List<String> courseHoursStr = new ArrayList<>();
         for (CourseHours c:mutCourseHours) {
             courseHoursStr.add(c.toString());

@@ -40,7 +40,7 @@ public class DataAccessObject<T extends DataObject >  {
                     newObject = doc.toObject(valueType);
                     newObject.id = doc.getId();
                 } catch (Exception ignore){
-                    // TODO Log an error here
+                    Log.d("DAO", "DataAccessObject: Failed to deserialize " + doc.getId() + " ignoring.");
                     continue;
                 }
 
