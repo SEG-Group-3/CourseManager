@@ -59,4 +59,39 @@ public class CourseHoursTest extends TestCase {
 
         assertEquals(t1.toString(),t2.toString());
     }
+
+    @Test
+    public void testTimeSet()
+    {
+        CourseHours.Time t1;
+
+        t1 = new CourseHours.Time(12,12);
+
+        try
+        {
+            t1.setMinute(120);
+        }
+        catch (IllegalArgumentException e)
+        {
+            assertEquals("Illegal hour value. 0 <= hour < 24",e.getMessage());
+        }
+        catch (Exception e)
+        {
+            fail();
+        }
+
+        try
+        {
+            t1.setHour(120);
+        }
+        catch (IllegalArgumentException e)
+        {
+            assertEquals("Illegal hour value. 0 <= hour < 24",e.getMessage());
+        }
+        catch (Exception e)
+        {
+            fail();
+        }
+
+    }
 }

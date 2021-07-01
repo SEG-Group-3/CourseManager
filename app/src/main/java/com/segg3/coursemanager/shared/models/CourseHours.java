@@ -60,7 +60,7 @@ public class CourseHours implements Comparable<CourseHours>{
             setMinute(Integer.parseInt(tmp[1]));
         }
 
-        private void setHour(int hour)
+        public void setHour(int hour)
         {
             if(0 <= hour && hour < 24)
             {
@@ -72,7 +72,7 @@ public class CourseHours implements Comparable<CourseHours>{
             }
         }
 
-        private void setMinute(int minute)
+        public void setMinute(int minute)
         {
             if(0 <= minute && minute < 60)
             {
