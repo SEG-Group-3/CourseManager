@@ -156,6 +156,13 @@ public class CourseHours implements Comparable<CourseHours>{
         this.durations = durations;
     }
 
+    public CourseHours(int weekDay, int startHour, int startMinute, int duration)
+    {
+        this.weekDay = DayOfWeek.of(weekDay);
+        this.start = new Time(startHour, startMinute);
+        this.durations = duration;
+    }
+
     public CourseHours(String CourseHoursRaw)
     {
         String[] tmpParam = CourseHoursRaw.split("\\|");
