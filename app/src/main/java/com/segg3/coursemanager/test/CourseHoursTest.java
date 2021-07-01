@@ -94,4 +94,26 @@ public class CourseHoursTest extends TestCase {
         }
 
     }
+
+    @Test
+    public void testTimeAdd()
+    {
+        CourseHours.Time t1;
+
+        t1 = new CourseHours.Time(12,40);
+
+
+        assertFalse(t1.addMinute(10));
+        assertEquals("12:50",t1.toString());
+
+        assertFalse(t1.addMinute(20));
+        assertEquals("13:10",t1.toString());
+
+        t1.setHour(23);
+        t1.setMinute(50);
+        assertTrue(t1.addMinute(20));
+        assertEquals("0:10",t1.toString());
+
+
+    }
 }

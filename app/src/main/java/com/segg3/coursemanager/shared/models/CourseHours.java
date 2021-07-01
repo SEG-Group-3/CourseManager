@@ -84,23 +84,23 @@ public class CourseHours implements Comparable<CourseHours>{
             }
         }
 
-        private boolean addHour(int hour)
+        public boolean addHour(int hour)
         {
-            boolean overFlow = this.hour+hour>24;
+            boolean overFlow = this.hour+hour>=24;
 
             this.hour = (this.hour+hour) % 24;
 
             return overFlow;
         }
 
-        private boolean addMinute(int minute)
+        public boolean addMinute(int minute)
         {
             boolean overflow = false;
 
-            if(minute >= 60)
+            if(this.minute + minute >= 60)
             {
-                overflow = addHour(minute/60);
-                addMinute(minute%60);
+                overflow = addHour((this.minute+minute) / 60);
+                this.minute = (this.minute+minute) % 60;
             }
             else
             {
