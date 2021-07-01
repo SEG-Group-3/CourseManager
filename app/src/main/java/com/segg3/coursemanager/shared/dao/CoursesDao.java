@@ -66,6 +66,9 @@ public class CoursesDao extends DataAccessObject<Course> {
     public void unAssignInstructor(String courseCode){
         Course c=get(courseCode);
         c.instructor="";
+        c.capacity = -1;
+        c.description = "";
+        c.courseHours = new ArrayList<>();
         editCourse(c.code,c);
     }
 
