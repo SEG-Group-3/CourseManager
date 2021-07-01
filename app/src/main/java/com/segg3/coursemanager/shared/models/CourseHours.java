@@ -55,11 +55,9 @@ public class CourseHours implements Comparable<CourseHours>{
         {
             String[] tmp = timeRaw.split("\\:");
 
-            Integer hourRaw = new Integer(tmp[0]);
-            Integer minuteRaw = new Integer(tmp[1]);
 
-            setHour(hourRaw.intValue());
-            setMinute(minuteRaw.intValue());
+            setHour(Integer.parseInt(tmp[0]));
+            setMinute(Integer.parseInt(tmp[1]));
         }
 
         private void setHour(int hour)
