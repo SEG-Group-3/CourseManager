@@ -210,22 +210,16 @@ public class InstructorEditCourseFragment extends Fragment {
     private void onCourseHourClicked(View v) {
         MaterialAlertDialogBuilder builder = CreateCourseHoursBuilder()
                 .setPositiveButton("Apply", (dialog, which) -> {
-
-                    String weekDay = courseHourBinding.weekdayPicker.getDisplayedValues()[courseHourBinding.weekdayPicker.getValue()];
-                    String courseHour = courseHourBinding.hourPicker.getDisplayedValues()[courseHourBinding.hourPicker.getValue()];
-                    String courseMinute = courseHourBinding.minutePicker.getDisplayedValues()[courseHourBinding.minutePicker.getValue()];
-                    String courseDuration = courseHourBinding.durationPicker.getDisplayedValues()[courseHourBinding.durationPicker.getValue()];
-
                     CourseHours cw = new CourseHours(
-                            courseHourBinding.weekdayPicker.getValue(),
-                            Integer.parseInt(courseHour),
-                            Integer.parseInt(courseMinute),
-                            Integer.parseInt(courseDuration));
+                            courseHourBinding.weekdayPicker.getValue() + 1,
+                            courseHourBinding.hourPicker.getValue(),
+                            10 * courseHourBinding.minutePicker.getValue(),
+                            30 + 5 * courseHourBinding.durationPicker.getValue());
 
 
                     // TODO check if cw intersect with preexisting course hours
-
-                    // Replace previous value
+                    // if it intersects show error
+                    // if its ok, replace previous value
                     int position = recyclerView.getChildLayoutPosition(v);
                     mutCourseHours.remove(position);
                     mutCourseHours.add(position, cw.toString());
