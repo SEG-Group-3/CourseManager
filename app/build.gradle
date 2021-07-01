@@ -52,6 +52,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
     implementation 'org.testng:testng:6.9.6'
+    //implementation 'org.junit.jupiter:junit-jupiter'
 
 
     testImplementation 'junit:junit:4.13.2'
