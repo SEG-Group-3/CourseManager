@@ -7,7 +7,9 @@ apply plugin: 'com.google.gms.google-services'
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
-
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 
     defaultConfig {
         applicationId "com.segg3.coursemanager"

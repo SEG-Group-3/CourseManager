@@ -47,7 +47,7 @@ public class Instructor extends User{
             case "code":
                 return searchByCode(filter);
             default:
-                throw new IllegalArgumentException("Illegal feild");
+                throw new IllegalArgumentException("Illegal field");
         }
     }
 
