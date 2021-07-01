@@ -81,6 +81,8 @@ public class InstructorEditCourseFragment extends Fragment {
         binding.courseCapacityInput.getEditText().setText(String.valueOf(beingEdited.capacity));
         binding.courseDescriptionInput.getEditText().setText(beingEdited.description);
 
+        binding.uidText.setText(beingEdited.name);
+
 
 
         // Add an hour when button is clicked
