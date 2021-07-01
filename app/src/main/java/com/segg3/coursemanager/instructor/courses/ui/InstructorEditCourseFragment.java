@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
+import android.widget.NumberPicker;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -20,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 import com.segg3.coursemanager.R;
+import com.segg3.coursemanager.databinding.DialogCourseHourBinding;
 import com.segg3.coursemanager.databinding.FragmentInstructorEditCourseBinding;
 import com.segg3.coursemanager.shared.adapters.CourseHoursListAdapter;
 import com.segg3.coursemanager.shared.dao.CoursesDao;
@@ -29,6 +31,7 @@ import com.segg3.coursemanager.shared.utils.UIUtils;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +42,7 @@ public class InstructorEditCourseFragment extends Fragment {
     CourseHoursListAdapter courseListAdapter;
     RecyclerView recyclerView;
     List<String> mutCourseHours;
+    DialogCourseHourBinding courseHourBinding;
 
     int position = -1;
 
@@ -93,7 +97,6 @@ public class InstructorEditCourseFragment extends Fragment {
 
         // Swipe stuff to the left to delete it
         mutCourseHours = new ArrayList<>(beingEdited.courseHours);
-        InstructorEditCourseFragment parent = this;
         ItemTouchHelper.SimpleCallback touchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
             @Override
@@ -108,13 +111,7 @@ public class InstructorEditCourseFragment extends Fragment {
                 int position = viewHolder.getAdapterPosition();
                 mutCourseHours.remove(position);
 
-                List<CourseHours> courseHours = new ArrayList<>();
-                for (String c : mutCourseHours) {
-                    courseHours.add(new CourseHours(c));
-                }
-
-                courseListAdapter = new CourseHoursListAdapter(courseHours, parent::onCourseHourClicked);
-                recyclerView.setAdapter(courseListAdapter);
+                updateRecyclerView(mutCourseHours);
 
                 UIUtils.createToast(getContext(), "Swiped something...");
             }
@@ -143,21 +140,99 @@ public class InstructorEditCourseFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    private void onCourseHourClicked(View v) {
-        // TODO Update some course hour (maybe a popup menu?)
-
+    private MaterialAlertDialogBuilder CreateCourseHoursBuilder(){
         LayoutInflater inflater = getLayoutInflater();
         View popupView = inflater.inflate(R.layout.dialog_course_hour, recyclerView, false);
+        courseHourBinding = DialogCourseHourBinding.bind(popupView);
+        // Set Weekdays
+        NumberPicker weekPicker = popupView.findViewById(R.id.weekday_picker);
+        List<String> values = new ArrayList<>();
+        for (DayOfWeek dayOfWeek: DayOfWeek.values()){
+            values.add(dayOfWeek.toString());
+        }
+        String[] valuesString = new String[DayOfWeek.values().length];
+        values.toArray(valuesString);
+        weekPicker.setDisplayedValues(valuesString);
+        weekPicker.setMaxValue(valuesString.length-1);
+        weekPicker.setMinValue(0);
 
-        new MaterialAlertDialogBuilder(getContext())
+        // Set Hour
+        NumberPicker hourPicker = popupView.findViewById(R.id.hour_picker);
+        hourPicker.setMinValue(0);
+        hourPicker.setMaxValue(23);
+
+        // Set Minutes
+        NumberPicker minutePicker = popupView.findViewById(R.id.minute_picker);
+
+        // Only show numbers in steps of 10
+        int minDuration = 0;
+        int maxDuration = 60;
+        String[] minutesStrings = new String[(maxDuration-minDuration)/10];
+        for (int i = 0; i < minutesStrings.length; i++) {
+            minutesStrings[i] = String.valueOf(minDuration + i * 10);
+        }
+
+        minutePicker.setDisplayedValues(minutesStrings);
+        minutePicker.setMinValue(0);
+        minutePicker.setMaxValue(minutesStrings.length-1);
+
+
+        // Set Duration
+        NumberPicker durationPicker = popupView.findViewById(R.id.duration_picker);
+
+        // Only show numbers in steps of 5
+        minDuration = 30;
+        maxDuration = 180;
+        String[] durationStrings = new String[(maxDuration-minDuration)/5];
+        for (int i = 0; i < durationStrings.length; i++) {
+            durationStrings[i] = String.valueOf(minDuration + i * 5);
+        }
+
+        durationPicker.setDisplayedValues(durationStrings);
+        durationPicker.setMinValue(0);
+        durationPicker.setMaxValue(durationStrings.length-1);
+        MaterialAlertDialogBuilder builder = new  MaterialAlertDialogBuilder(getContext())
                 .setTitle("Pick a time")
-                .setView(popupView)
-                .setPositiveButton("Apply", (dialog, which) -> {
-                    // TODO Add a new button to the list of buttons to be added
+                .setView(popupView);
 
+        return builder;
+    }
+
+    private void updateRecyclerView(List<String> courseStrings){
+        List<CourseHours> courseHours = new ArrayList<>();
+        for (String c : mutCourseHours) {
+            courseHours.add(new CourseHours(c));
+        }
+        courseListAdapter = new CourseHoursListAdapter(courseHours, this::onCourseHourClicked);
+        recyclerView.setAdapter(courseListAdapter);
+    }
+
+    private void onCourseHourClicked(View v) {
+        MaterialAlertDialogBuilder builder = CreateCourseHoursBuilder()
+                .setPositiveButton("Apply", (dialog, which) -> {
+
+                    String weekDay = courseHourBinding.weekdayPicker.getDisplayedValues()[courseHourBinding.weekdayPicker.getValue()];
+                    String courseHour = courseHourBinding.hourPicker.getDisplayedValues()[courseHourBinding.hourPicker.getValue()];
+                    String courseMinute = courseHourBinding.minutePicker.getDisplayedValues()[courseHourBinding.minutePicker.getValue()];
+                    String courseDuration = courseHourBinding.durationPicker.getDisplayedValues()[courseHourBinding.durationPicker.getValue()];
+
+                    CourseHours cw = new CourseHours(
+                            courseHourBinding.weekdayPicker.getValue(),
+                            Integer.parseInt(courseHour),
+                            Integer.parseInt(courseMinute),
+                            Integer.parseInt(courseDuration));
+
+
+                    // TODO check if cw intersect with preexisting course hours
+
+                    // Replace previous value
+                    int position = recyclerView.getChildLayoutPosition(v);
+                    mutCourseHours.remove(position);
+                    mutCourseHours.add(position, cw.toString());
+                    updateRecyclerView(mutCourseHours);
                 } )
-                .setNegativeButton("Cancel", (dialog, which) -> {})
-                .show();
+                .setNegativeButton("Cancel", (dialog, which) -> {});
+        builder.show();
     }
 
     private void onCancelEdit(View v) {

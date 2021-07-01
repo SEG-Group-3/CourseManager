@@ -18,6 +18,7 @@
             style="?textAppearanceCaption"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="Weekday" />
 
         <NumberPicker
@@ -37,6 +38,7 @@
             style="?textAppearanceCaption"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="Hour" />
 
         <LinearLayout
@@ -80,6 +82,7 @@
             style="?textAppearanceCaption"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="Duration" />
 
         <NumberPicker
