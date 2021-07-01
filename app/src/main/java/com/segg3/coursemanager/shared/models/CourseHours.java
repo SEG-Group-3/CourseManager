@@ -117,7 +117,10 @@ public class CourseHours implements Comparable<CourseHours>{
 
         @Override
         public String toString() {
-            return hour+":"+minute;
+            if (minute < 10)
+                return hour+":0" + minute;
+            else
+                return hour+":"+minute;
         }
 
         public int compare(Time t) {
