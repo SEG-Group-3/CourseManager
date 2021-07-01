@@ -16,7 +16,7 @@ public class CourseHours implements Comparable<CourseHours>{
     public int compareTo(CourseHours courseHours) {
         if(this.weekDay.compareTo(courseHours.weekDay) != 0)
         {
-            return this.weekDay.compareTo(courseHours.weekDay);
+            return Math.max(-1, Math.min(1, this.weekDay.compareTo(courseHours.weekDay)));
         }
 
         Time startTmp1 = start.clone();
