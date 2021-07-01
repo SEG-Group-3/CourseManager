@@ -80,6 +80,9 @@ public class InstructorEditCourseFragment extends Fragment {
         binding.courseCapacityInput.getEditText().setText(String.valueOf(beingEdited.capacity));
         binding.courseDescriptionInput.getEditText().setText(beingEdited.description);
 
+
+        // Add an hour when button is clicked
+        binding.courseHoursFab.setOnClickListener(this::onAddCourseClicked);
         // TODO Populate course hours recycler view
         recyclerView = binding.courseHoursRecyclerView;
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -123,6 +126,26 @@ public class InstructorEditCourseFragment extends Fragment {
         // binding.courseHoursRecyclerView...
 
         return view;
+    }
+
+    private void onAddCourseClicked(View view) {
+        MaterialAlertDialogBuilder builder = CreateCourseHoursBuilder()
+                .setPositiveButton("Add", (dialog, which) -> {
+                    CourseHours cw = new CourseHours(
+                            courseHourBinding.weekdayPicker.getValue() + 1,
+                            courseHourBinding.hourPicker.getValue(),
+                            10 * courseHourBinding.minutePicker.getValue(),
+                            30 + 5 * courseHourBinding.durationPicker.getValue());
+
+
+                    // TODO check if cw intersect with preexisting course hours
+                    // if it intersects show error
+                    // if its ok, replace previous value
+                    mutCourseHours.add(cw.toString());
+                    updateRecyclerView(mutCourseHours);
+                } )
+                .setNegativeButton("Cancel", (dialog, which) -> {});
+        builder.show();
     }
 
     @Override
