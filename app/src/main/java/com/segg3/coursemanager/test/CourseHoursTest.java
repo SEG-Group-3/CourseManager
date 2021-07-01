@@ -1,11 +1,39 @@
 package com.segg3.coursemanager.test;
 
+import com.segg3.coursemanager.shared.models.CourseHours;
+
 import junit.framework.TestCase;
+
+import org.junit.Test;
+
+import java.time.DayOfWeek;
 
 public class CourseHoursTest extends TestCase {
 
-    //@Test
+    @Test
+    public void testConstructors()
+    {
+        CourseHours courseHours1 = new CourseHours(DayOfWeek.FRIDAY, new CourseHours.Time(11,11), 60);
+
+        CourseHours courseHours2 = new CourseHours(courseHours1.toString());
+
+        assertEquals(courseHours1.toString(), courseHours2.toString());
+    }
+    @Test
     public void testCompareTo() {
-        assertEquals(1,1);
+
+        CourseHours courseHours1 = new CourseHours(DayOfWeek.MONDAY, new CourseHours.Time(11,11), 60);
+
+        CourseHours courseHours2 = new CourseHours(DayOfWeek.TUESDAY, new CourseHours.Time(11,11), 60);
+
+        CourseHours courseHours3 = new CourseHours(DayOfWeek.TUESDAY, new CourseHours.Time(12,00), 60);
+
+        assertEquals(-1, courseHours1.compareTo(courseHours2));
+
+        assertEquals(0, courseHours2.compareTo(courseHours3));
+        assertEquals(0, courseHours3.compareTo(courseHours2));
+
+        assertEquals(1, courseHours2.compareTo(courseHours1));
+
     }
 }
