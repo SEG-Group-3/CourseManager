@@ -37,6 +37,26 @@ public class CourseHoursTest extends TestCase {
 
         //check if courseHours2 is less than courseHours1
         assertEquals(1, courseHours2.compareTo(courseHours1));
+    }
 
+    @Test
+    public void testTimeConstructor()
+    {
+        CourseHours.Time t1,t2;
+
+        t1 = new CourseHours.Time(12,1);
+        t2 = new CourseHours.Time(t1.toString());
+
+        assertEquals(t1.toString(),t2.toString());
+
+        t1 = new CourseHours.Time(12,00);
+        t2 = new CourseHours.Time(t1.toString());
+
+        assertEquals(t1.toString(),t2.toString());
+
+        t1 = new CourseHours.Time(12,00);
+        t2 = new CourseHours.Time("12:00");
+
+        assertEquals(t1.toString(),t2.toString());
     }
 }
