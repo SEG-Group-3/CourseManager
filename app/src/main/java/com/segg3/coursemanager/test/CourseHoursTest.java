@@ -28,11 +28,14 @@ public class CourseHoursTest extends TestCase {
 
         CourseHours courseHours3 = new CourseHours(DayOfWeek.TUESDAY, new CourseHours.Time(12,00), 60);
 
+        //check if courseHours1 is less than courseHours2
         assertEquals(-1, courseHours1.compareTo(courseHours2));
 
+        //check if courseHours1 intersects with courseHours2
         assertEquals(0, courseHours2.compareTo(courseHours3));
         assertEquals(0, courseHours3.compareTo(courseHours2));
 
+        //check if courseHours2 is less than courseHours1
         assertEquals(1, courseHours2.compareTo(courseHours1));
 
     }
