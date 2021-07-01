@@ -33,6 +33,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.time.DayOfWeek;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class InstructorEditCourseFragment extends Fragment {
@@ -41,7 +42,7 @@ public class InstructorEditCourseFragment extends Fragment {
 
     CourseHoursListAdapter courseListAdapter;
     RecyclerView recyclerView;
-    List<String> mutCourseHours;
+    List<CourseHours> mutCourseHours;
     DialogCourseHourBinding courseHourBinding;
 
     int position = -1;
@@ -81,6 +82,7 @@ public class InstructorEditCourseFragment extends Fragment {
         binding.courseDescriptionInput.getEditText().setText(beingEdited.description);
 
 
+
         // Add an hour when button is clicked
         binding.courseHoursFab.setOnClickListener(this::onAddCourseClicked);
         // TODO Populate course hours recycler view
@@ -89,17 +91,16 @@ public class InstructorEditCourseFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.scrollToPosition(0);
 
-        List<CourseHours> courseHours = new ArrayList<>();
+        mutCourseHours = new ArrayList<>();
         for (String c : beingEdited.courseHours) {
-            courseHours.add(new CourseHours(c));
+            mutCourseHours.add(new CourseHours(c));
         }
 
-        courseListAdapter = new CourseHoursListAdapter(courseHours, this::onCourseHourClicked);
+        courseListAdapter = new CourseHoursListAdapter(mutCourseHours, this::onCourseHourClicked);
         recyclerView.setAdapter(courseListAdapter);
 
 
         // Swipe stuff to the left to delete it
-        mutCourseHours = new ArrayList<>(beingEdited.courseHours);
         ItemTouchHelper.SimpleCallback touchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
             @Override
@@ -113,9 +114,7 @@ public class InstructorEditCourseFragment extends Fragment {
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
                 mutCourseHours.remove(position);
-
-                updateRecyclerView(mutCourseHours);
-
+                updateRecyclerView();
                 UIUtils.createToast(getContext(), "Swiped something...");
             }
         };
@@ -141,8 +140,8 @@ public class InstructorEditCourseFragment extends Fragment {
                     // TODO check if cw intersect with preexisting course hours
                     // if it intersects show error
                     // if its ok, replace previous value
-                    mutCourseHours.add(cw.toString());
-                    updateRecyclerView(mutCourseHours);
+                    mutCourseHours.add(cw);
+                    updateRecyclerView();
                 } )
                 .setNegativeButton("Cancel", (dialog, which) -> {});
         builder.show();
@@ -221,12 +220,8 @@ public class InstructorEditCourseFragment extends Fragment {
         return builder;
     }
 
-    private void updateRecyclerView(List<String> courseStrings){
-        List<CourseHours> courseHours = new ArrayList<>();
-        for (String c : mutCourseHours) {
-            courseHours.add(new CourseHours(c));
-        }
-        courseListAdapter = new CourseHoursListAdapter(courseHours, this::onCourseHourClicked);
+    private void updateRecyclerView(){
+        courseListAdapter = new CourseHoursListAdapter(mutCourseHours, this::onCourseHourClicked);
         recyclerView.setAdapter(courseListAdapter);
     }
 
@@ -245,8 +240,8 @@ public class InstructorEditCourseFragment extends Fragment {
                     // if its ok, replace previous value
                     int position = recyclerView.getChildLayoutPosition(v);
                     mutCourseHours.remove(position);
-                    mutCourseHours.add(position, cw.toString());
-                    updateRecyclerView(mutCourseHours);
+                    mutCourseHours.add(cw);
+                    updateRecyclerView();
                 } )
                 .setNegativeButton("Cancel", (dialog, which) -> {});
         builder.show();
@@ -290,7 +285,13 @@ public class InstructorEditCourseFragment extends Fragment {
         // TODO Update course date
         beingEdited.description = binding.courseDescriptionInput.getEditText().getText().toString();
         beingEdited.capacity = Integer.parseUnsignedInt(capacity);
-        beingEdited.courseHours = mutCourseHours;
+
+
+        List<String> courseHoursStr = new ArrayList<>();
+        for (CourseHours c:mutCourseHours) {
+            courseHoursStr.add(c.toString());
+        }
+        beingEdited.courseHours = courseHoursStr;
         CoursesDao.getInstance().editCourse(beingEdited.code, beingEdited);
         UIUtils.swipeFragmentLeft(getParentFragmentManager(), new MyCourseViewFragment());
     }
