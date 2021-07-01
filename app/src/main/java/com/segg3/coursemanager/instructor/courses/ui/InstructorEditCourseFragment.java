@@ -140,8 +140,14 @@ public class InstructorEditCourseFragment extends Fragment {
                     // TODO check if cw intersect with preexisting course hours
                     // if it intersects show error
                     // if its ok, replace previous value
-                    mutCourseHours.add(cw);
-                    updateRecyclerView();
+                    boolean intersect=CourseHours.courseHoursIntersect(cw,mutCourseHours);
+                    if (!intersect) {
+                        mutCourseHours.add(cw);
+                        updateRecyclerView();
+                    }
+                    else{
+                        UIUtils.createToast(getContext(), "This Course Hour intersects with others");
+                    }
                 } )
                 .setNegativeButton("Cancel", (dialog, which) -> {});
         builder.show();
@@ -238,10 +244,16 @@ public class InstructorEditCourseFragment extends Fragment {
                     // TODO check if cw intersect with preexisting course hours
                     // if it intersects show error
                     // if its ok, replace previous value
-                    int position = recyclerView.getChildLayoutPosition(v);
-                    mutCourseHours.remove(position);
-                    mutCourseHours.add(cw);
-                    updateRecyclerView();
+                    boolean intersect=CourseHours.courseHoursIntersect(cw,mutCourseHours);
+                    if (!intersect) {
+                        int position = recyclerView.getChildLayoutPosition(v);
+                        mutCourseHours.remove(position);
+                        mutCourseHours.add(cw);
+                        updateRecyclerView();
+                    }
+                    else{
+                        UIUtils.createToast(getContext(), "This Course Hour intersects with others");
+                    }
                 } )
                 .setNegativeButton("Cancel", (dialog, which) -> {});
         builder.show();

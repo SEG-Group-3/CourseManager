@@ -11,15 +11,15 @@
         android:theme="@style/Theme.CourseManager"
         android:fullBackupContent="false">
 <!--        Declaration of all activities in our app-->
-        <activity android:name=".MainActivity" android:screenOrientation="nosensor">
+        <activity android:name=".MainActivity" android:screenOrientation="nosensor" android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".auth.login.ui.LoginActivity" android:screenOrientation="nosensor"/>
-        <activity android:name=".auth.register.ui.RegisterActivity" android:screenOrientation="nosensor"/>
+        <activity android:name=".auth.login.ui.LoginActivity" android:screenOrientation="nosensor" android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".auth.register.ui.RegisterActivity" android:screenOrientation="nosensor" android:windowSoftInputMode="adjustPan"/>
 
 
 

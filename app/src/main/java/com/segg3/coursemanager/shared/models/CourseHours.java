@@ -2,7 +2,7 @@ package com.segg3.coursemanager.shared.models;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.time.DayOfWeek;
+import java.time.DayOfWeek;import java.util.List;
 
 public class CourseHours implements Comparable<CourseHours>{
 
@@ -117,7 +117,10 @@ public class CourseHours implements Comparable<CourseHours>{
 
         @Override
         public String toString() {
-            return hour+":"+minute;
+            if (minute < 10)
+                return hour+":0" + minute;
+            else
+                return hour+":"+minute;
         }
 
         public int compare(Time t) {
@@ -147,6 +150,14 @@ public class CourseHours implements Comparable<CourseHours>{
 
             return 0;
         }
+    }
+    public static boolean courseHoursIntersect(CourseHours course, List<CourseHours> otherCourses) {
+        for (CourseHours courseHour : otherCourses) {
+            if (course.compareTo(courseHour) == 0) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public CourseHours(DayOfWeek weekDay, Time start, Integer durations)
