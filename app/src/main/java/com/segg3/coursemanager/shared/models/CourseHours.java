@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.time.DayOfWeek;
 
-public class CourseHours implements  Comparable<CourseHours>{
+public class CourseHours implements Comparable<CourseHours>{
 
     public final DayOfWeek weekDay;
 
@@ -40,7 +40,7 @@ public class CourseHours implements  Comparable<CourseHours>{
         return 0;
     }
 
-    public class Time
+    public static class Time
     {
         int hour;
         int minute;
@@ -53,7 +53,7 @@ public class CourseHours implements  Comparable<CourseHours>{
 
         public Time(String timeRaw)
         {
-            String[] tmp = timeRaw.split(":");
+            String[] tmp = timeRaw.split("\\:");
 
             Integer hourRaw = new Integer(tmp[0]);
             Integer minuteRaw = new Integer(tmp[1]);
@@ -160,7 +160,7 @@ public class CourseHours implements  Comparable<CourseHours>{
 
     public CourseHours(String CourseHoursRaw)
     {
-        String[] tmpParam = CourseHoursRaw.split("|");
+        String[] tmpParam = CourseHoursRaw.split("\\|");
 
         this.weekDay = DayOfWeek.valueOf(tmpParam[0]);
 
