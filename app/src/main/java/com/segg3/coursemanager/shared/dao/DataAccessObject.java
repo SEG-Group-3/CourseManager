@@ -24,8 +24,7 @@ public class DataAccessObject<T extends DataObject >  {
 
     public DataAccessObject(String collectionName, Class<T> valueType) {
         collectionRef = FirebaseFirestore.getInstance().collection(collectionName);
-        cache = new MutableLiveData<>();
-        cache.setValue(new HashMap<>());
+        cache = new MutableLiveData<>(new HashMap<>());
 
         this.valueType = valueType;
         // Synchronizes the DAO cache with the database
@@ -47,9 +46,16 @@ public class DataAccessObject<T extends DataObject >  {
                 switch (dc.getType()) {
                     case ADDED:
                     case MODIFIED:
+                        // Try to remove a key if repetitions are found
+                        if (keyToIdMap.containsKey(newObject.getPrimaryKey())){
+                            delete(newObject.getPrimaryKey());
+                            Log.d("DAO", "DataAccessObject: Found repeated key " + doc.getId() +
+                                    " while building the cache.");
+                            break;
+                        }
+                        keyToIdMap.put(newObject.getPrimaryKey(), doc.getId());
                         cache.getValue().put(newObject.getPrimaryKey(), newObject);
                         cache.setValue(cache.getValue());
-                        keyToIdMap.put(newObject.getPrimaryKey(), doc.getId());
                         break;
                     case REMOVED:
                         cache.getValue().remove(newObject.getPrimaryKey());
@@ -65,7 +71,6 @@ public class DataAccessObject<T extends DataObject >  {
 
     // The methods get, add, and delete should be
     // abstracted by an inherited class
-
     protected T get(String key) {
         return cache.getValue().get(key);
     }
