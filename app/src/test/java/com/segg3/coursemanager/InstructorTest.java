@@ -1,4 +1,4 @@
-package com.segg3.coursemanager.test;
+package com.segg3.coursemanager;
 
 import com.google.firebase.FirebaseApp;
 import com.segg3.coursemanager.shared.models.Course;
