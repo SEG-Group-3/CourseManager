@@ -169,6 +169,10 @@ public class InstructorEditCourseFragment extends Fragment {
         return CreateCourseHoursBuilder(0,0,0,0);
     }
 
+    private MaterialAlertDialogBuilder CreateCourseHoursBuilder(CourseHours c){
+        return CreateCourseHoursBuilder(c.weekDay.getValue() - 1,c.start.hour,c.start.minute,c.durations);
+    }
+
     private MaterialAlertDialogBuilder CreateCourseHoursBuilder(int weekDay, int hour, int min, int duration){
         LayoutInflater inflater = getLayoutInflater();
         View popupView = inflater.inflate(R.layout.dialog_course_hour, recyclerView, false);
@@ -209,7 +213,7 @@ public class InstructorEditCourseFragment extends Fragment {
         minutePicker.setMinValue(0);
         minutePicker.setMaxValue(minutesStrings.length-1);
 
-        minutePicker.setValue(Math.max(minDuration, Math.min(minutesStrings.length-1, min)));
+        minutePicker.setValue(Math.max(minDuration, Math.min(minutesStrings.length-1, min / 10)));
 
 
         // Set Duration
@@ -242,7 +246,12 @@ public class InstructorEditCourseFragment extends Fragment {
     }
 
     private void onCourseHourClicked(View v) {
-        MaterialAlertDialogBuilder builder = CreateCourseHoursBuilder()
+
+        int index = recyclerView.getChildLayoutPosition(v);
+
+        CourseHours courseHours = mutCourseHours.get(index);
+
+        MaterialAlertDialogBuilder builder = CreateCourseHoursBuilder(courseHours)
                 .setPositiveButton("Apply", (dialog, which) -> {
                     CourseHours cw = new CourseHours(
                             courseHourBinding.weekdayPicker.getValue() + 1,
