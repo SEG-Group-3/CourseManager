@@ -42,8 +42,8 @@ public class CourseHours implements Comparable<CourseHours>{
 
     public static class Time
     {
-        int hour;
-        int minute;
+        public int hour;
+        public int minute;
 
         public Time(int hour, int minute)
         {
