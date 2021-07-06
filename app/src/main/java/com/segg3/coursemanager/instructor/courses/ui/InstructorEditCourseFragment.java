@@ -33,7 +33,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.time.DayOfWeek;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class InstructorEditCourseFragment extends Fragment {
@@ -166,6 +165,11 @@ public class InstructorEditCourseFragment extends Fragment {
     }
 
     private MaterialAlertDialogBuilder CreateCourseHoursBuilder(){
+
+        return CreateCourseHoursBuilder(0,0,0,0);
+    }
+
+    private MaterialAlertDialogBuilder CreateCourseHoursBuilder(int weekDay, int hour, int min, int duration){
         LayoutInflater inflater = getLayoutInflater();
         View popupView = inflater.inflate(R.layout.dialog_course_hour, recyclerView, false);
         courseHourBinding = DialogCourseHourBinding.bind(popupView);
@@ -181,10 +185,14 @@ public class InstructorEditCourseFragment extends Fragment {
         weekPicker.setMaxValue(valuesString.length-1);
         weekPicker.setMinValue(0);
 
+        weekPicker.setValue(Math.max(0, Math.min(valuesString.length-1, weekDay)));
+
         // Set Hour
         NumberPicker hourPicker = popupView.findViewById(R.id.hour_picker);
         hourPicker.setMinValue(0);
         hourPicker.setMaxValue(23);
+
+        hourPicker.setValue(Math.max(0, Math.min(23, hour)));
 
         // Set Minutes
         NumberPicker minutePicker = popupView.findViewById(R.id.minute_picker);
@@ -201,6 +209,8 @@ public class InstructorEditCourseFragment extends Fragment {
         minutePicker.setMinValue(0);
         minutePicker.setMaxValue(minutesStrings.length-1);
 
+        minutePicker.setValue(Math.max(minDuration, Math.min(minutesStrings.length-1, min)));
+
 
         // Set Duration
         NumberPicker durationPicker = popupView.findViewById(R.id.duration_picker);
@@ -216,6 +226,9 @@ public class InstructorEditCourseFragment extends Fragment {
         durationPicker.setDisplayedValues(durationStrings);
         durationPicker.setMinValue(0);
         durationPicker.setMaxValue(durationStrings.length-1);
+
+        durationPicker.setValue((Math.max(minDuration, Math.min(maxDuration, duration)) - minDuration)/5);
+
         MaterialAlertDialogBuilder builder = new  MaterialAlertDialogBuilder(getContext())
                 .setTitle("Pick a time")
                 .setView(popupView);
