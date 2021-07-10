@@ -42,7 +42,7 @@ public class CoursesDaoTest {
         c.name = NAME;
         c.description = DESCRIPTION;
         c.capacity = CAPACITY;
-        c.instructor = INSTRUCTOR;
+        //c.instructor = INSTRUCTOR;
         c.courseHours = new ArrayList<>();
         c.courseHours.add(CHOUR);
 
@@ -99,16 +99,18 @@ public class CoursesDaoTest {
     }
 
     @Test
-    public void assignInstructor()
-    {
+    public void assignInstructorUnassignInstructor() throws InterruptedException {
+        assertTrue(dao.assignInstructor(userTypes[2] + testUserNameSufix, CODE));
+
+        TimeUnit.SECONDS.sleep(1);
+        dao.unAssignInstructor(CODE);
+
+
+        assertEquals("", dao.getCourse(CODE).instructor);
 
     }
 
-    @Test
-    public void unAssignInstructor()
-    {
 
-    }
 
     @After
     public void cleanUp() throws InterruptedException {
