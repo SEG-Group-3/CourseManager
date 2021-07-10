@@ -89,13 +89,15 @@ public class CoursesDaoTest {
 
         //leave course
         assertTrue(dao.leaveCourse(userTypes[1]+testUserNameSufix, CODE));
+        
         TimeUnit.SECONDS.sleep(1);
+
         for(int i1 = 0; i1 < userTypes.length;i1++)
         {
             assertFalse(dao.leaveCourse(userTypes[i1]+testUserNameSufix, CODE));
         }
     }
-    /*
+
     @Test
     public void assignInstructor()
     {
@@ -106,7 +108,7 @@ public class CoursesDaoTest {
     public void unAssignInstructor()
     {
 
-    }*/
+    }
 
     @After
     public void cleanUp() throws InterruptedException {
