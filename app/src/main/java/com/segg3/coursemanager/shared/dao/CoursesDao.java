@@ -114,14 +114,22 @@ public class CoursesDao extends DataAccessObject<Course> {
     }
 
     public boolean joinCourse(String userName, String code) {
-        throw new NotImplementedError();
+        User u = UsersDao.getInstance().get(userName);
+        Course c = get(code);
+
+        if(u.type.toLowerCase().equals("student") && c.enrolled.size() < c.capacity) {
+            c.enrolled.add(u.userName);
+            c.registeredStudents++;
+            put(c);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public boolean leaveCourse(String userName, String code) {
-        throw new NotImplementedError();
-    }
-
-    public LiveData<HashMap<String, Course>> getStudents() {
         throw new NotImplementedError();
     }
 }
