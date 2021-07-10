@@ -79,7 +79,10 @@ public class CoursesDaoTest {
     @Test
     public void studentJoinClass()
     {
-
+        for(int i1 = 0; i1 < userTypes.length; i1++)
+        {
+            assertEquals(dao.joinCourse(userTypes[i1] + testUserNameSufix, CODE), userTypes[i1].equals("Instructor"));
+        }
     }
 
     @Test
