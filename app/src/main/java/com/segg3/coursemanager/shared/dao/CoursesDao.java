@@ -11,6 +11,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
+import kotlin.NotImplementedError;
+
 public class CoursesDao extends DataAccessObject<Course> {
     private static CoursesDao instance;
 
@@ -63,19 +65,20 @@ public class CoursesDao extends DataAccessObject<Course> {
 
         return put(merged);
     }
-    public void unAssignInstructor(String courseCode){
-        Course c=get(courseCode);
-        c.instructor="";
+
+    public void unAssignInstructor(String courseCode) {
+        Course c = get(courseCode);
+        c.instructor = "";
         c.capacity = -1;
         c.description = "";
         c.courseHours = new ArrayList<>();
-        editCourse(c.code,c);
+        editCourse(c.code, c);
     }
 
-    public List<Course> getInstructorCourses(String userName){
-        List<Course> filtered= new ArrayList<>();
-        for (Course c:cache.getValue().values()){
-            if (c.instructor.equals(userName)){
+    public List<Course> getInstructorCourses(String userName) {
+        List<Course> filtered = new ArrayList<>();
+        for (Course c : cache.getValue().values()) {
+            if (c.instructor.equals(userName)) {
                 filtered.add(c);
             }
         }
@@ -83,12 +86,11 @@ public class CoursesDao extends DataAccessObject<Course> {
     }
 
 
-    public List<Course> searchCourse(String query)
-    {
+    public List<Course> searchCourse(String query) {
         List<Course> filtered = new ArrayList<>();
-        query=query.toLowerCase();
+        query = query.toLowerCase();
         Collection<Course> unfiltered = cache.getValue().values();
-        for (Course c:unfiltered)
+        for (Course c : unfiltered)
             if (c.name.toLowerCase().contains(query) || c.code.toLowerCase().contains(query))
                 filtered.add(c);
 
@@ -98,16 +100,28 @@ public class CoursesDao extends DataAccessObject<Course> {
     public boolean assignInstructor(String userName, String code) {
         User u = UsersDao.getInstance().get(userName);
         Course c = get(code);
-        if (u.type.toLowerCase().equals("instructor") && c.instructor.equals("")){
+        if (u.type.toLowerCase().equals("instructor") && c.instructor.equals("")) {
             c.instructor = u.userName;
             c.courseHours = new ArrayList<>();
             c.capacity = -1;
             c.description = "";
             c.registeredStudents = 0;
             put(c);
-            return  true;
-        } else{
+            return true;
+        } else {
             return false;
         }
+    }
+
+    public boolean joinCourse(String userName, String code) {
+        throw new NotImplementedError();
+    }
+
+    public boolean leaveCourse(String userName, String code) {
+        throw new NotImplementedError();
+    }
+
+    public LiveData<HashMap<String, Course>> getStudents() {
+        throw new NotImplementedError();
     }
 }
