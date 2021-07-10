@@ -15,6 +15,7 @@ public class Course extends DataObject {
     public int capacity = -1;
     public int registeredStudents = 0;
     public List<String> courseHours = new ArrayList<>();
+    public List<String> enrolled = new ArrayList<>();
 
     public Course(){
         courseHours.add("1|10:00|30");
