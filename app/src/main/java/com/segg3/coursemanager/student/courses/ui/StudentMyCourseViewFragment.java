@@ -86,21 +86,23 @@ import java.util.List;
             coursesViewModel = new ViewModelProvider(requireActivity()).get(CoursesViewModel.class);
 
             // Set Initial State
-            courses= CoursesDao.getInstance().getInstructorCourses(auth.getUser().getValue().userName);
+            courses= CoursesDao.getInstance().getStudentCourses(auth.getUser().getValue().userName);
             courseListAdapter = new CourseListAdapter(courses, this::onCourseClicked);
             recyclerView.setAdapter(courseListAdapter);
             // Update UI on change
 
             coursesViewModel.getCourses().observe(getViewLifecycleOwner(), courses -> {
-                courses=CoursesDao.getInstance().getInstructorCourses(auth.getUser().getValue().userName);
-                courseListAdapter = new CourseListAdapter(courses, this::onCourseClicked);
-                recyclerView.setAdapter(courseListAdapter);
+                updateCourses();
             });
-
+            updateCourses();
             UIUtils.setToolbarTitle(getActivity(), getString(R.string.courses));
             return v;
         }
-
+        public void updateCourses(){
+            courses=CoursesDao.getInstance().getStudentCourses(auth.getUser().getValue().userName);
+            courseListAdapter = new CourseListAdapter(courses, this::onCourseClicked);
+            recyclerView.setAdapter(courseListAdapter);
+        }
         public void onAddClicked(View v) {
 
         }
@@ -108,7 +110,12 @@ import java.util.List;
         public void onCourseClicked(View v) {
             // Finds the selected item
             int position = recyclerView.getChildLayoutPosition(v);
+            Course clicked=courses.get(position);
             // TODO create YesNoMenu and ask student to un-enrol course
+            UIUtils.createYesNoMenu("Unenroll","Do you want to unenroll this course?",getContext(),(dialog, which) -> {
+                UIUtils.createToast(getContext(),"Unenroll successful");
+                CoursesDao.getInstance().leaveCourse(MainActivity.instance.auth.getUser().getValue().userName, clicked.code);
+            });
         }
     }
 
