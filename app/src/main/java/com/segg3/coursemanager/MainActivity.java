@@ -23,13 +23,15 @@ import com.segg3.coursemanager.shared.utils.UIUtils;
 import com.segg3.coursemanager.shared.viewmodels.AuthViewModel;
 import com.segg3.coursemanager.shared.viewmodels.CoursesViewModel;
 import com.segg3.coursemanager.shared.viewmodels.UsersViewModel;
+import com.segg3.coursemanager.student.courses.ui.StudentCourseViewFragment;
+import com.segg3.coursemanager.student.courses.ui.StudentMyCourseViewFragment;
 
 public class MainActivity extends AppCompatActivity {
     public static MainActivity instance;
     private ActivityMainBinding binding;
     private UsersViewModel users;
     private CoursesViewModel courses;
-    private AuthViewModel auth;
+    public AuthViewModel auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,6 +141,30 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 });
 
+
+            }
+            else{
+                binding.navigationMenu.inflateMenu(R.menu.student_menu);
+
+                // Admin navigation
+                binding.navigationMenu.setNavigationItemSelectedListener(item -> {
+                    if (item.getItemId() == R.id.nav_home) {
+                        UIUtils.swapViews(getSupportFragmentManager(), new HomeFragment());
+                    } else if (item.getItemId() == R.id.nav_log_out) {
+                        // Delete cookies and go to login "cookies"
+                        ActivityOptions options = ActivityOptions.makeBasic();
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(intent, options.toBundle());
+                        closeDrawer();
+                    } else if (item.getItemId() == R.id.nav_student_view_all_courses) {
+                        UIUtils.swapViews(getSupportFragmentManager(), new StudentCourseViewFragment());
+                    } else if (item.getItemId() == R.id.nav_student_my_courses) {
+                        UIUtils.swapViews(getSupportFragmentManager(), new StudentMyCourseViewFragment());
+                    }
+
+                    closeDrawer();
+                    return true;
+                });
 
             }
         }
