@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class CoursesDao extends DataAccessObject<Course> {
     private static CoursesDao instance;
@@ -111,11 +112,29 @@ public class CoursesDao extends DataAccessObject<Course> {
         }
     }
 
+    public List<Course> getStudentCourses(String studentName) {
+        List<Course> filtered = new ArrayList<>();
+        for (Course c : Objects.requireNonNull(cache.getValue()).values()) {
+            for (String s: c.enrolled) {
+                if (studentName.equals(s)) {
+                    filtered.add(c);
+                    break;
+                }
+            }
+        }
+        return filtered;
+    }
+
     public boolean joinCourse(String userName, String code) {
         User u = UsersDao.getInstance().get(userName);
         Course c = get(code);
 
         if(u.type.toLowerCase().equals("student") && c.registeredStudents < c.capacity) {
+            for (Course course: getStudentCourses(userName)) {
+                if (course.code.equals(code)) {
+                    return false;
+                }
+            }
             c.enrolled.add(u.userName);
             c.registeredStudents++;
             put(c);
