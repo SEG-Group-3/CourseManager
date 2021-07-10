@@ -170,7 +170,7 @@ public class InstructorEditCourseFragment extends Fragment {
     }
 
     private MaterialAlertDialogBuilder CreateCourseHoursBuilder(CourseHours c){
-        return CreateCourseHoursBuilder(c.weekDay.getValue() - 1,c.start.hour,c.start.minute,c.durations);
+        return CreateCourseHoursBuilder(c.weekDay.getValue() - 1, c.start.hour, c.start.minute, c.durations);
     }
 
     private MaterialAlertDialogBuilder CreateCourseHoursBuilder(int weekDay, int hour, int min, int duration){
