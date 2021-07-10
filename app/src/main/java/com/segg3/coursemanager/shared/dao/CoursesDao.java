@@ -11,8 +11,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
-import kotlin.NotImplementedError;
-
 public class CoursesDao extends DataAccessObject<Course> {
     private static CoursesDao instance;
 
@@ -117,7 +115,7 @@ public class CoursesDao extends DataAccessObject<Course> {
         User u = UsersDao.getInstance().get(userName);
         Course c = get(code);
 
-        if(u.type.toLowerCase().equals("student") && c.enrolled.size() < c.capacity) {
+        if(u.type.toLowerCase().equals("student") && c.registeredStudents < c.capacity) {
             c.enrolled.add(u.userName);
             c.registeredStudents++;
             put(c);
@@ -130,6 +128,19 @@ public class CoursesDao extends DataAccessObject<Course> {
     }
 
     public boolean leaveCourse(String userName, String code) {
-        throw new NotImplementedError();
+        User u = UsersDao.getInstance().get(userName);
+        Course c = get(code);
+
+        if(c.enrolled.contains(u.userName))
+        {
+            c.enrolled.remove(u.userName);
+            c.registeredStudents--;
+            put(c);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }
