@@ -10,8 +10,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 
 public class CoursesDaoTest {
@@ -77,20 +80,22 @@ public class CoursesDaoTest {
     }
 
     @Test
-    public void studentJoinClass()
-    {
+    public void studentJoinAndLeaveClass() throws InterruptedException {
+        //join course
         for(int i1 = 0; i1 < userTypes.length; i1++)
         {
             assertEquals(dao.joinCourse(userTypes[i1] + testUserNameSufix, CODE), userTypes[i1].equals("Student"));
         }
+
+        //leave course
+        assertTrue(dao.leaveCourse(userTypes[1]+testUserNameSufix, CODE));
+        TimeUnit.SECONDS.sleep(1);
+        for(int i1 = 0; i1 < userTypes.length;i1++)
+        {
+            assertFalse(dao.leaveCourse(userTypes[i1]+testUserNameSufix, CODE));
+        }
     }
-
-    @Test
-    public void studentLeaveClass()
-    {
-
-    }
-
+    /*
     @Test
     public void assignInstructor()
     {
@@ -101,7 +106,7 @@ public class CoursesDaoTest {
     public void unAssignInstructor()
     {
 
-    }
+    }*/
 
     @After
     public void cleanUp() throws InterruptedException {
