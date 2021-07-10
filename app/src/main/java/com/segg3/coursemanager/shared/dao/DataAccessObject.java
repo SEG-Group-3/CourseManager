@@ -45,7 +45,6 @@ public class DataAccessObject<T extends DataObject >  {
 
                 switch (dc.getType()) {
                     case ADDED:
-                    case MODIFIED:
                         // Try to remove a key if repetitions are found
                         if (keyToIdMap.containsKey(newObject.getPrimaryKey())){
                             delete(newObject.getPrimaryKey());
@@ -53,6 +52,8 @@ public class DataAccessObject<T extends DataObject >  {
                                     " while building the cache.");
                             break;
                         }
+                    case MODIFIED:
+
                         keyToIdMap.put(newObject.getPrimaryKey(), doc.getId());
                         cache.getValue().put(newObject.getPrimaryKey(), newObject);
                         cache.setValue(cache.getValue());
