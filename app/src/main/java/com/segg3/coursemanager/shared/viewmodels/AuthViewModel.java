@@ -17,8 +17,11 @@ public class AuthViewModel extends ViewModel {
 
 
     public LiveData<User> getUser() {
-        if (user == null) {
+        if (user == null || user.getValue() == null) {
             user = new MutableLiveData<>();
+        } else{
+            // Updates the user with the most recent from the database
+            user.setValue(UsersDao.getInstance().getUser(user.getValue().userName));
         }
         return user;
     }

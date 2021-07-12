@@ -73,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
+        auth.getUser().observe(this, user -> createUserMenu(user));
+
     }
 
     @Override
@@ -80,11 +82,26 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         instance = this;
 
+        // If credentials were not stored go to login screen
+        User u = auth.getUser().getValue();
+        if (u == null) {
+            Log.v("ACCOUNT", "User is not logged in, redirecting to Login");
+            ActivityOptions options = ActivityOptions.makeBasic();
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent, options.toBundle());
+            return;
+        } else{
+            createUserMenu(u);
+        }
+
+        setContentView(binding.getRoot());
+        UIUtils.swapViews(getSupportFragmentManager(), new HomeFragment());
+    }
+
+    public void createUserMenu(User u){
         binding.navigationMenu.getMenu().clear();
         binding.navigationMenu.inflateMenu(R.menu.base_menu);
 
-        // If credentials were not stored go to login screen
-        User u = auth.getUser().getValue();
         if (u == null) {
             Log.v("ACCOUNT", "User is not logged in, redirecting to Login");
             ActivityOptions options = ActivityOptions.makeBasic();
@@ -168,9 +185,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }
-
-        setContentView(binding.getRoot());
-        UIUtils.swapViews(getSupportFragmentManager(), new HomeFragment());
     }
 
 
