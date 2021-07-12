@@ -26,23 +26,24 @@ import com.segg3.coursemanager.shared.viewmodels.UsersViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
-public class EditUserFragment extends Fragment {
+public class AdminEditUserFragment extends Fragment {
     FragmentEditUserBinding binding;
     UsersViewModel usersViewModel;
     String selectedRole = null;
     User beingEdited;
     int position = -1;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view =inflater.inflate(R.layout.fragment_edit_user, container, false);
+        View view = inflater.inflate(R.layout.fragment_edit_user, container, false);
         binding = FragmentEditUserBinding.bind(view);
         usersViewModel = new ViewModelProvider(requireActivity()).get(UsersViewModel.class);
 
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                UIUtils.swipeFragmentLeft(getParentFragmentManager(), new UsersViewFragment());
+                UIUtils.swipeFragmentLeft(getParentFragmentManager(), new AdminUsersViewFragment());
             }
         });
 
@@ -67,8 +68,7 @@ public class EditUserFragment extends Fragment {
         UIUtils.setToolbarTitle(getActivity(), getString(R.string.edit_users));
 
         position = getArguments().getInt("position", -1);
-        if (position != -1)
-        {
+        if (position != -1) {
             // Editing existing item
             beingEdited = usersViewModel.getUsers().getValue().get(position);
 
@@ -82,13 +82,13 @@ public class EditUserFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull @NotNull MenuItem item) {
         UIUtils.createYesNoMenu("Delete Item", "Do you really want to delete this user?", getActivity(), (dialog, which) -> {
             // Delete user here
-            if (position != -1){
-                 UsersDao.getInstance().deleteUser(beingEdited.userName);
+            if (position != -1) {
+                UsersDao.getInstance().deleteUser(beingEdited.userName);
                 UIUtils.createToast(getActivity().getApplicationContext(), "User deleted");
-            } else{
+            } else {
                 UIUtils.createToast(getActivity().getApplicationContext(), "No item to be deleted");
             }
-            UIUtils.swipeFragmentLeft(getParentFragmentManager(), new UsersViewFragment());
+            UIUtils.swipeFragmentLeft(getParentFragmentManager(), new AdminUsersViewFragment());
         });
         return super.onOptionsItemSelected(item);
     }
@@ -100,22 +100,20 @@ public class EditUserFragment extends Fragment {
     }
 
 
-
-
-    private void onCancelEdit(View v){
-        UIUtils.swipeFragmentLeft(getParentFragmentManager(), new UsersViewFragment());
+    private void onCancelEdit(View v) {
+        UIUtils.swipeFragmentLeft(getParentFragmentManager(), new AdminUsersViewFragment());
     }
 
-    private void onApplyEdit(View v){
+    private void onApplyEdit(View v) {
         String name = binding.inputUsername.getEditText().getText().toString();
         String password = binding.inputPassword.getEditText().getText().toString();
 
 
         TextInputLayout[] emptyCheckedFields = {binding.inputUsername};
         boolean ok = true;
-        for (TextInputLayout field:
-                emptyCheckedFields ) {
-            if (field.getEditText().getText().toString().isEmpty()){
+        for (TextInputLayout field :
+                emptyCheckedFields) {
+            if (field.getEditText().getText().toString().isEmpty()) {
                 field.setError(getString(R.string.error_empty_field));
                 field.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.shake));
                 ok = false;
@@ -132,14 +130,13 @@ public class EditUserFragment extends Fragment {
         u.type = selectedRole;
         u.userName = name;
 
-        if (position != -1){
+        if (position != -1) {
             UsersDao.getInstance().editUser(beingEdited.userName, u);
-        }
-        else{
+        } else {
             // ## Add user here
             UsersDao.getInstance().addUser(u); // Add new item
         }
 
-        UIUtils.swipeFragmentLeft(getParentFragmentManager(), new UsersViewFragment());
+        UIUtils.swipeFragmentLeft(getParentFragmentManager(), new AdminUsersViewFragment());
     }
 }

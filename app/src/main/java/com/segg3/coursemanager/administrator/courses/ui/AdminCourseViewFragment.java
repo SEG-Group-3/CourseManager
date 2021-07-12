@@ -19,16 +19,16 @@ import com.segg3.coursemanager.shared.utils.UIUtils;
 import com.segg3.coursemanager.shared.viewmodels.CoursesViewModel;
 
 
-public class CourseViewFragment extends Fragment {
+public class AdminCourseViewFragment extends Fragment {
     CourseListAdapter courseListAdapter;
     CoursesViewModel coursesViewModel;
     RecyclerView recyclerView;
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
-        View v=inflater.inflate(R.layout.fragment_list_view, container, false);
-        recyclerView= v.findViewById(R.id.course_recycler_view);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_list_view, container, false);
+        recyclerView = v.findViewById(R.id.course_recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(v.getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.scrollToPosition(0);
@@ -52,22 +52,22 @@ public class CourseViewFragment extends Fragment {
             recyclerView.setAdapter(courseListAdapter);
         });
 
-        UIUtils.setToolbarTitle(getActivity(),  getString(R.string.courses));
+        UIUtils.setToolbarTitle(getActivity(), getString(R.string.courses));
         return v;
     }
 
     public void onAddClicked(View v) {
-        Fragment edit_course_frag = new EditCourseFragment();
+        Fragment edit_course_frag = new AdminEditCourseFragment();
         Bundle args = new Bundle();
         edit_course_frag.setArguments(args);
         UIUtils.swipeFragmentRight(getParentFragmentManager(), edit_course_frag);
     }
 
-    public void onCourseClicked(View v){
+    public void onCourseClicked(View v) {
         // Finds the selected item
         int position = recyclerView.getChildLayoutPosition(v);
         // Setup Fragment arguments
-        Fragment edit_course_frag = new EditCourseFragment();
+        Fragment edit_course_frag = new AdminEditCourseFragment();
         Bundle args = new Bundle();
         args.putInt("position", position);
         edit_course_frag.setArguments(args);

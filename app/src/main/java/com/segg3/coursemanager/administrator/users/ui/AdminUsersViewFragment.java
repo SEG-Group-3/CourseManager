@@ -18,7 +18,7 @@ import com.segg3.coursemanager.shared.fragments.HomeFragment;
 import com.segg3.coursemanager.shared.utils.UIUtils;
 import com.segg3.coursemanager.shared.viewmodels.UsersViewModel;
 
-public class UsersViewFragment extends Fragment {
+public class AdminUsersViewFragment extends Fragment {
     UserListAdapter listAdapter;
     RecyclerView recyclerView;
 
@@ -60,7 +60,7 @@ public class UsersViewFragment extends Fragment {
     }
 
     public void onAddClicked(View v) {
-        Fragment edit_user_frag = new EditUserFragment();
+        Fragment edit_user_frag = new AdminEditUserFragment();
         Bundle args = new Bundle();
         edit_user_frag.setArguments(args);
         UIUtils.swipeFragmentRight(getParentFragmentManager(), edit_user_frag);
@@ -70,7 +70,7 @@ public class UsersViewFragment extends Fragment {
         // Finds the selected item
         int position = recyclerView.getChildLayoutPosition(v);
         // Setup Fragment arguments
-        Fragment edit_user_frag = new EditUserFragment();
+        Fragment edit_user_frag = new AdminEditUserFragment();
         Bundle args = new Bundle();
         args.putInt("position", position);
         edit_user_frag.setArguments(args);
