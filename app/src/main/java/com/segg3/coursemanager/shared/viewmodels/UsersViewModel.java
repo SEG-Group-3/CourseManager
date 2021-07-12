@@ -24,7 +24,7 @@ public class UsersViewModel extends ViewModel {
     }
 
     private LiveData<List<User>> loadUsers(HashMap<String, User> usersMap) {
-        MutableLiveData liveData = new MutableLiveData();
+        MutableLiveData<List<User>> liveData = new MutableLiveData<>();
         liveData.setValue(new ArrayList<>(usersMap.values()));
         return liveData;
     }
