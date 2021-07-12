@@ -16,6 +16,8 @@ import com.segg3.coursemanager.databinding.ActivityLoginBinding;
 import com.segg3.coursemanager.shared.utils.UIUtils;
 import com.segg3.coursemanager.shared.viewmodels.AuthViewModel;
 
+import org.apache.tools.ant.Main;
+
 public class LoginActivity extends AppCompatActivity {
     private ActivityLoginBinding binding;
     private AuthViewModel auth;
@@ -61,6 +63,7 @@ public class LoginActivity extends AppCompatActivity {
             // Call authentication code authenticate Here!!!
             if (auth.login(UIUtils.getFieldText(binding.usernameInput), UIUtils.getFieldText(binding.passwordInput))) {
                 UIUtils.createToast(getApplicationContext(), "Welcome!");
+                MainActivity.instance.createUserMenu(auth.getUser().getValue());
                 finish();
             } else
                 UIUtils.createToast(getApplicationContext(), "The user name or password is incorrect");

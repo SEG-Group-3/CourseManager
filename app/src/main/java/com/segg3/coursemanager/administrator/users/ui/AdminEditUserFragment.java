@@ -31,7 +31,6 @@ public class AdminEditUserFragment extends Fragment {
     UsersViewModel usersViewModel;
     String selectedRole = null;
     User beingEdited;
-    int position = -1;
 
     @Nullable
     @Override
@@ -67,10 +66,10 @@ public class AdminEditUserFragment extends Fragment {
         setHasOptionsMenu(true);
         UIUtils.setToolbarTitle(getActivity(), getString(R.string.edit_users));
 
-        position = getArguments().getInt("position", -1);
-        if (position != -1) {
+        String userName = getArguments().getString("userName", "");
+        beingEdited = UsersDao.getInstance().getUser(userName);
+        if (beingEdited != null) {
             // Editing existing item
-            beingEdited = usersViewModel.getUsers().getValue().get(position);
 
             binding.inputUsername.getEditText().setText(beingEdited.userName);
             binding.uidText.setText(beingEdited.id);
@@ -82,11 +81,11 @@ public class AdminEditUserFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull @NotNull MenuItem item) {
         UIUtils.createYesNoMenu("Delete Item", "Do you really want to delete this user?", getActivity(), (dialog, which) -> {
             // Delete user here
-            if (position != -1) {
+            if (beingEdited != null) {
                 UsersDao.getInstance().deleteUser(beingEdited.userName);
-                UIUtils.createToast(getActivity().getApplicationContext(), "User deleted");
+                UIUtils.createToast(getContext(), "User deleted");
             } else {
-                UIUtils.createToast(getActivity().getApplicationContext(), "No item to be deleted");
+                UIUtils.createToast(getContext(), "No item to be deleted");
             }
             UIUtils.swipeFragmentLeft(getParentFragmentManager(), new AdminUsersViewFragment());
         });
@@ -130,7 +129,7 @@ public class AdminEditUserFragment extends Fragment {
         u.type = selectedRole;
         u.userName = name;
 
-        if (position != -1) {
+        if (beingEdited != null) {
             UsersDao.getInstance().editUser(beingEdited.userName, u);
         } else {
             // ## Add user here

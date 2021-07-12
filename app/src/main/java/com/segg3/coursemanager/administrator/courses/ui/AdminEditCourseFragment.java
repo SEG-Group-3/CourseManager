@@ -19,6 +19,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.segg3.coursemanager.R;
 import com.segg3.coursemanager.databinding.FragmentEditCourseBinding;
 import com.segg3.coursemanager.shared.dao.CoursesDao;
+import com.segg3.coursemanager.shared.fragments.HomeFragment;
 import com.segg3.coursemanager.shared.models.Course;
 import com.segg3.coursemanager.shared.utils.UIUtils;
 import com.segg3.coursemanager.shared.viewmodels.CoursesViewModel;
@@ -29,7 +30,7 @@ public class AdminEditCourseFragment extends Fragment {
     FragmentEditCourseBinding binding;
     CoursesViewModel coursesViewModel;
     Course beingEdited;
-    int position = -1;
+
 
     @Nullable
     @Override
@@ -54,13 +55,15 @@ public class AdminEditCourseFragment extends Fragment {
         setHasOptionsMenu(true);
         UIUtils.setToolbarTitle(getActivity(), getString(R.string.edit_course));
 
-        position = getArguments().getInt("position", -1);
-        if (position != -1) {
+        beingEdited = CoursesDao.getInstance().getCourse(getArguments().getString("code"));
+        if (beingEdited != null) {
             // Editing existing item
-            beingEdited = coursesViewModel.getCourses().getValue().get(position);
             binding.courseNameInput.getEditText().setText(beingEdited.name);
             binding.courseCodeInput.getEditText().setText(beingEdited.code);
             binding.uidText.setText(beingEdited.getId());
+        } else{
+            UIUtils.createToast(getContext(), "A missing course was clicked");
+            UIUtils.swipeFragmentLeft(getParentFragmentManager(), new HomeFragment());
         }
         return view;
     }
@@ -69,12 +72,12 @@ public class AdminEditCourseFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull @NotNull MenuItem item) {
         UIUtils.createYesNoMenu("Delete Item", "Do you really want to delete this item?", getActivity(), (dialog, which) -> {
             // Delete user here
-            if (position != -1) {
+            if (beingEdited != null) {
                 CoursesDao.getInstance().deleteCourse(beingEdited.code);
 
-                UIUtils.createToast(getActivity().getApplicationContext(), "Course deleted");
+                UIUtils.createToast(getContext(), "Course deleted");
             } else {
-                UIUtils.createToast(getActivity().getApplicationContext(), "No item to be deleted");
+                UIUtils.createToast(getContext(), "No item to be deleted");
             }
             UIUtils.swipeFragmentLeft(getParentFragmentManager(), new AdminCourseViewFragment());
         });
@@ -113,7 +116,7 @@ public class AdminEditCourseFragment extends Fragment {
         Course c = new Course();
         c.name = name;
         c.code = code;
-        if (position != -1) {
+        if (beingEdited != null) {
             CoursesDao.getInstance().editCourse(beingEdited.code, c);
         } else {
             CoursesDao.getInstance().addCourse(c);

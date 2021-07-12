@@ -39,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         instance = this;
         binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
 
         users = new ViewModelProvider(this).get(UsersViewModel.class);
         courses = new ViewModelProvider(this).get(CoursesViewModel.class);
@@ -74,7 +76,10 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
-        auth.getUser().observe(this, user -> createUserMenu(user));
+        auth.getUser().observe(this, this::createUserMenu);
+
+        setContentView(binding.getRoot());
+
 
     }
 
@@ -85,21 +90,15 @@ public class MainActivity extends AppCompatActivity {
 
         // If credentials were not stored go to login screen
         User u = auth.getUser().getValue();
-        if (u == null) {
-            Log.v("ACCOUNT", "User is not logged in, redirecting to Login");
-            ActivityOptions options = ActivityOptions.makeBasic();
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(intent, options.toBundle());
-            return;
-        } else {
-            createUserMenu(u);
-        }
+        createUserMenu(u);
 
-        setContentView(binding.getRoot());
+
+
         UIUtils.swapViews(getSupportFragmentManager(), new HomeFragment());
     }
 
     public void createUserMenu(User u) {
+
         binding.navigationMenu.getMenu().clear();
         binding.navigationMenu.inflateMenu(R.menu.base_menu);
 
@@ -110,6 +109,8 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent, options.toBundle());
             return;
         } else {
+            UIUtils.swapViews(getSupportFragmentManager(), new HomeFragment());
+
             View nav_header = binding.navigationMenu.getHeaderView(0);
             ((TextView) nav_header.findViewById(R.id.nav_head_username)).setText(u.userName);
             ((TextView) nav_header.findViewById(R.id.nav_head_usertype)).setText(u.type);

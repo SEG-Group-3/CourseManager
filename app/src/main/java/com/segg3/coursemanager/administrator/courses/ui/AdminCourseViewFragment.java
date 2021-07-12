@@ -1,61 +1,74 @@
 package com.segg3.coursemanager.administrator.courses.ui;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
-import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
+import com.segg3.coursemanager.MainActivity;
 import com.segg3.coursemanager.R;
 import com.segg3.coursemanager.shared.adapters.CourseListAdapter;
-import com.segg3.coursemanager.shared.fragments.HomeFragment;
+import com.segg3.coursemanager.shared.dao.CoursesDao;
+import com.segg3.coursemanager.shared.fragments.ListFragmentTemplate;
+import com.segg3.coursemanager.shared.models.Course;
+import com.segg3.coursemanager.shared.models.User;
 import com.segg3.coursemanager.shared.utils.UIUtils;
-import com.segg3.coursemanager.shared.viewmodels.CoursesViewModel;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
-public class AdminCourseViewFragment extends Fragment {
-    CourseListAdapter courseListAdapter;
-    CoursesViewModel coursesViewModel;
-    RecyclerView recyclerView;
-
+public class AdminCourseViewFragment extends ListFragmentTemplate<Course, CourseListAdapter> {
     @Nullable
+    User currentUser;
+
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_list_view, container, false);
-        recyclerView = v.findViewById(R.id.course_recycler_view);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(v.getContext());
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.scrollToPosition(0);
-
-        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                UIUtils.swipeFragmentLeft(getParentFragmentManager(), new HomeFragment());
-            }
-        });
-
-        coursesViewModel = new ViewModelProvider(requireActivity()).get(CoursesViewModel.class);
-
-        // Set Initial State
-        courseListAdapter = new CourseListAdapter(coursesViewModel.getCourses().getValue(), this::onCourseClicked);
-        recyclerView.setAdapter(courseListAdapter);
-        v.findViewById(R.id.floatingActionButton).setOnClickListener(this::onAddClicked);
-        // Update UI on change
-        coursesViewModel.getCourses().observe(getViewLifecycleOwner(), courses -> {
-            courseListAdapter = new CourseListAdapter(courses, this::onCourseClicked);
-            recyclerView.setAdapter(courseListAdapter);
-        });
-
+    public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         UIUtils.setToolbarTitle(getActivity(), getString(R.string.courses));
-        return v;
+
+
+        List<Course> courseL = new ArrayList<>(CoursesDao.getInstance().getCourses().getValue().values());
+        setItems(new CourseListAdapter(courseL));
+
+        currentUser = MainActivity.instance.auth.getUser().getValue();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        List<Course> coursesL = new ArrayList<>(CoursesDao.getInstance().getCourses().getValue().values());
+        setItems(new CourseListAdapter(coursesL));
+        CoursesDao.getInstance().getCourses().observe(getViewLifecycleOwner(), courses -> {
+            List<Course> coursesList = new ArrayList<>(courses.values());
+            setItems(new CourseListAdapter(coursesList));
+        });
+    }
+
+    @NonNull
+    @Override
+    public CourseListAdapter filterQuery(@NonNull String query, @NonNull List<Course> items) {
+        List<Course> filtered = new ArrayList<>();
+        for (Course c : items)
+            if (c.name.toLowerCase().contains(query.toLowerCase()) || c.code.toLowerCase().contains(query.toLowerCase()) ||
+                    c.instructor.toLowerCase().contains(query.toLowerCase()))
+                filtered.add(c);
+
+        return new CourseListAdapter(filtered);
+    }
+
+    @Override
+    public boolean onItemSwiped(@NonNull Course item) {
+        CoursesDao.getInstance().deleteCourse(item.code);
+        return false;
+    }
+
+    @Override
     public void onAddClicked(View v) {
         Fragment edit_course_frag = new AdminEditCourseFragment();
         Bundle args = new Bundle();
@@ -63,13 +76,11 @@ public class AdminCourseViewFragment extends Fragment {
         UIUtils.swipeFragmentRight(getParentFragmentManager(), edit_course_frag);
     }
 
-    public void onCourseClicked(View v) {
-        // Finds the selected item
-        int position = recyclerView.getChildLayoutPosition(v);
-        // Setup Fragment arguments
+    @Override
+    public void onItemClicked(@NonNull Course item) {
         Fragment edit_course_frag = new AdminEditCourseFragment();
         Bundle args = new Bundle();
-        args.putInt("position", position);
+        args.putString("code", item.code);
         edit_course_frag.setArguments(args);
         UIUtils.swipeFragmentRight(getParentFragmentManager(), edit_course_frag);
     }
