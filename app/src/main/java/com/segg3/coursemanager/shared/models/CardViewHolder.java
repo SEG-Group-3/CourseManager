@@ -11,7 +11,7 @@ import com.segg3.coursemanager.R;
 
 import org.jetbrains.annotations.NotNull;
 
-public class CardViewHolder extends RecyclerView.ViewHolder{
+public class CardViewHolder extends RecyclerView.ViewHolder {
     public final ImageView imageView;
     public final TextView title;
     public final TextView subtitle;
@@ -19,9 +19,9 @@ public class CardViewHolder extends RecyclerView.ViewHolder{
 
     public CardViewHolder(@NonNull @NotNull View itemView) {
         super(itemView);
-        title=itemView.findViewById(R.id.card_title);
-        subtitle=itemView.findViewById(R.id.card_subtitle);
-        subsubtitle=itemView.findViewById(R.id.card_subsubtitle);
+        title = itemView.findViewById(R.id.card_title);
+        subtitle = itemView.findViewById(R.id.card_subtitle);
+        subsubtitle = itemView.findViewById(R.id.card_subsubtitle);
         imageView = itemView.findViewById(R.id.card_drawable_image);
     }
 }

@@ -17,7 +17,7 @@ public class Course extends DataObject {
     public List<String> courseHours = new ArrayList<>();
     public List<String> enrolled = new ArrayList<>();
 
-    public Course(){
+    public Course() {
         courseHours.add("1|10:00|30");
         courseHours.add("2|16:00|50");
         this.id = "";
@@ -28,7 +28,6 @@ public class Course extends DataObject {
         this.code = code;
         this.id = id;
     }
-
 
 
     //Setters
@@ -57,20 +56,18 @@ public class Course extends DataObject {
 
         String tmp = "Course{";
 
-        tmp+="name='" + name + '\'';
-        tmp+="\tcode='" + code + '\'';
-        tmp+="\tid='" + id + '\'';
+        tmp += "name='" + name + '\'';
+        tmp += "\tcode='" + code + '\'';
+        tmp += "\tid='" + id + '\'';
 
-        tmp+="\tcourseHours{";
+        tmp += "\tcourseHours{";
 
 
-
-        tmp+="}";
-        tmp="}";
+        tmp += "}";
+        tmp = "}";
 
         return tmp;
     }
-
 
 
     @Override

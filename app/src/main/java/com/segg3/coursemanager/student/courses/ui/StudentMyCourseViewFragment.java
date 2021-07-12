@@ -26,68 +26,68 @@ import com.segg3.coursemanager.shared.viewmodels.CoursesViewModel;
 import java.util.List;
 
 public class StudentMyCourseViewFragment extends Fragment {
-        CourseListAdapter courseListAdapter;
-        CoursesViewModel coursesViewModel;
-        RecyclerView recyclerView;
-        private AuthViewModel auth;
-        FragmentListViewBinding binding;
-        List<Course> courses;
+    CourseListAdapter courseListAdapter;
+    CoursesViewModel coursesViewModel;
+    RecyclerView recyclerView;
+    FragmentListViewBinding binding;
+    List<Course> courses;
+    private AuthViewModel auth;
 
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = FragmentListViewBinding.inflate(inflater);
+        View v = binding.getRoot();
+        recyclerView = v.findViewById(R.id.course_recycler_view);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(v.getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.scrollToPosition(0);
 
-        @Nullable
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            binding = FragmentListViewBinding.inflate(inflater);
-            View v = binding.getRoot();
-            recyclerView = v.findViewById(R.id.course_recycler_view);
-            LinearLayoutManager layoutManager = new LinearLayoutManager(v.getContext());
-            recyclerView.setLayoutManager(layoutManager);
-            recyclerView.scrollToPosition(0);
+        auth = new ViewModelProvider(MainActivity.instance).get(AuthViewModel.class);
+        binding.floatingActionButton.setVisibility(View.GONE);
+        binding.searchBar.setVisibility(View.GONE);
 
-            auth = new ViewModelProvider(MainActivity.instance).get(AuthViewModel.class);
-            binding.floatingActionButton.setVisibility(View.GONE);
-            binding.searchBar.setVisibility(View.GONE);
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                UIUtils.swipeFragmentLeft(getParentFragmentManager(), new HomeFragment());
+            }
+        });
 
-            requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
-                @Override
-                public void handleOnBackPressed() {
-                    UIUtils.swipeFragmentLeft(getParentFragmentManager(), new HomeFragment());
-                }
-            });
+        coursesViewModel = new ViewModelProvider(requireActivity()).get(CoursesViewModel.class);
 
-            coursesViewModel = new ViewModelProvider(requireActivity()).get(CoursesViewModel.class);
+        // Set Initial State
+        courses = CoursesDao.getInstance().getStudentCourses(auth.getUser().getValue().userName);
+        courseListAdapter = new CourseListAdapter(courses, this::onCourseClicked);
+        recyclerView.setAdapter(courseListAdapter);
+        // Update UI on change
 
-            // Set Initial State
-            courses= CoursesDao.getInstance().getStudentCourses(auth.getUser().getValue().userName);
-            courseListAdapter = new CourseListAdapter(courses, this::onCourseClicked);
-            recyclerView.setAdapter(courseListAdapter);
-            // Update UI on change
-
-            coursesViewModel.getCourses().observe(getViewLifecycleOwner(), courses -> {
-                updateCourses();
-            });
+        coursesViewModel.getCourses().observe(getViewLifecycleOwner(), courses -> {
             updateCourses();
-            UIUtils.setToolbarTitle(getActivity(), "My courses");
-            return v;
-        }
-        public void updateCourses(){
-            courses=CoursesDao.getInstance().getStudentCourses(auth.getUser().getValue().userName);
-            courseListAdapter = new CourseListAdapter(courses, this::onCourseClicked);
-            recyclerView.setAdapter(courseListAdapter);
-        }
-
-        public void onCourseClicked(View v) {
-            // Finds the selected item
-            int position = recyclerView.getChildLayoutPosition(v);
-            Course clicked=courses.get(position);
-            Fragment frag = new StudentInspectCourseViewFragment();
-
-            Bundle args = new Bundle();
-            args.putString("code", clicked.code);
-            frag.setArguments(args);
-
-            UIUtils.swipeFragmentRight(getParentFragmentManager(), frag);
-        }
+        });
+        updateCourses();
+        UIUtils.setToolbarTitle(getActivity(), "My courses");
+        return v;
     }
+
+    public void updateCourses() {
+        courses = CoursesDao.getInstance().getStudentCourses(auth.getUser().getValue().userName);
+        courseListAdapter = new CourseListAdapter(courses, this::onCourseClicked);
+        recyclerView.setAdapter(courseListAdapter);
+    }
+
+    public void onCourseClicked(View v) {
+        // Finds the selected item
+        int position = recyclerView.getChildLayoutPosition(v);
+        Course clicked = courses.get(position);
+        Fragment frag = new StudentInspectCourseViewFragment();
+
+        Bundle args = new Bundle();
+        args.putString("code", clicked.code);
+        frag.setArguments(args);
+
+        UIUtils.swipeFragmentRight(getParentFragmentManager(), frag);
+    }
+}
 
 

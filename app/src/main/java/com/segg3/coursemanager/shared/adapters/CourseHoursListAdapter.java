@@ -21,7 +21,7 @@ public class CourseHoursListAdapter extends RecyclerView.Adapter<CardViewHolder>
     private View.OnClickListener onClickListener;
 
     public CourseHoursListAdapter(List<CourseHours> courseHours, View.OnClickListener listener) {
-        onClickListener=listener;
+        onClickListener = listener;
         courseHoursList = courseHours;
     }
 
@@ -29,7 +29,7 @@ public class CourseHoursListAdapter extends RecyclerView.Adapter<CardViewHolder>
     @NotNull
     @Override
     public CardViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.row_course_layout,parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_course_layout, parent, false);
         v.setOnClickListener(onClickListener);
         return new CardViewHolder(v);
     }
@@ -39,7 +39,7 @@ public class CourseHoursListAdapter extends RecyclerView.Adapter<CardViewHolder>
         holder.title.setText(courseHoursList.get(position).weekDay.toString());
         holder.subtitle.setText(courseHoursList.get(position).start.toString());
         holder.subsubtitle.setText(courseHoursList.get(position).durations + " minutes");
-        holder.imageView.setImageDrawable(AppCompatResources.getDrawable(holder.imageView.getContext(),R.drawable.ic_clock));
+        holder.imageView.setImageDrawable(AppCompatResources.getDrawable(holder.imageView.getContext(), R.drawable.ic_clock));
 
     }
 

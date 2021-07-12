@@ -1,7 +1,6 @@
 package com.segg3.coursemanager.student.courses.ui;
 
 
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +14,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.segg3.coursemanager.MainActivity;
 import com.segg3.coursemanager.R;
 import com.segg3.coursemanager.databinding.FragmentListViewBinding;
 import com.segg3.coursemanager.shared.adapters.CourseListAdapter;
@@ -23,7 +21,6 @@ import com.segg3.coursemanager.shared.dao.CoursesDao;
 import com.segg3.coursemanager.shared.fragments.HomeFragment;
 import com.segg3.coursemanager.shared.models.Course;
 import com.segg3.coursemanager.shared.utils.UIUtils;
-import com.segg3.coursemanager.shared.viewmodels.AuthViewModel;
 import com.segg3.coursemanager.shared.viewmodels.CoursesViewModel;
 
 import java.util.List;

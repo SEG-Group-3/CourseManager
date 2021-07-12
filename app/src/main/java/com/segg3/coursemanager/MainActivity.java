@@ -12,12 +12,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.segg3.coursemanager.administrator.courses.ui.CourseViewFragment;
-import com.segg3.coursemanager.administrator.users.ui.UsersViewFragment;
-import com.segg3.coursemanager.shared.fragments.LoginActivity;
+import com.segg3.coursemanager.administrator.courses.ui.AdminCourseViewFragment;
+import com.segg3.coursemanager.administrator.users.ui.AdminUsersViewFragment;
 import com.segg3.coursemanager.databinding.ActivityMainBinding;
-import com.segg3.coursemanager.instructor.courses.ui.MyCourseViewFragment;
+import com.segg3.coursemanager.instructor.courses.ui.InstructorCourseViewFragment;
+import com.segg3.coursemanager.instructor.courses.ui.InstructorMyCourseViewFragment;
 import com.segg3.coursemanager.shared.fragments.HomeFragment;
+import com.segg3.coursemanager.shared.fragments.LoginActivity;
 import com.segg3.coursemanager.shared.models.User;
 import com.segg3.coursemanager.shared.utils.UIUtils;
 import com.segg3.coursemanager.shared.viewmodels.AuthViewModel;
@@ -28,10 +29,10 @@ import com.segg3.coursemanager.student.courses.ui.StudentMyCourseViewFragment;
 
 public class MainActivity extends AppCompatActivity {
     public static MainActivity instance;
+    public AuthViewModel auth;
     private ActivityMainBinding binding;
     private UsersViewModel users;
     private CoursesViewModel courses;
-    public AuthViewModel auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent, options.toBundle());
             return;
-        } else{
+        } else {
             createUserMenu(u);
         }
 
@@ -98,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         UIUtils.swapViews(getSupportFragmentManager(), new HomeFragment());
     }
 
-    public void createUserMenu(User u){
+    public void createUserMenu(User u) {
         binding.navigationMenu.getMenu().clear();
         binding.navigationMenu.inflateMenu(R.menu.base_menu);
 
@@ -112,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
             View nav_header = binding.navigationMenu.getHeaderView(0);
             ((TextView) nav_header.findViewById(R.id.nav_head_username)).setText(u.userName);
             ((TextView) nav_header.findViewById(R.id.nav_head_usertype)).setText(u.type);
-            if (u.type.toLowerCase().equals("admin")){
+            if (u.type.toLowerCase().equals("admin")) {
                 binding.navigationMenu.inflateMenu(R.menu.admin_menu);
 
                 // Admin navigation
@@ -126,16 +127,15 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent, options.toBundle());
                         closeDrawer();
                     } else if (item.getItemId() == R.id.nav_edit_courses) {
-                        UIUtils.swapViews(getSupportFragmentManager(), new CourseViewFragment());
+                        UIUtils.swapViews(getSupportFragmentManager(), new AdminCourseViewFragment());
                     } else if (item.getItemId() == R.id.nav_edit_users) {
-                        UIUtils.swapViews(getSupportFragmentManager(), new UsersViewFragment());
+                        UIUtils.swapViews(getSupportFragmentManager(), new AdminUsersViewFragment());
                     }
 
                     closeDrawer();
                     return true;
                 });
-            }
-            else  if (u.type.toLowerCase().equals("instructor")){
+            } else if (u.type.toLowerCase().equals("instructor")) {
                 binding.navigationMenu.inflateMenu(R.menu.instructor_menu);
 
                 // Admin navigation
@@ -149,9 +149,9 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent, options.toBundle());
                         closeDrawer();
                     } else if (item.getItemId() == R.id.nav_instructor_edit_courses) {
-                        UIUtils.swapViews(getSupportFragmentManager(), new com.segg3.coursemanager.instructor.courses.ui.CourseViewFragment());
+                        UIUtils.swapViews(getSupportFragmentManager(), new InstructorCourseViewFragment());
                     } else if (item.getItemId() == R.id.nav_instructor_my_courses) {
-                        UIUtils.swapViews(getSupportFragmentManager(), new MyCourseViewFragment());
+                        UIUtils.swapViews(getSupportFragmentManager(), new InstructorMyCourseViewFragment());
                     }
 
                     closeDrawer();
@@ -159,8 +159,7 @@ public class MainActivity extends AppCompatActivity {
                 });
 
 
-            }
-            else{
+            } else {
                 binding.navigationMenu.inflateMenu(R.menu.student_menu);
 
                 // Admin navigation

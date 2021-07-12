@@ -99,7 +99,7 @@ public class UIUtils {
         };
     }
 
-    public static void setRemoveErrorOnChange(TextInputLayout inputLayout){
+    public static void setRemoveErrorOnChange(TextInputLayout inputLayout) {
         inputLayout.getEditText().addTextChangedListener(UIUtils.createTextErrorRemover(inputLayout));
     }
 
