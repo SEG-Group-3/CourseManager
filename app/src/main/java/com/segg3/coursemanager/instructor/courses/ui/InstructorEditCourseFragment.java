@@ -24,9 +24,12 @@ import com.segg3.coursemanager.R;
 import com.segg3.coursemanager.databinding.DialogCourseHourBinding;
 import com.segg3.coursemanager.databinding.FragmentInstructorEditCourseBinding;
 import com.segg3.coursemanager.shared.adapters.CourseHoursListAdapter;
+import com.segg3.coursemanager.shared.adapters.UserListAdapter;
 import com.segg3.coursemanager.shared.dao.CoursesDao;
+import com.segg3.coursemanager.shared.dao.UsersDao;
 import com.segg3.coursemanager.shared.models.Course;
 import com.segg3.coursemanager.shared.models.CourseHours;
+import com.segg3.coursemanager.shared.models.User;
 import com.segg3.coursemanager.shared.utils.UIUtils;
 
 import org.jetbrains.annotations.NotNull;
@@ -91,6 +94,7 @@ public class InstructorEditCourseFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.scrollToPosition(0);
 
+        // Setup course hours
         mutCourseHours = new ArrayList<>();
         for (String c : beingEdited.courseHours) {
             mutCourseHours.add(new CourseHours(c));
@@ -98,6 +102,19 @@ public class InstructorEditCourseFragment extends Fragment {
 
         courseListAdapter = new CourseHoursListAdapter(mutCourseHours, this::onCourseHourClicked);
         recyclerView.setAdapter(courseListAdapter);
+
+        // Setup course students
+        List<User> students = new ArrayList<>();
+        for (String u : beingEdited.enrolled) {
+            students.add(UsersDao.getInstance().getUser(u));
+        }
+
+        UserListAdapter userListAdapter = new UserListAdapter(students, null);
+        LinearLayoutManager layoutManager2 = new LinearLayoutManager(getContext());
+        binding.courseStudentsRecyclerView.setLayoutManager(layoutManager2);
+        binding.courseStudentsRecyclerView.scrollToPosition(0);
+        binding.courseStudentsRecyclerView.setAdapter(userListAdapter);
+
 
 
         // Swipe stuff to the left to delete it
@@ -112,7 +129,7 @@ public class InstructorEditCourseFragment extends Fragment {
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                int position = viewHolder.getAdapterPosition();
+                int position = viewHolder.getLayoutPosition();
                 mutCourseHours.remove(position);
                 updateRecyclerView();
                 UIUtils.createToast(getContext(), "Swiped something...");
@@ -121,8 +138,6 @@ public class InstructorEditCourseFragment extends Fragment {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(touchHelperCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
-
-        // binding.courseHoursRecyclerView...
 
         return view;
     }
