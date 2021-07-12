@@ -34,10 +34,8 @@ public class StudentCourseViewFragment extends Fragment {
     FragmentListViewBinding binding;
     CoursesViewModel coursesViewModel;
     List<Course> allCourses;
-    List<Course> enrolledCourses;
 
     String query = "";
-    private AuthViewModel auth;
 
     @Nullable
     @Override
@@ -52,7 +50,6 @@ public class StudentCourseViewFragment extends Fragment {
         coursesViewModel = new ViewModelProvider(requireActivity()).get(CoursesViewModel.class);
 
 
-        auth = new ViewModelProvider(MainActivity.instance).get(AuthViewModel.class);
         binding.floatingActionButton.setVisibility(View.GONE);
 
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {

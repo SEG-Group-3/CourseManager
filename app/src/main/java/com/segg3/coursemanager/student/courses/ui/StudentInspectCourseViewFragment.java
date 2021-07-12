@@ -2,31 +2,23 @@ package com.segg3.coursemanager.student.courses.ui;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.activity.OnBackPressedCallback;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.segg3.coursemanager.MainActivity;
-import com.segg3.coursemanager.R;
 import com.segg3.coursemanager.databinding.FragmentStudentInspectCourseBinding;
-import com.segg3.coursemanager.instructor.courses.ui.MyCourseViewFragment;
 import com.segg3.coursemanager.shared.adapters.CourseHoursListAdapter;
 import com.segg3.coursemanager.shared.dao.CoursesDao;
 import com.segg3.coursemanager.shared.models.Course;
 import com.segg3.coursemanager.shared.models.CourseHours;
 import com.segg3.coursemanager.shared.models.User;
 import com.segg3.coursemanager.shared.utils.UIUtils;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,8 +92,6 @@ public class StudentInspectCourseViewFragment extends Fragment {
 
         }
 
-
-
         // Show course hours
         recyclerView = binding.courseHoursRecyclerView;
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -125,28 +115,8 @@ public class StudentInspectCourseViewFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull @NotNull MenuItem item) {
-        UIUtils.createYesNoMenu("Unassign from course", "Do you really want to unassign this course?", getActivity(), (dialog, which) -> {
-            CoursesDao.getInstance().unAssignInstructor(beingEdited.code);
-            UIUtils.swipeFragmentLeft(getParentFragmentManager(), new MyCourseViewFragment());
-        });
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(@NonNull @NotNull Menu menu, @NonNull @NotNull MenuInflater inflater) {
-        inflater.inflate(R.menu.edit_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
     private void onCancel(View v) {
-        UIUtils.swipeFragmentLeft(getParentFragmentManager(), new MyCourseViewFragment());
+        onCancel();
     }
 
     private void onCancel(){
