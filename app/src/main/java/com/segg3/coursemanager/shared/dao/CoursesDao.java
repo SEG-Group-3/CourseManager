@@ -3,6 +3,7 @@ package com.segg3.coursemanager.shared.dao;
 import androidx.lifecycle.LiveData;
 
 import com.segg3.coursemanager.shared.models.Course;
+import com.segg3.coursemanager.shared.models.CourseHours;
 import com.segg3.coursemanager.shared.models.User;
 import com.segg3.coursemanager.shared.utils.TaskCallback;
 
@@ -126,13 +127,34 @@ public class CoursesDao extends DataAccessObject<Course> {
     public boolean joinCourse(String userName, String code) {
         User u = UsersDao.getInstance().get(userName);
         Course c = get(code);
-
+        List<Course> enrolled = getStudentCourses(userName);
         if(u.type.toLowerCase().equals("student") && c.registeredStudents < c.capacity) {
-            for (Course course: getStudentCourses(userName)) {
+            //checks if user is already enrolled
+            for (Course course: enrolled) {
                 if (course.code.equals(code)) {
                     return false;
                 }
             }
+
+            //checks for time conflict
+            CourseHours courseHour;
+            CourseHours enrolledCourseHour;
+            for(String courseHourRaw : c.courseHours)
+            {
+                courseHour = new CourseHours(courseHourRaw);
+                for(Course course : enrolled)
+                {
+                    for(String enrolledCourseHourRaw : course.courseHours)
+                    {
+                        enrolledCourseHour = new CourseHours(enrolledCourseHourRaw);
+                        if(courseHour.compareTo(enrolledCourseHour) == 0)
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+
             c.enrolled.add(u.userName);
             c.registeredStudents++;
             put(c);
