@@ -12,24 +12,20 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.segg3.coursemanager.MainActivity;
 import com.segg3.coursemanager.R;
-import com.segg3.coursemanager.databinding.DialogCourseHourBinding;
 import com.segg3.coursemanager.databinding.FragmentStudentInspectCourseBinding;
 import com.segg3.coursemanager.instructor.courses.ui.MyCourseViewFragment;
 import com.segg3.coursemanager.shared.adapters.CourseHoursListAdapter;
 import com.segg3.coursemanager.shared.dao.CoursesDao;
-import com.segg3.coursemanager.shared.dao.UsersDao;
 import com.segg3.coursemanager.shared.models.Course;
 import com.segg3.coursemanager.shared.models.CourseHours;
 import com.segg3.coursemanager.shared.models.User;
 import com.segg3.coursemanager.shared.utils.UIUtils;
 
-import org.apache.tools.ant.Main;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;

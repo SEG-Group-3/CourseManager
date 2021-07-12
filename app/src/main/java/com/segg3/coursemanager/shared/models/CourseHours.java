@@ -2,7 +2,8 @@ package com.segg3.coursemanager.shared.models;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.time.DayOfWeek;import java.util.List;
+import java.time.DayOfWeek;
+import java.util.List;
 
 public class CourseHours implements Comparable<CourseHours>{
 

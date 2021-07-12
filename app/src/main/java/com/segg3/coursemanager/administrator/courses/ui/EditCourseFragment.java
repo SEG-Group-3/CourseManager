@@ -25,8 +25,6 @@ import com.segg3.coursemanager.shared.viewmodels.CoursesViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-
 public class EditCourseFragment extends Fragment {
     FragmentEditCourseBinding binding;
     CoursesViewModel coursesViewModel;
