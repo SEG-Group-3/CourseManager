@@ -16,8 +16,6 @@ import com.segg3.coursemanager.databinding.ActivityLoginBinding;
 import com.segg3.coursemanager.shared.utils.UIUtils;
 import com.segg3.coursemanager.shared.viewmodels.AuthViewModel;
 
-import org.apache.tools.ant.Main;
-
 public class LoginActivity extends AppCompatActivity {
     private ActivityLoginBinding binding;
     private AuthViewModel auth;

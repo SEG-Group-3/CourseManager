@@ -93,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
         createUserMenu(u);
 
 
-
         UIUtils.swapViews(getSupportFragmentManager(), new HomeFragment());
     }
 

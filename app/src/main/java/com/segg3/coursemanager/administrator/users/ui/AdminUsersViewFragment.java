@@ -1,26 +1,18 @@
 package com.segg3.coursemanager.administrator.users.ui;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.segg3.coursemanager.R;
 import com.segg3.coursemanager.shared.adapters.UserListAdapter;
 import com.segg3.coursemanager.shared.dao.UsersDao;
-import com.segg3.coursemanager.shared.fragments.HomeFragment;
 import com.segg3.coursemanager.shared.fragments.ListFragmentTemplate;
 import com.segg3.coursemanager.shared.models.User;
 import com.segg3.coursemanager.shared.utils.UIUtils;
-import com.segg3.coursemanager.shared.viewmodels.UsersViewModel;
 
 import org.jetbrains.annotations.NotNull;
 

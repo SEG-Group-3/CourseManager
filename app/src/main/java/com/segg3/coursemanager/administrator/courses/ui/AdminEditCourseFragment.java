@@ -61,7 +61,7 @@ public class AdminEditCourseFragment extends Fragment {
             binding.courseNameInput.getEditText().setText(beingEdited.name);
             binding.courseCodeInput.getEditText().setText(beingEdited.code);
             binding.uidText.setText(beingEdited.getId());
-        } else{
+        } else {
             UIUtils.createToast(getContext(), "A missing course was clicked");
             UIUtils.swipeFragmentLeft(getParentFragmentManager(), new HomeFragment());
         }
