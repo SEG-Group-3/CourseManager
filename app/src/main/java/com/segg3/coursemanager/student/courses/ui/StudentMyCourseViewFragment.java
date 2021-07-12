@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.segg3.coursemanager.MainActivity;
 import com.segg3.coursemanager.R;
 import com.segg3.coursemanager.databinding.FragmentListViewBinding;
-import com.segg3.coursemanager.instructor.courses.ui.InstructorEditCourseFragment;
 import com.segg3.coursemanager.shared.adapters.CourseListAdapter;
 import com.segg3.coursemanager.shared.dao.CoursesDao;
 import com.segg3.coursemanager.shared.fragments.HomeFragment;
@@ -26,34 +25,7 @@ import com.segg3.coursemanager.shared.viewmodels.CoursesViewModel;
 
 import java.util.List;
 
-
-
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import androidx.activity.OnBackPressedCallback;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.segg3.coursemanager.MainActivity;
-import com.segg3.coursemanager.R;
-import com.segg3.coursemanager.databinding.FragmentListViewBinding;
-import com.segg3.coursemanager.shared.adapters.CourseListAdapter;
-import com.segg3.coursemanager.shared.dao.CoursesDao;
-import com.segg3.coursemanager.shared.fragments.HomeFragment;
-import com.segg3.coursemanager.shared.models.Course;
-import com.segg3.coursemanager.shared.utils.UIUtils;
-import com.segg3.coursemanager.shared.viewmodels.AuthViewModel;
-import com.segg3.coursemanager.shared.viewmodels.CoursesViewModel;
-
-import java.util.List;
-
-    public class StudentMyCourseViewFragment extends Fragment {
+public class StudentMyCourseViewFragment extends Fragment {
         CourseListAdapter courseListAdapter;
         CoursesViewModel coursesViewModel;
         RecyclerView recyclerView;
@@ -95,7 +67,7 @@ import java.util.List;
                 updateCourses();
             });
             updateCourses();
-            UIUtils.setToolbarTitle(getActivity(), getString(R.string.courses));
+            UIUtils.setToolbarTitle(getActivity(), "My courses");
             return v;
         }
         public void updateCourses(){
@@ -103,19 +75,18 @@ import java.util.List;
             courseListAdapter = new CourseListAdapter(courses, this::onCourseClicked);
             recyclerView.setAdapter(courseListAdapter);
         }
-        public void onAddClicked(View v) {
-
-        }
 
         public void onCourseClicked(View v) {
             // Finds the selected item
             int position = recyclerView.getChildLayoutPosition(v);
             Course clicked=courses.get(position);
-            // TODO create YesNoMenu and ask student to un-enrol course
-            UIUtils.createYesNoMenu("Unenroll","Do you want to unenroll this course?",getContext(),(dialog, which) -> {
-                UIUtils.createToast(getContext(),"Unenroll successful");
-                CoursesDao.getInstance().leaveCourse(MainActivity.instance.auth.getUser().getValue().userName, clicked.code);
-            });
+            Fragment frag = new StudentInspectCourseViewFragment();
+
+            Bundle args = new Bundle();
+            args.putString("code", clicked.code);
+            frag.setArguments(args);
+
+            UIUtils.swipeFragmentRight(getParentFragmentManager(), frag);
         }
     }
 

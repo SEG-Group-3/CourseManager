@@ -98,16 +98,14 @@ public class StudentCourseViewFragment extends Fragment {
         Course clicked = allCourses.get(position);
         //TODO ask student to enrol to the course. if yes,
         // check if it conflicts with the time of other courses and enrol
-        if (!clicked.instructor.equals("")){
-            UIUtils.createYesNoMenu("Enrol course","Do you want to enrol?\n\n"+clicked.description,getContext(),(dialog, which) -> {
-                if(CoursesDao.getInstance().joinCourse(MainActivity.instance.auth.getUser().getValue().userName,clicked.code)){
-                    UIUtils.createToast(getContext(),"Enrol successful");
-                }
-                else{
-                    UIUtils.createToast(getContext(),"Error");
-                }
-            });
-        }
+        Fragment frag = new StudentInspectCourseViewFragment();
+
+        Bundle args = new Bundle();
+        args.putString("code", clicked.code);
+        args.putBoolean("viewingAll", true);
+        frag.setArguments(args);
+
+        UIUtils.swipeFragmentRight(getParentFragmentManager(), frag);
     }
 }
 
