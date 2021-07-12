@@ -108,7 +108,7 @@ public class InstructorEditCourseFragment extends Fragment {
             students.add(UsersDao.getInstance().getUser(u));
         }
 
-        UserListAdapter userListAdapter = new UserListAdapter(students, null);
+        UserListAdapter userListAdapter = new UserListAdapter(students);
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(getContext());
         binding.courseStudentsRecyclerView.setLayoutManager(layoutManager2);
         binding.courseStudentsRecyclerView.scrollToPosition(0);

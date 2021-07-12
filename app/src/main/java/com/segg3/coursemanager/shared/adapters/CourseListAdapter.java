@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.segg3.coursemanager.R;
 import com.segg3.coursemanager.shared.models.CardViewHolder;
@@ -16,13 +15,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class CourseListAdapter extends RecyclerView.Adapter<CardViewHolder> {
-    private final List<Course> courseList;
-    private View.OnClickListener onClickListener;
+public class CourseListAdapter extends GenericCardAdapter<Course> {
+    public CourseListAdapter(List<Course> items, View.OnClickListener listener) {
+        super(items, listener);
+    }
 
-    public CourseListAdapter(List<Course> courses, View.OnClickListener listener) {
-        onClickListener = listener;
-        courseList = courses;
+    public CourseListAdapter(List<Course> coursesL) {
+        super(coursesL);
     }
 
     @NonNull
@@ -36,17 +35,9 @@ public class CourseListAdapter extends RecyclerView.Adapter<CardViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull CardViewHolder holder, int position) {
-        holder.title.setText(courseList.get(position).name);
-        holder.subtitle.setText(courseList.get(position).code);
-        holder.subsubtitle.setText(courseList.get(position).instructor);
+        holder.title.setText(itemList.get(position).name);
+        holder.subtitle.setText(itemList.get(position).code);
+        holder.subsubtitle.setText(itemList.get(position).instructor);
         holder.imageView.setImageDrawable(AppCompatResources.getDrawable(holder.imageView.getContext(), R.drawable.ic_book));
-
     }
-
-    @Override
-    public int getItemCount() {
-        return courseList.size();
-    }
-
-
 }
