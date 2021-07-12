@@ -1,4 +1,4 @@
-package com.segg3.coursemanager.auth.login.ui;
+package com.segg3.coursemanager.shared.fragments;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
@@ -12,7 +12,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.textfield.TextInputLayout;
 import com.segg3.coursemanager.MainActivity;
 import com.segg3.coursemanager.R;
-import com.segg3.coursemanager.auth.register.ui.RegisterActivity;
 import com.segg3.coursemanager.databinding.ActivityLoginBinding;
 import com.segg3.coursemanager.shared.utils.UIUtils;
 import com.segg3.coursemanager.shared.viewmodels.AuthViewModel;

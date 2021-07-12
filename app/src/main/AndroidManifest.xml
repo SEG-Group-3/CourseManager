@@ -18,8 +18,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".auth.login.ui.LoginActivity" android:screenOrientation="nosensor" android:windowSoftInputMode="adjustPan"/>
-        <activity android:name=".auth.register.ui.RegisterActivity" android:screenOrientation="nosensor" android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".shared.fragments.LoginActivity" android:screenOrientation="nosensor" android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".shared.fragments.RegisterActivity" android:screenOrientation="nosensor" android:windowSoftInputMode="adjustPan"/>
 
 
 

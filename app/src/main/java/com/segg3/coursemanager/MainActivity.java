@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.segg3.coursemanager.administrator.courses.ui.CourseViewFragment;
 import com.segg3.coursemanager.administrator.users.ui.UsersViewFragment;
-import com.segg3.coursemanager.auth.login.ui.LoginActivity;
+import com.segg3.coursemanager.shared.fragments.LoginActivity;
 import com.segg3.coursemanager.databinding.ActivityMainBinding;
 import com.segg3.coursemanager.instructor.courses.ui.MyCourseViewFragment;
 import com.segg3.coursemanager.shared.fragments.HomeFragment;
