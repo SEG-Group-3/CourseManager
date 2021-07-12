@@ -115,11 +115,9 @@ public class CoursesDao extends DataAccessObject<Course> {
     public List<Course> getStudentCourses(String studentName) {
         List<Course> filtered = new ArrayList<>();
         for (Course c : Objects.requireNonNull(cache.getValue()).values()) {
-            for (String s: c.enrolled) {
-                if (studentName.equals(s)) {
-                    filtered.add(c);
-                    break;
-                }
+            if (c.enrolled.contains(studentName))
+            {
+                filtered.add(c);
             }
         }
         return filtered;
