@@ -29,17 +29,27 @@ public class DayOfWeekFilter extends Filter<Course> {
         List<Course> tmp = new ArrayList<Course>();
         Course c;
         CourseHours courseHours;
+        boolean check;
         for(int i1 = 0; i1 < unfiltered.size(); i1++)
         {
             c = unfiltered.get(i1);
+
+            check = true;
+
             for(int i2 = 0; i2 < c.courseHours.size(); i2++)
             {
                 courseHours = new CourseHours(c.courseHours.get(i2));
 
-                if(weekQuery[courseHours.weekDay.getValue() - 1])
+                if(!weekQuery[courseHours.weekDay.getValue() - 1])
                 {
-                    tmp.add(c);
+                    check = false;
+                    break;
                 }
+            }
+
+            if(check)
+            {
+                tmp.add(c);
             }
         }
 
