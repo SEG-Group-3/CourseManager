@@ -1,9 +1,8 @@
 package com.segg3.coursemanager;
 
-import android.util.Log;
-
 import com.segg3.coursemanager.shared.dao.CoursesDao;
 import com.segg3.coursemanager.shared.dao.UsersDao;
+import com.segg3.coursemanager.shared.filter.DayOfWeekFilter;
 import com.segg3.coursemanager.shared.models.Course;
 import com.segg3.coursemanager.shared.models.CourseHours;
 import com.segg3.coursemanager.shared.models.User;
@@ -104,14 +103,8 @@ public class CoursesDaoTest {
     }
 
     @Test
-    public void testSearchCourse() throws InterruptedException {
+    public void testSearchCourseByNameAndCode() throws InterruptedException {
         List<Course> query = courseDao.searchCourse(CODEPREFIX);
-
-        Log.d("DEBUG TEST",query.size()+"");
-        for(int i1 = 0; i1 < query.size(); i1++)
-        {
-            Log.d("DEBUG TEST",query.get(i1).code);
-        }
 
         assertEquals(3, query.size());
 
@@ -121,18 +114,78 @@ public class CoursesDaoTest {
         assertEquals(CODEPREFIX+1, query.get(0).code);
 
         Course c = courseDao.getCourse(CODEPREFIX+2);
-        c.name = "TEST NAME TEST NAME";
+        c.name = "sdfaSDfdSFdsf1ds5Df89dc1vDFDSfds45f";
 
         courseDao.editCourse(c.code, c);
 
         TimeUnit.SECONDS.sleep(5);
 
-        query = courseDao.searchCourse(CODEPREFIX+1);
+        query = courseDao.searchCourse("faSDfdSFdsf1ds5");
 
         assertEquals(1, query.size());
-        assertEquals("TEST NAME TEST NAME", query.get(0).name);
+        assertTrue("sdfaSDfdSFdsf1ds5Df89dc1vDFDSfds45f".equals(query.get(0).name));
 
         TimeUnit.SECONDS.sleep(5);
+    }
+
+    @Test
+    public void testSeachCourseByDayOfWeek() throws InterruptedException {
+        String code1 = CODEPREFIX+1;
+        String code2 = CODEPREFIX+2;
+        String code3 = CODEPREFIX+3;
+
+        Course course1 = courseDao.getCourse(code1);
+        Course course2 = courseDao.getCourse(code2);
+        Course course3 = courseDao.getCourse(code3);
+
+        CourseHours courseHours;
+
+        courseHours = new CourseHours(DayOfWeek.MONDAY.getValue(), 0,0,10);
+        course1.courseHours.add(courseHours.toString());
+
+        courseHours = new CourseHours(DayOfWeek.TUESDAY.getValue(), 0,0,10);
+        course1.courseHours.add(courseHours.toString());
+
+
+        courseHours = new CourseHours(DayOfWeek.MONDAY.getValue(), 0,0,10);
+        course2.courseHours.add(courseHours.toString());
+
+
+        courseHours = new CourseHours(DayOfWeek.THURSDAY.getValue(), 0,0,10);
+        course3.courseHours.add(courseHours.toString());
+
+        courseDao.editCourse(code1, course1);
+        courseDao.editCourse(code2, course2);
+        courseDao.editCourse(code3, course3);
+
+        TimeUnit.SECONDS.sleep(5);
+
+        List<Course> unfilteredList = courseDao.searchCourse(CODEPREFIX);
+
+        boolean[] query = new boolean[7];
+        for(int i1 = 0; i1 < 7; i1++)
+        {
+            query[i1] = false;
+        }
+
+        DayOfWeekFilter filter = new DayOfWeekFilter();
+
+        assertEquals(0, filter.search(query, unfilteredList).size());
+
+        for(int i1 = 0; i1 < 7; i1++)
+        {
+            query[i1] = true;
+        }
+        assertEquals(3, filter.search(query, unfilteredList).size());
+
+        for(int i1 = 1; i1 < 7; i1++)
+        {
+            query[i1] = false;
+        }
+        assertEquals(1, filter.search(query, unfilteredList).size());
+
+        query[1] = true;
+        assertEquals(2, filter.search(query, unfilteredList).size());
     }
 
     @Test
