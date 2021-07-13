@@ -12,9 +12,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.segg3.coursemanager.R;
-import com.segg3.coursemanager.instructor.courses.ui.InstructorMyCourseViewFragment;
 import com.segg3.coursemanager.shared.adapters.CourseListAdapter;
 import com.segg3.coursemanager.shared.dao.CoursesDao;
+import com.segg3.coursemanager.shared.filter.DayOfWeekFilter;
 import com.segg3.coursemanager.shared.fragments.ListFragmentTemplate;
 import com.segg3.coursemanager.shared.models.Course;
 import com.segg3.coursemanager.shared.utils.UIUtils;
@@ -51,15 +51,28 @@ public class StudentCourseViewFragment extends ListFragmentTemplate<Course, Cour
     @NonNull
     @Override
     public CourseListAdapter filterQuery(@NonNull String query, @NonNull List<Course> items) {
-        // TODO Filter items at day i+1
-        //        for (int i = 0; i < 7; i++) {
-        //            MenuItem dayItem = filterMenu.getItem(i);
-        //            if(!dayItem.isChecked()){
-        //            }
-        //        }
+        boolean[] dayOfWeekQeury = new boolean[7];
+        try
+        {
+            for (int i = 0; i < 7; i++)
+            {
+                MenuItem dayItem = filterMenu.getItem(i);
+                dayOfWeekQeury[i] = dayItem.isChecked();
+            }
+        }
+        catch (Exception e)
+        {
+            for(int i = 0; i < 7; i++)
+            {
+                dayOfWeekQeury[i] = true;
+            }
+        }
 
         List<Course> filtered = CoursesDao.getInstance().searchCourse(query);
 
+        DayOfWeekFilter dayOfWeekFilter = new DayOfWeekFilter();
+
+        filtered = dayOfWeekFilter.search(dayOfWeekQeury, filtered);
 
         return new CourseListAdapter(filtered);
     }
