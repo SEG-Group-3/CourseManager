@@ -6,7 +6,7 @@ import java.util.List;
 
 public class DayOfWeekFilter extends Filter<Course> {
     @Override
-    public List<Course> search(Object query) {
+    public List<Course> search(Object query, List<Course> unfiltered) {
         throw new UnsupportedOperationException();
     }
 }
