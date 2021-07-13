@@ -4,30 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Filter <E> {
-    public abstract List<E> search(Object query);
+    public abstract List<E> search(Object query, List<E> unfiltered);
 
-    public List<E> convert(List<Object> list)
+    public List<E> union (List<E> a, List<E> b)
     {
         List<E> tmp = new ArrayList<>();
-        for(int i1 = 0; i1 < list.size(); i1++)
-        {
-            tmp.add((E) list.get(i1));
-        }
-
-        return tmp;
-    }
-
-    public static List<Object> union (Object group1, Object group2)
-    {
-        List<Object> a = (List<Object>) group1;
-        List<Object> b = (List<Object>) group2;
-
-        List<Object> tmp = new ArrayList<>();
 
         tmp.addAll(a);
         for(int i1 = 0; i1 < b.size(); i1++)
         {
-            if(!tmp.contains(group2))
+            if(!tmp.contains(b.get(i1)))
             {
                 tmp.add(b.get(i1));
             }
@@ -36,24 +22,24 @@ public abstract class Filter <E> {
         return tmp;
     }
 
-    public static List<Object> intersection(List<Object> group1, List<Object> group2)
+    public List<E> intersection(List<E> a, List<E> b)
     {
-        List<Object> tmp = new ArrayList<>();
+        List<E> tmp = new ArrayList<>();
 
-        List<Object> larger;
+        List<E> larger;
 
-        if(group1.size() > group2.size())
+        if(a.size() > b.size())
         {
-            larger = group1;
+            larger = a;
         }
         else
         {
-            larger = group2;
+            larger = b;
         }
 
         for(int i1 = 0; i1 < larger.size(); i1++)
         {
-            if(group2.contains(larger.get(i1)))
+            if(b.contains(larger.get(i1)))
             {
                 tmp.add(larger.get(i1));
             }
@@ -62,31 +48,31 @@ public abstract class Filter <E> {
         return tmp;
     }
 
-    public static List<Object> complement(List<Object> group1, List<Object> surrounding)
+    public List<E> complement(List<E> a, List<E> surrounding)
     {
-        return diffrence(surrounding, group1);
+        return diffrence(surrounding, a);
     }
 
-    public static List<Object> diffrence(List<Object> group1, List<Object> group2)
+    public List<E> diffrence(List<E> a, List<E> b)
     {
-        List<Object> tmp = new ArrayList<>();
+        List<E> tmp = new ArrayList<>();
 
-        for(int i1 = 0; i1 < group1.size(); i1++)
+        for(int i1 = 0; i1 < a.size(); i1++)
         {
-            if(!group2.contains(group1.get(i1)))
+            if(!b.contains(a.get(i1)))
             {
-                tmp.add(group1.get(i1));
+                tmp.add(a.get(i1));
             }
         }
 
         return tmp;
     }
 
-    public static List<Object> symmetricDiffrence(List<Object> group1, List<Object> group2)
+    public List<E> symmetricDiffrence(List<E> group1, List<E> group2)
     {
-        List<Object> tmp1 = Filter.diffrence(group1,group2);
-        List<Object> tmp2 = Filter.diffrence(group2, group1);
+        List<E> tmp1 = this.diffrence(group1,group2);
+        List<E> tmp2 = this.diffrence(group2, group1);
 
-        return Filter.union(tmp1, tmp2);
+        return this.union(tmp1, tmp2);
     }
 }
