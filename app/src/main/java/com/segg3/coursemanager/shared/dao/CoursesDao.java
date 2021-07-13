@@ -3,7 +3,6 @@ package com.segg3.coursemanager.shared.dao;
 import androidx.lifecycle.LiveData;
 
 import com.segg3.coursemanager.shared.filter.CodeFilter;
-import com.segg3.coursemanager.shared.filter.Filter;
 import com.segg3.coursemanager.shared.filter.NameFilter;
 import com.segg3.coursemanager.shared.models.Course;
 import com.segg3.coursemanager.shared.models.CourseHours;
@@ -94,13 +93,14 @@ public class CoursesDao extends DataAccessObject<Course> {
         query = query.toLowerCase();
         Collection<Course> unfiltered = cache.getValue().values();
 
-        List<Course> unfilteredd = new ArrayList<>();
-        unfiltered.addAll(unfiltered);
+        List<Course> unfilteredList = new ArrayList<>();
 
-        NameFilter filter1 = new NameFilter();
-        CodeFilter filter2 = new CodeFilter();
+        unfilteredList.addAll(unfiltered);
 
-        return filter1.convert(Filter.union((Object) filter1.search(unfilteredd), (Object) filter2.search(unfilteredd)));
+        NameFilter nameFilter = new NameFilter();
+        CodeFilter codeFilter = new CodeFilter();
+
+        return nameFilter.union(nameFilter.search(query, unfilteredList), codeFilter.search(query, unfilteredList));
 
         /*
         for (Course c : unfiltered)
