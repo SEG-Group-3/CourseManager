@@ -7,7 +7,7 @@ public class User extends DataObject {
     public String password = "ERROR";
     public String userName = "ERROR";
 
-    public User(){
+    public User() {
 
     }
 

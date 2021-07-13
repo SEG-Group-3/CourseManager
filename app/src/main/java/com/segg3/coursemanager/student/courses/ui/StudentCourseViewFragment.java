@@ -1,7 +1,6 @@
 package com.segg3.coursemanager.student.courses.ui;
 
 
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +14,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.segg3.coursemanager.MainActivity;
 import com.segg3.coursemanager.R;
 import com.segg3.coursemanager.databinding.FragmentListViewBinding;
 import com.segg3.coursemanager.shared.adapters.CourseListAdapter;
@@ -23,7 +21,6 @@ import com.segg3.coursemanager.shared.dao.CoursesDao;
 import com.segg3.coursemanager.shared.fragments.HomeFragment;
 import com.segg3.coursemanager.shared.models.Course;
 import com.segg3.coursemanager.shared.utils.UIUtils;
-import com.segg3.coursemanager.shared.viewmodels.AuthViewModel;
 import com.segg3.coursemanager.shared.viewmodels.CoursesViewModel;
 
 import java.util.List;
@@ -34,10 +31,8 @@ public class StudentCourseViewFragment extends Fragment {
     FragmentListViewBinding binding;
     CoursesViewModel coursesViewModel;
     List<Course> allCourses;
-    List<Course> enrolledCourses;
 
     String query = "";
-    private AuthViewModel auth;
 
     @Nullable
     @Override
@@ -52,7 +47,6 @@ public class StudentCourseViewFragment extends Fragment {
         coursesViewModel = new ViewModelProvider(requireActivity()).get(CoursesViewModel.class);
 
 
-        auth = new ViewModelProvider(MainActivity.instance).get(AuthViewModel.class);
         binding.floatingActionButton.setVisibility(View.GONE);
 
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
@@ -98,16 +92,14 @@ public class StudentCourseViewFragment extends Fragment {
         Course clicked = allCourses.get(position);
         //TODO ask student to enrol to the course. if yes,
         // check if it conflicts with the time of other courses and enrol
-        if (!clicked.instructor.equals("")){
-            UIUtils.createYesNoMenu("Enrol course","Do you want to enrol?\n\n"+clicked.description,getContext(),(dialog, which) -> {
-                if(CoursesDao.getInstance().joinCourse(MainActivity.instance.auth.getUser().getValue().userName,clicked.code)){
-                    UIUtils.createToast(getContext(),"Enrol successful");
-                }
-                else{
-                    UIUtils.createToast(getContext(),"Error");
-                }
-            });
-        }
+        Fragment frag = new StudentInspectCourseViewFragment();
+
+        Bundle args = new Bundle();
+        args.putString("code", clicked.code);
+        args.putBoolean("viewingAll", true);
+        frag.setArguments(args);
+
+        UIUtils.swipeFragmentRight(getParentFragmentManager(), frag);
     }
 }
 

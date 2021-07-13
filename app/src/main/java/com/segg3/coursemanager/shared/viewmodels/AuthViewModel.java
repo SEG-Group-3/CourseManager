@@ -17,7 +17,7 @@ public class AuthViewModel extends ViewModel {
 
 
     public LiveData<User> getUser() {
-        if (user == null) {
+        if (user == null || user.getValue() == null) {
             user = new MutableLiveData<>();
         }
         return user;

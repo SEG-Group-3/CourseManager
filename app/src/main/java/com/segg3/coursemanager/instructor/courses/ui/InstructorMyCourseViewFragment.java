@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SearchView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
@@ -26,13 +25,12 @@ import com.segg3.coursemanager.shared.viewmodels.CoursesViewModel;
 
 import java.util.List;
 
-public class CourseViewFragment extends Fragment {
+public class InstructorMyCourseViewFragment extends Fragment {
     CourseListAdapter courseListAdapter;
+    CoursesViewModel coursesViewModel;
     RecyclerView recyclerView;
     FragmentListViewBinding binding;
-    CoursesViewModel coursesViewModel;
-    List<Course> currentList;
-    String query = "";
+    List<Course> courses;
     private AuthViewModel auth;
 
     @Nullable
@@ -40,16 +38,14 @@ public class CourseViewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentListViewBinding.inflate(inflater);
         View v = binding.getRoot();
-        recyclerView = binding.courseRecyclerView;
+        recyclerView = v.findViewById(R.id.course_recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(v.getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.scrollToPosition(0);
 
-        coursesViewModel = new ViewModelProvider(requireActivity()).get(CoursesViewModel.class);
-
-
         auth = new ViewModelProvider(MainActivity.instance).get(AuthViewModel.class);
         binding.floatingActionButton.setVisibility(View.GONE);
+        binding.searchBar.setVisibility(View.GONE);
 
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
@@ -58,54 +54,37 @@ public class CourseViewFragment extends Fragment {
             }
         });
 
+        coursesViewModel = new ViewModelProvider(requireActivity()).get(CoursesViewModel.class);
 
         // Set Initial State
-        updateCourses();
+        courses = CoursesDao.getInstance().getInstructorCourses(auth.getUser().getValue().userName);
+        courseListAdapter = new CourseListAdapter(courses, this::onCourseClicked);
+        recyclerView.setAdapter(courseListAdapter);
         // Update UI on change
-        binding.searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                query = newText;
-                updateCourses();
-                return false;
-            }
-        });
         coursesViewModel.getCourses().observe(getViewLifecycleOwner(), courses -> {
-            updateCourses();
+            courses = CoursesDao.getInstance().getInstructorCourses(auth.getUser().getValue().userName);
+            courseListAdapter = new CourseListAdapter(courses, this::onCourseClicked);
+            recyclerView.setAdapter(courseListAdapter);
         });
+
         UIUtils.setToolbarTitle(getActivity(), getString(R.string.courses));
         return v;
     }
 
-    public void updateCourses() {
-        currentList = CoursesDao.getInstance().searchCourse(query);
-        courseListAdapter = new CourseListAdapter(currentList, this::onCourseClicked);
-        recyclerView.setAdapter(courseListAdapter);
+    public void onAddClicked(View v) {
+
     }
 
     public void onCourseClicked(View v) {
-        //Finds the selected item
+        // Finds the selected item
         int position = recyclerView.getChildLayoutPosition(v);
-        Course clicked = currentList.get(position);
+        // Setup Fragment arguments
 
-
-        if (clicked.instructor.equals("")) {
-            UIUtils.createYesNoMenu("Enter course", "Do you want to assign yourself to this course?",
-                    getContext(),
-                    (dialog, which) -> {
-                        if (CoursesDao.getInstance().assignInstructor(auth.getUser().getValue().userName, clicked.code)) {
-                            UIUtils.createToast(getContext(), "You have been assigned to this course");
-                        } else {
-                            UIUtils.createToast(getContext(), "An error has occurred");
-                        }
-                    });
-        } else {
-            UIUtils.createToast(getContext(), "This course is already taken!");
-        }
+        Fragment instructor_edit_course = new InstructorEditCourseFragment();
+        Bundle args = new Bundle();
+        args.putString("code", courses.get(position).code);
+        instructor_edit_course.setArguments(args);
+        UIUtils.swipeFragmentRight(getParentFragmentManager(), instructor_edit_course);
     }
 }

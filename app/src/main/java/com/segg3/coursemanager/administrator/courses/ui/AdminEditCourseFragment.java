@@ -19,30 +19,30 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.segg3.coursemanager.R;
 import com.segg3.coursemanager.databinding.FragmentEditCourseBinding;
 import com.segg3.coursemanager.shared.dao.CoursesDao;
+import com.segg3.coursemanager.shared.fragments.HomeFragment;
 import com.segg3.coursemanager.shared.models.Course;
 import com.segg3.coursemanager.shared.utils.UIUtils;
 import com.segg3.coursemanager.shared.viewmodels.CoursesViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-
-public class EditCourseFragment extends Fragment {
+public class AdminEditCourseFragment extends Fragment {
     FragmentEditCourseBinding binding;
     CoursesViewModel coursesViewModel;
     Course beingEdited;
-    int position = -1;
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view =inflater.inflate(R.layout.fragment_edit_course, container, false);
+        View view = inflater.inflate(R.layout.fragment_edit_course, container, false);
         binding = FragmentEditCourseBinding.bind(view);
         coursesViewModel = new ViewModelProvider(requireActivity()).get(CoursesViewModel.class);
 
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                UIUtils.swipeFragmentLeft(getParentFragmentManager(), new CourseViewFragment());
+                UIUtils.swipeFragmentLeft(getParentFragmentManager(), new AdminCourseViewFragment());
             }
         });
 
@@ -55,14 +55,15 @@ public class EditCourseFragment extends Fragment {
         setHasOptionsMenu(true);
         UIUtils.setToolbarTitle(getActivity(), getString(R.string.edit_course));
 
-        position = getArguments().getInt("position", -1);
-        if (position != -1)
-        {
+        beingEdited = CoursesDao.getInstance().getCourse(getArguments().getString("code"));
+        if (beingEdited != null) {
             // Editing existing item
-            beingEdited =coursesViewModel.getCourses().getValue().get(position);
             binding.courseNameInput.getEditText().setText(beingEdited.name);
             binding.courseCodeInput.getEditText().setText(beingEdited.code);
             binding.uidText.setText(beingEdited.getId());
+        } else {
+            UIUtils.createToast(getContext(), "A missing course was clicked");
+            UIUtils.swipeFragmentLeft(getParentFragmentManager(), new HomeFragment());
         }
         return view;
     }
@@ -71,14 +72,14 @@ public class EditCourseFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull @NotNull MenuItem item) {
         UIUtils.createYesNoMenu("Delete Item", "Do you really want to delete this item?", getActivity(), (dialog, which) -> {
             // Delete user here
-            if (position != -1){
-                 CoursesDao.getInstance().deleteCourse(beingEdited.code);
+            if (beingEdited != null) {
+                CoursesDao.getInstance().deleteCourse(beingEdited.code);
 
-                UIUtils.createToast(getActivity().getApplicationContext(), "Course deleted");
-            } else{
-                UIUtils.createToast(getActivity().getApplicationContext(), "No item to be deleted");
+                UIUtils.createToast(getContext(), "Course deleted");
+            } else {
+                UIUtils.createToast(getContext(), "No item to be deleted");
             }
-            UIUtils.swipeFragmentLeft(getParentFragmentManager(), new CourseViewFragment());
+            UIUtils.swipeFragmentLeft(getParentFragmentManager(), new AdminCourseViewFragment());
         });
         return super.onOptionsItemSelected(item);
     }
@@ -90,21 +91,19 @@ public class EditCourseFragment extends Fragment {
     }
 
 
-
-
-    private void onCancelEdit(View v){
-        UIUtils.swipeFragmentLeft(getParentFragmentManager(), new CourseViewFragment());
+    private void onCancelEdit(View v) {
+        UIUtils.swipeFragmentLeft(getParentFragmentManager(), new AdminCourseViewFragment());
     }
 
-    private void onApplyEdit(View v){
+    private void onApplyEdit(View v) {
         String name = binding.courseNameInput.getEditText().getText().toString();
         String code = binding.courseCodeInput.getEditText().getText().toString();
 
         TextInputLayout[] emptyCheckedFields = {binding.courseNameInput, binding.courseCodeInput};
         boolean ok = true;
-        for (TextInputLayout field:
-                emptyCheckedFields ) {
-            if (field.getEditText().getText().toString().isEmpty()){
+        for (TextInputLayout field :
+                emptyCheckedFields) {
+            if (field.getEditText().getText().toString().isEmpty()) {
                 field.setError(getString(R.string.error_empty_field));
                 field.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.shake));
                 ok = false;
@@ -117,14 +116,13 @@ public class EditCourseFragment extends Fragment {
         Course c = new Course();
         c.name = name;
         c.code = code;
-        if (position != -1){
-             CoursesDao.getInstance().editCourse(beingEdited.code, c);
-        }
-        else{
-             CoursesDao.getInstance().addCourse(c);
+        if (beingEdited != null) {
+            CoursesDao.getInstance().editCourse(beingEdited.code, c);
+        } else {
+            CoursesDao.getInstance().addCourse(c);
         }
 
 
-        UIUtils.swipeFragmentLeft(getParentFragmentManager(), new CourseViewFragment());
+        UIUtils.swipeFragmentLeft(getParentFragmentManager(), new AdminCourseViewFragment());
     }
 }

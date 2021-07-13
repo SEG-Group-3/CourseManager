@@ -1,4 +1,4 @@
-package com.segg3.coursemanager.auth.register.ui;
+package com.segg3.coursemanager.shared.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;

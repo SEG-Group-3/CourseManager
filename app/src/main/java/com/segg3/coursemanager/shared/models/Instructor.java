@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class Instructor extends User{
+public class Instructor extends User {
 
 
     //Attribute names for database
@@ -34,14 +34,13 @@ public class Instructor extends User{
 
     /**
      * Get an array courses based on a filter
+     *
      * @param filter String that is used to filter names
-     * @param field firebase document field that is used for filter
+     * @param field  firebase document field that is used for filter
      * @return course
      */
-    public Course[] searchCourses(String filter, String field)
-    {
-        switch (field)
-        {
+    public Course[] searchCourses(String filter, String field) {
+        switch (field) {
             case "name":
                 return searchByName(filter);
             case "code":
@@ -51,14 +50,11 @@ public class Instructor extends User{
         }
     }
 
-    private Course[] searchByName(String name)
-    {
+    private Course[] searchByName(String name) {
         List<Course> tmpCourses = new ArrayList<Course>();
 
-        for(Course c : courses.values())
-        {
-            if(c.name.toLowerCase().contains(name.toLowerCase()))
-            {
+        for (Course c : courses.values()) {
+            if (c.name.toLowerCase().contains(name.toLowerCase())) {
                 tmpCourses.add(c);
             }
         }
@@ -66,14 +62,11 @@ public class Instructor extends User{
         return (Course[]) tmpCourses.toArray();
     }
 
-    private Course[] searchByCode(String code)
-    {
+    private Course[] searchByCode(String code) {
         List<Course> tmpCourses = new ArrayList<Course>();
 
-        for(Course c : courses.values())
-        {
-            if(c.code.toLowerCase().contains(code.toLowerCase()))
-            {
+        for (Course c : courses.values()) {
+            if (c.code.toLowerCase().contains(code.toLowerCase())) {
                 tmpCourses.add(c);
             }
         }
@@ -83,11 +76,11 @@ public class Instructor extends User{
 
     /**
      * Set capacity for a course
-     * @param course course that will be edited
+     *
+     * @param course   course that will be edited
      * @param capacity new CourseHour to update date
      */
-    public void setCapacity(Course course, int capacity)
-    {
+    public void setCapacity(Course course, int capacity) {
         DocumentReference doc = courseDB.document(course.code);
 
         doc.update(String.valueOf(course.capacity), capacity).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -103,8 +96,7 @@ public class Instructor extends User{
         });
     }
 
-    public void setCapacity(String courseID, int capacity)
-    {
+    public void setCapacity(String courseID, int capacity) {
         DocumentReference doc = courseDB.document(courseID);
 
         doc.update(CAPACITY_KEY, capacity).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -126,11 +118,11 @@ public class Instructor extends User{
 
     /**
      * Set Course hours of a course
+     *
      * @param course course that will edited
-     * @param date new CourseHour to update date
+     * @param date   new CourseHour to update date
      */
-    public void setCourseHours (Course course,  CourseHours date)
-    {
+    public void setCourseHours(Course course, CourseHours date) {
         DocumentReference doc = courseDB.document(course.code);
 
         doc.update(String.valueOf(course.courseHours), date).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -169,11 +161,11 @@ public class Instructor extends User{
 
     /**
      * Set description of a course
+     *
      * @param course course that will edited
-     * @param desc String that will replace old desc
+     * @param desc   String that will replace old desc
      */
-    public void setDesc(Course course, String desc)
-    {
+    public void setDesc(Course course, String desc) {
         DocumentReference doc = courseDB.document(course.code);
 
         doc.update(course.description, desc).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -189,8 +181,7 @@ public class Instructor extends User{
         });
     }
 
-    public void setDesc(String courseID, String desc)
-    {
+    public void setDesc(String courseID, String desc) {
         DocumentReference doc = courseDB.document(courseID);
 
         doc.update(DECS_KEY, desc).addOnSuccessListener(new OnSuccessListener<Void>() {

@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class DataAccessObject<T extends DataObject >  {
+public class DataAccessObject<T extends DataObject> {
     protected final HashMap<String, String> keyToIdMap = new HashMap<>();
     private final CollectionReference collectionRef;
     private final Class<T> valueType;
@@ -38,7 +38,7 @@ public class DataAccessObject<T extends DataObject >  {
                 try {
                     newObject = doc.toObject(valueType);
                     newObject.id = doc.getId();
-                } catch (Exception ignore){
+                } catch (Exception ignore) {
                     Log.d("DAO", "DataAccessObject: Failed to deserialize " + doc.getId() + " ignoring.");
                     continue;
                 }
@@ -46,7 +46,7 @@ public class DataAccessObject<T extends DataObject >  {
                 switch (dc.getType()) {
                     case ADDED:
                         // Try to remove a key if repetitions are found
-                        if (keyToIdMap.containsKey(newObject.getPrimaryKey())){
+                        if (keyToIdMap.containsKey(newObject.getPrimaryKey())) {
                             delete(newObject.getPrimaryKey());
                             Log.d("DAO", "DataAccessObject: Found repeated key " + doc.getId() +
                                     " while building the cache.");

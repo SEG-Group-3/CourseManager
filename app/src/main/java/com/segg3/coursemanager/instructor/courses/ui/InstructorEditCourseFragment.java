@@ -24,9 +24,12 @@ import com.segg3.coursemanager.R;
 import com.segg3.coursemanager.databinding.DialogCourseHourBinding;
 import com.segg3.coursemanager.databinding.FragmentInstructorEditCourseBinding;
 import com.segg3.coursemanager.shared.adapters.CourseHoursListAdapter;
+import com.segg3.coursemanager.shared.adapters.UserListAdapter;
 import com.segg3.coursemanager.shared.dao.CoursesDao;
+import com.segg3.coursemanager.shared.dao.UsersDao;
 import com.segg3.coursemanager.shared.models.Course;
 import com.segg3.coursemanager.shared.models.CourseHours;
+import com.segg3.coursemanager.shared.models.User;
 import com.segg3.coursemanager.shared.utils.UIUtils;
 
 import org.jetbrains.annotations.NotNull;
@@ -55,7 +58,7 @@ public class InstructorEditCourseFragment extends Fragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                UIUtils.swipeFragmentLeft(getParentFragmentManager(), new MyCourseViewFragment());
+                UIUtils.swipeFragmentLeft(getParentFragmentManager(), new InstructorMyCourseViewFragment());
             }
         });
 
@@ -83,7 +86,6 @@ public class InstructorEditCourseFragment extends Fragment {
         binding.uidText.setText(beingEdited.name);
 
 
-
         // Add an hour when button is clicked
         binding.courseHoursFab.setOnClickListener(this::onAddCourseClicked);
         recyclerView = binding.courseHoursRecyclerView;
@@ -91,6 +93,7 @@ public class InstructorEditCourseFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.scrollToPosition(0);
 
+        // Setup course hours
         mutCourseHours = new ArrayList<>();
         for (String c : beingEdited.courseHours) {
             mutCourseHours.add(new CourseHours(c));
@@ -98,6 +101,18 @@ public class InstructorEditCourseFragment extends Fragment {
 
         courseListAdapter = new CourseHoursListAdapter(mutCourseHours, this::onCourseHourClicked);
         recyclerView.setAdapter(courseListAdapter);
+
+        // Setup course students
+        List<User> students = new ArrayList<>();
+        for (String u : beingEdited.enrolled) {
+            students.add(UsersDao.getInstance().getUser(u));
+        }
+
+        UserListAdapter userListAdapter = new UserListAdapter(students);
+        LinearLayoutManager layoutManager2 = new LinearLayoutManager(getContext());
+        binding.courseStudentsRecyclerView.setLayoutManager(layoutManager2);
+        binding.courseStudentsRecyclerView.scrollToPosition(0);
+        binding.courseStudentsRecyclerView.setAdapter(userListAdapter);
 
 
         // Swipe stuff to the left to delete it
@@ -112,7 +127,7 @@ public class InstructorEditCourseFragment extends Fragment {
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                int position = viewHolder.getAdapterPosition();
+                int position = viewHolder.getLayoutPosition();
                 mutCourseHours.remove(position);
                 updateRecyclerView();
                 UIUtils.createToast(getContext(), "Swiped something...");
@@ -121,8 +136,6 @@ public class InstructorEditCourseFragment extends Fragment {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(touchHelperCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
-
-        // binding.courseHoursRecyclerView...
 
         return view;
     }
@@ -136,16 +149,16 @@ public class InstructorEditCourseFragment extends Fragment {
                             10 * courseHourBinding.minutePicker.getValue(),
                             30 + 5 * courseHourBinding.durationPicker.getValue());
 
-                    boolean intersect=CourseHours.courseHoursIntersect(cw,mutCourseHours);
+                    boolean intersect = CourseHours.courseHoursIntersect(cw, mutCourseHours);
                     if (!intersect) {
                         mutCourseHours.add(cw);
                         updateRecyclerView();
-                    }
-                    else{
+                    } else {
                         UIUtils.createToast(getContext(), "This Course Hour intersects with others");
                     }
-                } )
-                .setNegativeButton("Cancel", (dialog, which) -> {});
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> {
+                });
         builder.show();
     }
 
@@ -153,7 +166,7 @@ public class InstructorEditCourseFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull @NotNull MenuItem item) {
         UIUtils.createYesNoMenu("Unassign from course", "Do you really want to unassign this course?", getActivity(), (dialog, which) -> {
             CoursesDao.getInstance().unAssignInstructor(beingEdited.code);
-            UIUtils.swipeFragmentLeft(getParentFragmentManager(), new MyCourseViewFragment());
+            UIUtils.swipeFragmentLeft(getParentFragmentManager(), new InstructorMyCourseViewFragment());
         });
         return super.onOptionsItemSelected(item);
     }
@@ -164,32 +177,32 @@ public class InstructorEditCourseFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    private MaterialAlertDialogBuilder CreateCourseHoursBuilder(){
+    private MaterialAlertDialogBuilder CreateCourseHoursBuilder() {
 
-        return CreateCourseHoursBuilder(0,0,0,0);
+        return CreateCourseHoursBuilder(0, 0, 0, 0);
     }
 
-    private MaterialAlertDialogBuilder CreateCourseHoursBuilder(CourseHours c){
+    private MaterialAlertDialogBuilder CreateCourseHoursBuilder(CourseHours c) {
         return CreateCourseHoursBuilder(c.weekDay.getValue() - 1, c.start.hour, c.start.minute, c.durations);
     }
 
-    private MaterialAlertDialogBuilder CreateCourseHoursBuilder(int weekDay, int hour, int min, int duration){
+    private MaterialAlertDialogBuilder CreateCourseHoursBuilder(int weekDay, int hour, int min, int duration) {
         LayoutInflater inflater = getLayoutInflater();
         View popupView = inflater.inflate(R.layout.dialog_course_hour, recyclerView, false);
         courseHourBinding = DialogCourseHourBinding.bind(popupView);
         // Set Weekdays
         NumberPicker weekPicker = popupView.findViewById(R.id.weekday_picker);
         List<String> values = new ArrayList<>();
-        for (DayOfWeek dayOfWeek: DayOfWeek.values()){
+        for (DayOfWeek dayOfWeek : DayOfWeek.values()) {
             values.add(dayOfWeek.toString());
         }
         String[] valuesString = new String[DayOfWeek.values().length];
         values.toArray(valuesString);
         weekPicker.setDisplayedValues(valuesString);
-        weekPicker.setMaxValue(valuesString.length-1);
+        weekPicker.setMaxValue(valuesString.length - 1);
         weekPicker.setMinValue(0);
 
-        weekPicker.setValue(Math.max(0, Math.min(valuesString.length-1, weekDay)));
+        weekPicker.setValue(Math.max(0, Math.min(valuesString.length - 1, weekDay)));
 
         // Set Hour
         NumberPicker hourPicker = popupView.findViewById(R.id.hour_picker);
@@ -204,16 +217,16 @@ public class InstructorEditCourseFragment extends Fragment {
         // Only show numbers in steps of 10
         int minDuration = 0;
         int maxDuration = 60;
-        String[] minutesStrings = new String[(maxDuration-minDuration)/10];
+        String[] minutesStrings = new String[(maxDuration - minDuration) / 10];
         for (int i = 0; i < minutesStrings.length; i++) {
             minutesStrings[i] = String.valueOf(minDuration + i * 10);
         }
 
         minutePicker.setDisplayedValues(minutesStrings);
         minutePicker.setMinValue(0);
-        minutePicker.setMaxValue(minutesStrings.length-1);
+        minutePicker.setMaxValue(minutesStrings.length - 1);
 
-        minutePicker.setValue(Math.max(minDuration, Math.min(minutesStrings.length-1, min / 10)));
+        minutePicker.setValue(Math.max(minDuration, Math.min(minutesStrings.length - 1, min / 10)));
 
 
         // Set Duration
@@ -222,25 +235,25 @@ public class InstructorEditCourseFragment extends Fragment {
         // Only show numbers in steps of 5
         minDuration = 30;
         maxDuration = 180;
-        String[] durationStrings = new String[(maxDuration-minDuration)/5];
+        String[] durationStrings = new String[(maxDuration - minDuration) / 5];
         for (int i = 0; i < durationStrings.length; i++) {
             durationStrings[i] = String.valueOf(minDuration + i * 5);
         }
 
         durationPicker.setDisplayedValues(durationStrings);
         durationPicker.setMinValue(0);
-        durationPicker.setMaxValue(durationStrings.length-1);
+        durationPicker.setMaxValue(durationStrings.length - 1);
 
-        durationPicker.setValue((Math.max(minDuration, Math.min(maxDuration, duration)) - minDuration)/5);
+        durationPicker.setValue((Math.max(minDuration, Math.min(maxDuration, duration)) - minDuration) / 5);
 
-        MaterialAlertDialogBuilder builder = new  MaterialAlertDialogBuilder(getContext())
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext())
                 .setTitle("Pick a time")
                 .setView(popupView);
 
         return builder;
     }
 
-    private void updateRecyclerView(){
+    private void updateRecyclerView() {
         courseListAdapter = new CourseHoursListAdapter(mutCourseHours, this::onCourseHourClicked);
         recyclerView.setAdapter(courseListAdapter);
     }
@@ -260,23 +273,23 @@ public class InstructorEditCourseFragment extends Fragment {
                             30 + 5 * courseHourBinding.durationPicker.getValue());
 
 
-                    boolean intersect=CourseHours.courseHoursIntersect(cw,mutCourseHours);
+                    boolean intersect = CourseHours.courseHoursIntersect(cw, mutCourseHours);
                     if (!intersect) {
                         int position = recyclerView.getChildLayoutPosition(v);
                         mutCourseHours.remove(position);
                         mutCourseHours.add(cw);
                         updateRecyclerView();
-                    }
-                    else{
+                    } else {
                         UIUtils.createToast(getContext(), "This Course Hour intersects with others");
                     }
-                } )
-                .setNegativeButton("Cancel", (dialog, which) -> {});
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> {
+                });
         builder.show();
     }
 
     private void onCancelEdit(View v) {
-        UIUtils.swipeFragmentLeft(getParentFragmentManager(), new MyCourseViewFragment());
+        UIUtils.swipeFragmentLeft(getParentFragmentManager(), new InstructorMyCourseViewFragment());
     }
 
     private void onApplyEdit(View v) {
@@ -313,11 +326,11 @@ public class InstructorEditCourseFragment extends Fragment {
         beingEdited.description = binding.courseDescriptionInput.getEditText().getText().toString();
         beingEdited.capacity = Integer.parseUnsignedInt(capacity);
         List<String> courseHoursStr = new ArrayList<>();
-        for (CourseHours c:mutCourseHours) {
+        for (CourseHours c : mutCourseHours) {
             courseHoursStr.add(c.toString());
         }
         beingEdited.courseHours = courseHoursStr;
         CoursesDao.getInstance().editCourse(beingEdited.code, beingEdited);
-        UIUtils.swipeFragmentLeft(getParentFragmentManager(), new MyCourseViewFragment());
+        UIUtils.swipeFragmentLeft(getParentFragmentManager(), new InstructorMyCourseViewFragment());
     }
 }

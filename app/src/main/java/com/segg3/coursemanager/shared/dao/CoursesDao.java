@@ -116,8 +116,7 @@ public class CoursesDao extends DataAccessObject<Course> {
     public List<Course> getStudentCourses(String studentName) {
         List<Course> filtered = new ArrayList<>();
         for (Course c : Objects.requireNonNull(cache.getValue()).values()) {
-            if (c.enrolled.contains(studentName))
-            {
+            if (c.enrolled.contains(studentName)) {
                 filtered.add(c);
             }
         }
@@ -128,9 +127,9 @@ public class CoursesDao extends DataAccessObject<Course> {
         User u = UsersDao.getInstance().get(userName);
         Course c = get(code);
         List<Course> enrolled = getStudentCourses(userName);
-        if(u.type.toLowerCase().equals("student") && c.registeredStudents < c.capacity) {
+        if (u.type.toLowerCase().equals("student") && c.registeredStudents < c.capacity) {
             //checks if user is already enrolled
-            for (Course course: enrolled) {
+            for (Course course : enrolled) {
                 if (course.code.equals(code)) {
                     return false;
                 }
@@ -139,16 +138,12 @@ public class CoursesDao extends DataAccessObject<Course> {
             //checks for time conflict
             CourseHours courseHour;
             CourseHours enrolledCourseHour;
-            for(String courseHourRaw : c.courseHours)
-            {
+            for (String courseHourRaw : c.courseHours) {
                 courseHour = new CourseHours(courseHourRaw);
-                for(Course course : enrolled)
-                {
-                    for(String enrolledCourseHourRaw : course.courseHours)
-                    {
+                for (Course course : enrolled) {
+                    for (String enrolledCourseHourRaw : course.courseHours) {
                         enrolledCourseHour = new CourseHours(enrolledCourseHourRaw);
-                        if(courseHour.compareTo(enrolledCourseHour) == 0)
-                        {
+                        if (courseHour.compareTo(enrolledCourseHour) == 0) {
                             return false;
                         }
                     }
@@ -159,9 +154,7 @@ public class CoursesDao extends DataAccessObject<Course> {
             c.registeredStudents++;
             put(c);
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
@@ -170,15 +163,12 @@ public class CoursesDao extends DataAccessObject<Course> {
         User u = UsersDao.getInstance().get(userName);
         Course c = get(code);
 
-        if(c.enrolled.contains(u.userName))
-        {
+        if (c.enrolled.contains(u.userName)) {
             c.enrolled.remove(u.userName);
             c.registeredStudents--;
             put(c);
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }

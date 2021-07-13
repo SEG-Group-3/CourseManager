@@ -12,12 +12,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.segg3.coursemanager.administrator.courses.ui.CourseViewFragment;
-import com.segg3.coursemanager.administrator.users.ui.UsersViewFragment;
-import com.segg3.coursemanager.auth.login.ui.LoginActivity;
+import com.segg3.coursemanager.administrator.courses.ui.AdminCourseViewFragment;
+import com.segg3.coursemanager.administrator.users.ui.AdminUsersViewFragment;
 import com.segg3.coursemanager.databinding.ActivityMainBinding;
-import com.segg3.coursemanager.instructor.courses.ui.MyCourseViewFragment;
+import com.segg3.coursemanager.instructor.courses.ui.InstructorCourseViewFragment;
+import com.segg3.coursemanager.instructor.courses.ui.InstructorMyCourseViewFragment;
 import com.segg3.coursemanager.shared.fragments.HomeFragment;
+import com.segg3.coursemanager.shared.fragments.LoginActivity;
 import com.segg3.coursemanager.shared.models.User;
 import com.segg3.coursemanager.shared.utils.UIUtils;
 import com.segg3.coursemanager.shared.viewmodels.AuthViewModel;
@@ -28,16 +29,18 @@ import com.segg3.coursemanager.student.courses.ui.StudentMyCourseViewFragment;
 
 public class MainActivity extends AppCompatActivity {
     public static MainActivity instance;
+    public AuthViewModel auth;
     private ActivityMainBinding binding;
     private UsersViewModel users;
     private CoursesViewModel courses;
-    public AuthViewModel auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         instance = this;
         binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
 
         users = new ViewModelProvider(this).get(UsersViewModel.class);
         courses = new ViewModelProvider(this).get(CoursesViewModel.class);
@@ -73,6 +76,11 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
+        auth.getUser().observe(this, this::createUserMenu);
+
+        setContentView(binding.getRoot());
+
+
     }
 
     @Override
@@ -80,11 +88,19 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         instance = this;
 
+        // If credentials were not stored go to login screen
+        User u = auth.getUser().getValue();
+        createUserMenu(u);
+
+
+        UIUtils.swapViews(getSupportFragmentManager(), new HomeFragment());
+    }
+
+    public void createUserMenu(User u) {
+
         binding.navigationMenu.getMenu().clear();
         binding.navigationMenu.inflateMenu(R.menu.base_menu);
 
-        // If credentials were not stored go to login screen
-        User u = auth.getUser().getValue();
         if (u == null) {
             Log.v("ACCOUNT", "User is not logged in, redirecting to Login");
             ActivityOptions options = ActivityOptions.makeBasic();
@@ -92,10 +108,12 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent, options.toBundle());
             return;
         } else {
+            UIUtils.swapViews(getSupportFragmentManager(), new HomeFragment());
+
             View nav_header = binding.navigationMenu.getHeaderView(0);
             ((TextView) nav_header.findViewById(R.id.nav_head_username)).setText(u.userName);
             ((TextView) nav_header.findViewById(R.id.nav_head_usertype)).setText(u.type);
-            if (u.type.toLowerCase().equals("admin")){
+            if (u.type.toLowerCase().equals("admin")) {
                 binding.navigationMenu.inflateMenu(R.menu.admin_menu);
 
                 // Admin navigation
@@ -109,16 +127,15 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent, options.toBundle());
                         closeDrawer();
                     } else if (item.getItemId() == R.id.nav_edit_courses) {
-                        UIUtils.swapViews(getSupportFragmentManager(), new CourseViewFragment());
+                        UIUtils.swapViews(getSupportFragmentManager(), new AdminCourseViewFragment());
                     } else if (item.getItemId() == R.id.nav_edit_users) {
-                        UIUtils.swapViews(getSupportFragmentManager(), new UsersViewFragment());
+                        UIUtils.swapViews(getSupportFragmentManager(), new AdminUsersViewFragment());
                     }
 
                     closeDrawer();
                     return true;
                 });
-            }
-            else  if (u.type.toLowerCase().equals("instructor")){
+            } else if (u.type.toLowerCase().equals("instructor")) {
                 binding.navigationMenu.inflateMenu(R.menu.instructor_menu);
 
                 // Admin navigation
@@ -132,9 +149,9 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent, options.toBundle());
                         closeDrawer();
                     } else if (item.getItemId() == R.id.nav_instructor_edit_courses) {
-                        UIUtils.swapViews(getSupportFragmentManager(), new com.segg3.coursemanager.instructor.courses.ui.CourseViewFragment());
+                        UIUtils.swapViews(getSupportFragmentManager(), new InstructorCourseViewFragment());
                     } else if (item.getItemId() == R.id.nav_instructor_my_courses) {
-                        UIUtils.swapViews(getSupportFragmentManager(), new MyCourseViewFragment());
+                        UIUtils.swapViews(getSupportFragmentManager(), new InstructorMyCourseViewFragment());
                     }
 
                     closeDrawer();
@@ -142,8 +159,7 @@ public class MainActivity extends AppCompatActivity {
                 });
 
 
-            }
-            else{
+            } else {
                 binding.navigationMenu.inflateMenu(R.menu.student_menu);
 
                 // Admin navigation
@@ -168,9 +184,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }
-
-        setContentView(binding.getRoot());
-        UIUtils.swapViews(getSupportFragmentManager(), new HomeFragment());
     }
 
 

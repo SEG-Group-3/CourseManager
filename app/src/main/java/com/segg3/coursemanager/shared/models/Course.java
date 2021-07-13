@@ -28,7 +28,6 @@ public class Course extends DataObject {
     }
 
 
-
     //Setters
     public void setName(String name) {
         this.name = name;
@@ -55,20 +54,18 @@ public class Course extends DataObject {
 
         String tmp = "Course{";
 
-        tmp+="name='" + name + '\'';
-        tmp+="\tcode='" + code + '\'';
-        tmp+="\tid='" + id + '\'';
+        tmp += "name='" + name + '\'';
+        tmp += "\tcode='" + code + '\'';
+        tmp += "\tid='" + id + '\'';
 
-        tmp+="\tcourseHours{";
+        tmp += "\tcourseHours{";
 
 
-
-        tmp+="}";
-        tmp="}";
+        tmp += "}";
+        tmp = "}";
 
         return tmp;
     }
-
 
 
     @Override

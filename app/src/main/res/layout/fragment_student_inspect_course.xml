@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/course_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Course Name"
+            android:textAppearance="?textAppearanceHeadline5"
+            app:autoSizeMaxTextSize="20dp"
+            app:autoSizeMinTextSize="8dp" />
+
+        <TextView
+            android:id="@+id/course_description"
+            style="?textAppearanceBody1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10sp"
+            android:layout_weight="1"
+            android:text="Lorem ipsum dolor" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10sp"
+            android:autoSizeTextType="uniform"
+            android:gravity="bottom"
+            android:text="Schedule"
+            android:textAppearance="?textAppearanceCaption"
+            app:autoSizeMaxTextSize="10dp"
+            app:autoSizeMinTextSize="8dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/course_hours_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:layout_margin="10sp"
+            android:layout_weight="2"
+            android:background="@color/white" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.material.button.MaterialButton
+
+            android:id="@+id/cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="75dp"
+            android:layout_margin="12sp"
+            android:layout_weight="1"
+            android:text="Cancel"
+            android:textAllCaps="false"
+            app:cornerRadius="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:strokeColor="@color/white"
+            app:strokeWidth="2sp" />
+
+        <com.google.android.material.button.MaterialButton
+
+            android:id="@+id/apply_button"
+            android:layout_width="wrap_content"
+            android:layout_height="75dp"
+            android:layout_margin="12sp"
+            android:layout_weight="1"
+            android:text="Join/Drop"
+            android:textAllCaps="false"
+            app:cornerRadius="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:strokeColor="@color/white"
+            app:strokeWidth="2sp" />
+
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

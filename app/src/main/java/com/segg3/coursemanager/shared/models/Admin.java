@@ -17,24 +17,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class Admin extends User{
-
+public class Admin extends User {
 
 
     //Attribute names for database
     public static final String COURSENAME_KEY = "name";
     public static final String COURSECODE_KEY = "code";
-
-    // For reading database
-    private Consumer<List<Course>> listener = null;
-    private List<Course> listOfCourses = new ArrayList<>();
-
     //Database references for adding/deleting/editing courses/users
     private static final CollectionReference courseDB = FirebaseFirestore.getInstance().collection("Courses");
     private static final CollectionReference userDB = FirebaseFirestore.getInstance().collection("Users");
-
     // for adding course
     HashMap<String, Object> courseDatabase = new HashMap<>();
+    // For reading database
+    private Consumer<List<Course>> listener = null;
+    private List<Course> listOfCourses = new ArrayList<>();
 
     public void setListener(Consumer<List<Course>> listener) {
         this.listener = listener;
