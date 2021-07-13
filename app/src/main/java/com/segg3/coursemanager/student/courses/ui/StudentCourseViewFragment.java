@@ -2,96 +2,73 @@ package com.segg3.coursemanager.student.courses.ui;
 
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.SearchView;
 
-import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.segg3.coursemanager.R;
-import com.segg3.coursemanager.databinding.FragmentListViewBinding;
 import com.segg3.coursemanager.shared.adapters.CourseListAdapter;
 import com.segg3.coursemanager.shared.dao.CoursesDao;
-import com.segg3.coursemanager.shared.fragments.HomeFragment;
+import com.segg3.coursemanager.shared.fragments.ListFragmentTemplate;
 import com.segg3.coursemanager.shared.models.Course;
 import com.segg3.coursemanager.shared.utils.UIUtils;
-import com.segg3.coursemanager.shared.viewmodels.CoursesViewModel;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
 import java.util.List;
 
-public class StudentCourseViewFragment extends Fragment {
-    CourseListAdapter courseListAdapter;
-    RecyclerView recyclerView;
-    FragmentListViewBinding binding;
-    CoursesViewModel coursesViewModel;
-    List<Course> allCourses;
 
-    String query = "";
+public class StudentCourseViewFragment extends ListFragmentTemplate<Course, CourseListAdapter> {
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentListViewBinding.inflate(inflater);
-        View v = binding.getRoot();
-        recyclerView = binding.courseRecyclerView;
-        LinearLayoutManager layoutManager = new LinearLayoutManager(v.getContext());
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.scrollToPosition(0);
-
-        coursesViewModel = new ViewModelProvider(requireActivity()).get(CoursesViewModel.class);
-
-
-        binding.floatingActionButton.setVisibility(View.GONE);
-
-        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                UIUtils.swipeFragmentLeft(getParentFragmentManager(), new HomeFragment());
-            }
-        });
-
-
-        // Set Initial State
-        updateCourses();
-        // Update UI on change
-        binding.searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                query = newText;
-                updateCourses();
-                return false;
-            }
-        });
-        coursesViewModel.getCourses().observe(getViewLifecycleOwner(), courses -> updateCourses());
+    public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         UIUtils.setToolbarTitle(getActivity(), getString(R.string.courses));
-        return v;
+
+
+        List<Course> courseL = new ArrayList<>(CoursesDao.getInstance().getCourses().getValue().values());
+        setItems(new CourseListAdapter(courseL));
     }
 
-    public void updateCourses() {
-        allCourses = CoursesDao.getInstance().searchCourse(query);
-        courseListAdapter = new CourseListAdapter(allCourses, this::onCourseClicked);
-        recyclerView.setAdapter(courseListAdapter);
+    @Override
+    public void onResume() {
+        super.onResume();
+        List<Course> coursesL = new ArrayList<>(CoursesDao.getInstance().getCourses().getValue().values());
+        setItems(new CourseListAdapter(coursesL));
+        CoursesDao.getInstance().getCourses().observe(getViewLifecycleOwner(), courses -> {
+            List<Course> coursesList = new ArrayList<>(courses.values());
+            setItems(new CourseListAdapter(coursesList));
+        });
     }
 
-    public void onCourseClicked(View v) {
+    @NonNull
+    @Override
+    public CourseListAdapter filterQuery(@NonNull String query, @NonNull List<Course> items) {
+        List<Course> filtered = CoursesDao.getInstance().searchCourse(query);
+        return new CourseListAdapter(filtered);
+    }
+
+    @Override
+    public boolean onItemSwiped(@NonNull Course item) {
+        return false;
+    }
+
+    @Override
+    public void onAddClicked(View v) {
+        UIUtils.createToast(getContext(), "You cannot add courses!");
+    }
+
+    @Override
+    public void onItemClicked(@NonNull Course item) {
         //Finds the selected item
-        int position = recyclerView.getChildLayoutPosition(v);
-        Course clicked = allCourses.get(position);
+
         Fragment frag = new StudentInspectCourseViewFragment();
 
         Bundle args = new Bundle();
-        args.putString("code", clicked.code);
+        args.putString("code", item.code);
         args.putBoolean("viewingAll", true);
         frag.setArguments(args);
 

@@ -2,10 +2,16 @@ package com.segg3.coursemanager.shared.dao;
 
 import androidx.lifecycle.LiveData;
 
+import com.segg3.coursemanager.shared.filter.CodeFilter;
+import com.segg3.coursemanager.shared.filter.NameFilter;
+import com.segg3.coursemanager.shared.models.Course;
 import com.segg3.coursemanager.shared.models.User;
 import com.segg3.coursemanager.shared.utils.TaskCallback;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 public class UsersDao extends DataAccessObject<User> {
     private static UsersDao instance;
@@ -18,6 +24,17 @@ public class UsersDao extends DataAccessObject<User> {
         if (instance == null)
             instance = new UsersDao();
         return instance;
+    }
+
+
+    public List<User> searchUsers(String query) {
+        List<User> filtered = new ArrayList<>();
+        query = query.toLowerCase();
+        for (User u : cache.getValue().values())
+            if (u.userName.toLowerCase().contains(query) || u.type.toLowerCase().contains(query) || u.id.toLowerCase().contains(query))
+                filtered.add(u);
+
+        return filtered;
     }
 
     public LiveData<HashMap<String, User>> getUsers() {
