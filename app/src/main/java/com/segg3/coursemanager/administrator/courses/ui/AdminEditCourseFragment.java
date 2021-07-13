@@ -19,7 +19,6 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.segg3.coursemanager.R;
 import com.segg3.coursemanager.databinding.FragmentEditCourseBinding;
 import com.segg3.coursemanager.shared.dao.CoursesDao;
-import com.segg3.coursemanager.shared.fragments.HomeFragment;
 import com.segg3.coursemanager.shared.models.Course;
 import com.segg3.coursemanager.shared.utils.UIUtils;
 import com.segg3.coursemanager.shared.viewmodels.CoursesViewModel;
@@ -35,8 +34,8 @@ public class AdminEditCourseFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_edit_course, container, false);
-        binding = FragmentEditCourseBinding.bind(view);
+        binding = FragmentEditCourseBinding.inflate(inflater);
+        View view = binding.getRoot();
         coursesViewModel = new ViewModelProvider(requireActivity()).get(CoursesViewModel.class);
 
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
@@ -61,9 +60,6 @@ public class AdminEditCourseFragment extends Fragment {
             binding.courseNameInput.getEditText().setText(beingEdited.name);
             binding.courseCodeInput.getEditText().setText(beingEdited.code);
             binding.uidText.setText(beingEdited.getId());
-        } else {
-            UIUtils.createToast(getContext(), "A missing course was clicked");
-            UIUtils.swipeFragmentLeft(getParentFragmentManager(), new HomeFragment());
         }
         return view;
     }

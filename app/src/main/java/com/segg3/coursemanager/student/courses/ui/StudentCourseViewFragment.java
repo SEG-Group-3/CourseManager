@@ -73,9 +73,7 @@ public class StudentCourseViewFragment extends Fragment {
                 return false;
             }
         });
-        coursesViewModel.getCourses().observe(getViewLifecycleOwner(), courses -> {
-            updateCourses();
-        });
+        coursesViewModel.getCourses().observe(getViewLifecycleOwner(), courses -> updateCourses());
         UIUtils.setToolbarTitle(getActivity(), getString(R.string.courses));
         return v;
     }
@@ -90,8 +88,6 @@ public class StudentCourseViewFragment extends Fragment {
         //Finds the selected item
         int position = recyclerView.getChildLayoutPosition(v);
         Course clicked = allCourses.get(position);
-        //TODO ask student to enrol to the course. if yes,
-        // check if it conflicts with the time of other courses and enrol
         Fragment frag = new StudentInspectCourseViewFragment();
 
         Bundle args = new Bundle();

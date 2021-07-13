@@ -28,16 +28,16 @@ public class UsersDao extends DataAccessObject<User> {
         return get(userName);
     }
 
-    public TaskCallback<?> deleteUser(String userName) {
+    public TaskCallback<Boolean> deleteUser(String userName) {
         return this.delete(userName);
     }
 
-    public TaskCallback<?> addUser(User user) {
+    public TaskCallback<User> addUser(User user) {
         return this.add(user);
     }
 
-    public TaskCallback<?> editUser(String oldUserName, User user) {
-        TaskCallback callback = new TaskCallback();
+    public TaskCallback<User> editUser(String oldUserName, User user) {
+        TaskCallback<User> callback = new TaskCallback<>();
 
         // If old userName is invalid just add a new one
         if (this.get(oldUserName) == null) {

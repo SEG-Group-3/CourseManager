@@ -17,7 +17,7 @@ public class Course extends DataObject {
     public List<String> courseHours = new ArrayList<>();
     public List<String> enrolled = new ArrayList<>();
 
-    public Course(){
+    public Course() {
         this.id = "";
     }
 
@@ -62,7 +62,6 @@ public class Course extends DataObject {
 
 
         tmp += "}";
-        tmp = "}";
 
         return tmp;
     }

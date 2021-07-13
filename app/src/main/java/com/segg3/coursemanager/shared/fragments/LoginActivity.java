@@ -61,7 +61,6 @@ public class LoginActivity extends AppCompatActivity {
             // Call authentication code authenticate Here!!!
             if (auth.login(UIUtils.getFieldText(binding.usernameInput), UIUtils.getFieldText(binding.passwordInput))) {
                 UIUtils.createToast(getApplicationContext(), "Welcome!");
-                MainActivity.instance.createUserMenu(auth.getUser().getValue());
                 finish();
             } else
                 UIUtils.createToast(getApplicationContext(), "The user name or password is incorrect");

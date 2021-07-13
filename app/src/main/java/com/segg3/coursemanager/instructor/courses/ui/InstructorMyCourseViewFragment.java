@@ -62,9 +62,9 @@ public class InstructorMyCourseViewFragment extends Fragment {
         recyclerView.setAdapter(courseListAdapter);
         // Update UI on change
 
-        coursesViewModel.getCourses().observe(getViewLifecycleOwner(), courses -> {
-            courses = CoursesDao.getInstance().getInstructorCourses(auth.getUser().getValue().userName);
-            courseListAdapter = new CourseListAdapter(courses, this::onCourseClicked);
+        coursesViewModel.getCourses().observe(getViewLifecycleOwner(), courseList -> {
+            courseList = CoursesDao.getInstance().getInstructorCourses(auth.getUser().getValue().userName);
+            courseListAdapter = new CourseListAdapter(courseList, this::onCourseClicked);
             recyclerView.setAdapter(courseListAdapter);
         });
 
@@ -72,19 +72,16 @@ public class InstructorMyCourseViewFragment extends Fragment {
         return v;
     }
 
-    public void onAddClicked(View v) {
-
-    }
 
     public void onCourseClicked(View v) {
         // Finds the selected item
         int position = recyclerView.getChildLayoutPosition(v);
         // Setup Fragment arguments
 
-        Fragment instructor_edit_course = new InstructorEditCourseFragment();
+        Fragment instructorEditCourseFragment = new InstructorEditCourseFragment();
         Bundle args = new Bundle();
         args.putString("code", courses.get(position).code);
-        instructor_edit_course.setArguments(args);
-        UIUtils.swipeFragmentRight(getParentFragmentManager(), instructor_edit_course);
+        instructorEditCourseFragment.setArguments(args);
+        UIUtils.swipeFragmentRight(getParentFragmentManager(), instructorEditCourseFragment);
     }
 }

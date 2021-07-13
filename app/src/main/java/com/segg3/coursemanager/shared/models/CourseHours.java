@@ -1,5 +1,7 @@
 package com.segg3.coursemanager.shared.models;
 
+import com.google.common.base.Objects;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.time.DayOfWeek;
@@ -25,16 +27,12 @@ public class CourseHours implements Comparable<CourseHours> {
         this.durations = duration;
     }
 
-    public CourseHours(String CourseHoursRaw) {
-        String[] tmpParam = CourseHoursRaw.split("\\|");
+    public CourseHours(String courseHoursRaw) {
+        String[] tmpParam = courseHoursRaw.split("\\|");
 
         this.weekDay = DayOfWeek.valueOf(tmpParam[0]);
-
         this.start = new Time(tmpParam[1]);
-
-        Integer duration = new Integer(tmpParam[2]);
-
-        this.durations = duration.intValue();
+        this.durations = Integer.parseInt(tmpParam[2]);
     }
 
     public static boolean courseHoursIntersect(CourseHours course, List<CourseHours> otherCourses) {
@@ -46,8 +44,16 @@ public class CourseHours implements Comparable<CourseHours> {
         return false;
     }
 
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(weekDay, start, durations);
+    }
+
     @Override
     public int compareTo(CourseHours courseHours) {
+
+
         if (this.weekDay.compareTo(courseHours.weekDay) != 0) {
             return Math.max(-1, Math.min(1, this.weekDay.compareTo(courseHours.weekDay)));
         }

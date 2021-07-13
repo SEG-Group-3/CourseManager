@@ -76,7 +76,7 @@ public class DataAccessObject<T extends DataObject> {
         return cache.getValue().get(key);
     }
 
-    protected TaskCallback<?> add(T object) {
+    protected TaskCallback<T> add(T object) {
         TaskCallback<T> callback = new TaskCallback<>();
         if (cache.getValue().containsKey(object.getPrimaryKey())) {
             callback.lazyError(new KeyException("Key is already present"));
@@ -95,7 +95,7 @@ public class DataAccessObject<T extends DataObject> {
         return callback;
     }
 
-    protected TaskCallback<?> put(T object) {
+    protected TaskCallback<T> put(T object) {
         TaskCallback<T> callback = new TaskCallback<>();
         if (!cache.getValue().containsKey(object.getPrimaryKey())) {
             return add(object);
@@ -116,7 +116,7 @@ public class DataAccessObject<T extends DataObject> {
         return callback;
     }
 
-    protected TaskCallback<?> delete(String key) {
+    protected TaskCallback<Boolean> delete(String key) {
         TaskCallback<Boolean> callback = new TaskCallback<>();
 
         String id = keyToIdMap.get(key);

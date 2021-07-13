@@ -62,9 +62,7 @@ public class StudentMyCourseViewFragment extends Fragment {
         recyclerView.setAdapter(courseListAdapter);
         // Update UI on change
 
-        coursesViewModel.getCourses().observe(getViewLifecycleOwner(), courses -> {
-            updateCourses();
-        });
+        coursesViewModel.getCourses().observe(getViewLifecycleOwner(), courseList -> updateCourses());
         updateCourses();
         UIUtils.setToolbarTitle(getActivity(), "My courses");
         return v;

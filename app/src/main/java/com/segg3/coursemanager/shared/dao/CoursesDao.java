@@ -34,16 +34,16 @@ public class CoursesDao extends DataAccessObject<Course> {
         return get(courseCode);
     }
 
-    public TaskCallback<?> deleteCourse(String code) {
+    public TaskCallback<Boolean> deleteCourse(String code) {
         return this.delete(code);
     }
 
-    public TaskCallback<?> addCourse(Course course) {
+    public TaskCallback<Course> addCourse(Course course) {
         return this.add(course);
     }
 
-    public TaskCallback<?> editCourse(String oldCode, Course course) {
-        TaskCallback callback = new TaskCallback();
+    public TaskCallback<Course> editCourse(String oldCode, Course course) {
+        TaskCallback<Course> callback = new TaskCallback<>();
         //If old userName is invalid just add a new one
         if (this.get(oldCode) == null) {
             return addCourse(course);
@@ -100,7 +100,7 @@ public class CoursesDao extends DataAccessObject<Course> {
     public boolean assignInstructor(String userName, String code) {
         User u = UsersDao.getInstance().get(userName);
         Course c = get(code);
-        if (u.type.toLowerCase().equals("instructor") && c.instructor.equals("")) {
+        if (u.type.equalsIgnoreCase("instructor") && c.instructor.equals("")) {
             c.instructor = u.userName;
             c.courseHours = new ArrayList<>();
             c.capacity = -1;
@@ -127,7 +127,7 @@ public class CoursesDao extends DataAccessObject<Course> {
         User u = UsersDao.getInstance().get(userName);
         Course c = get(code);
         List<Course> enrolled = getStudentCourses(userName);
-        if (u.type.toLowerCase().equals("student") && c.registeredStudents < c.capacity) {
+        if (u.type.equalsIgnoreCase("student") && c.registeredStudents < c.capacity) {
             //checks if user is already enrolled
             for (Course course : enrolled) {
                 if (course.code.equals(code)) {
@@ -154,9 +154,8 @@ public class CoursesDao extends DataAccessObject<Course> {
             c.registeredStudents++;
             put(c);
             return true;
-        } else {
+        } else
             return false;
-        }
     }
 
     public boolean leaveCourse(String userName, String code) {

@@ -47,7 +47,6 @@ public class InstructorEditCourseFragment extends Fragment {
     List<CourseHours> mutCourseHours;
     DialogCourseHourBinding courseHourBinding;
 
-    int position = -1;
 
     @Nullable
     @Override
@@ -115,7 +114,7 @@ public class InstructorEditCourseFragment extends Fragment {
         binding.courseStudentsRecyclerView.setAdapter(userListAdapter);
 
 
-        // Swipe stuff to the left to delete it
+        // Swipe course hour to the left to delete it
         ItemTouchHelper.SimpleCallback touchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
             @Override
@@ -127,21 +126,22 @@ public class InstructorEditCourseFragment extends Fragment {
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                int position = viewHolder.getLayoutPosition();
-                mutCourseHours.remove(position);
+                int layoutPosition = viewHolder.getLayoutPosition();
+                mutCourseHours.remove(layoutPosition);
                 updateRecyclerView();
-                UIUtils.createToast(getContext(), "Swiped something...");
+                UIUtils.createToast(getContext(), "Removed session");
             }
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(touchHelperCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
+        // TODO Swiping students to the right would also be a good idea
 
         return view;
     }
 
     private void onAddCourseClicked(View view) {
-        MaterialAlertDialogBuilder builder = CreateCourseHoursBuilder()
+        MaterialAlertDialogBuilder builder = createCourseHoursBuilder()
                 .setPositiveButton("Add", (dialog, which) -> {
                     CourseHours cw = new CourseHours(
                             courseHourBinding.weekdayPicker.getValue() + 1,
@@ -177,16 +177,16 @@ public class InstructorEditCourseFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    private MaterialAlertDialogBuilder CreateCourseHoursBuilder() {
+    private MaterialAlertDialogBuilder createCourseHoursBuilder() {
 
-        return CreateCourseHoursBuilder(0, 0, 0, 0);
+        return createCourseHoursBuilder(0, 0, 0, 0);
     }
 
-    private MaterialAlertDialogBuilder CreateCourseHoursBuilder(CourseHours c) {
-        return CreateCourseHoursBuilder(c.weekDay.getValue() - 1, c.start.hour, c.start.minute, c.durations);
+    private MaterialAlertDialogBuilder createCourseHoursBuilder(CourseHours c) {
+        return createCourseHoursBuilder(c.weekDay.getValue() - 1, c.start.hour, c.start.minute, c.durations);
     }
 
-    private MaterialAlertDialogBuilder CreateCourseHoursBuilder(int weekDay, int hour, int min, int duration) {
+    private MaterialAlertDialogBuilder createCourseHoursBuilder(int weekDay, int hour, int min, int duration) {
         LayoutInflater inflater = getLayoutInflater();
         View popupView = inflater.inflate(R.layout.dialog_course_hour, recyclerView, false);
         courseHourBinding = DialogCourseHourBinding.bind(popupView);
@@ -246,11 +246,9 @@ public class InstructorEditCourseFragment extends Fragment {
 
         durationPicker.setValue((Math.max(minDuration, Math.min(maxDuration, duration)) - minDuration) / 5);
 
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext())
+        return new MaterialAlertDialogBuilder(getContext())
                 .setTitle("Pick a time")
                 .setView(popupView);
-
-        return builder;
     }
 
     private void updateRecyclerView() {
@@ -264,7 +262,7 @@ public class InstructorEditCourseFragment extends Fragment {
 
         CourseHours courseHours = mutCourseHours.get(index);
 
-        MaterialAlertDialogBuilder builder = CreateCourseHoursBuilder(courseHours)
+        MaterialAlertDialogBuilder builder = createCourseHoursBuilder(courseHours)
                 .setPositiveButton("Apply", (dialog, which) -> {
                     CourseHours cw = new CourseHours(
                             courseHourBinding.weekdayPicker.getValue() + 1,

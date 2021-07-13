@@ -63,20 +63,20 @@ public class AdminUsersViewFragment extends ListFragmentTemplate<User, UserListA
 
     @Override
     public void onAddClicked(View v) {
-        Fragment edit_user_frag = new AdminEditUserFragment();
+        Fragment adminEditUserFragment = new AdminEditUserFragment();
         Bundle args = new Bundle();
-        edit_user_frag.setArguments(args);
-        UIUtils.swipeFragmentRight(getParentFragmentManager(), edit_user_frag);
+        adminEditUserFragment.setArguments(args);
+        UIUtils.swipeFragmentRight(getParentFragmentManager(), adminEditUserFragment);
     }
 
     @Override
     public void onItemClicked(@NonNull User item) {
         // Finds the selected item
         // Setup Fragment arguments
-        Fragment edit_user_frag = new AdminEditUserFragment();
+        Fragment adminEditUserFragment = new AdminEditUserFragment();
         Bundle args = new Bundle();
         args.putString("userName", item.userName);
-        edit_user_frag.setArguments(args);
-        UIUtils.swipeFragmentRight(getParentFragmentManager(), edit_user_frag);
+        adminEditUserFragment.setArguments(args);
+        UIUtils.swipeFragmentRight(getParentFragmentManager(), adminEditUserFragment);
     }
 }

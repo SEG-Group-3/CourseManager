@@ -70,18 +70,18 @@ public class AdminCourseViewFragment extends ListFragmentTemplate<Course, Course
 
     @Override
     public void onAddClicked(View v) {
-        Fragment edit_course_frag = new AdminEditCourseFragment();
+        Fragment adminEditCourseFragment = new AdminEditCourseFragment();
         Bundle args = new Bundle();
-        edit_course_frag.setArguments(args);
-        UIUtils.swipeFragmentRight(getParentFragmentManager(), edit_course_frag);
+        adminEditCourseFragment.setArguments(args);
+        UIUtils.swipeFragmentRight(getParentFragmentManager(), adminEditCourseFragment);
     }
 
     @Override
     public void onItemClicked(@NonNull Course item) {
-        Fragment edit_course_frag = new AdminEditCourseFragment();
+        Fragment adminEditCourseFragment = new AdminEditCourseFragment();
         Bundle args = new Bundle();
         args.putString("code", item.code);
-        edit_course_frag.setArguments(args);
-        UIUtils.swipeFragmentRight(getParentFragmentManager(), edit_course_frag);
+        adminEditCourseFragment.setArguments(args);
+        UIUtils.swipeFragmentRight(getParentFragmentManager(), adminEditCourseFragment);
     }
 }

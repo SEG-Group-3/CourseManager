@@ -75,9 +75,7 @@ public class InstructorCourseViewFragment extends Fragment {
                 return false;
             }
         });
-        coursesViewModel.getCourses().observe(getViewLifecycleOwner(), courses -> {
-            updateCourses();
-        });
+        coursesViewModel.getCourses().observe(getViewLifecycleOwner(), courses -> updateCourses());
         UIUtils.setToolbarTitle(getActivity(), getString(R.string.courses));
         return v;
     }

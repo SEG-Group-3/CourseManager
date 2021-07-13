@@ -21,11 +21,11 @@ public abstract class GenericCardAdapter<T> extends RecyclerView.Adapter<CardVie
     @NonNull
     public List<CardViewHolder> viewHolders = new ArrayList<>();
 
-    public GenericCardAdapter(List<T> items) {
+    protected GenericCardAdapter(List<T> items) {
         itemList = items;
     }
 
-    public GenericCardAdapter(List<T> items, View.OnClickListener listener) {
+    protected GenericCardAdapter(List<T> items, View.OnClickListener listener) {
         itemList = items;
         onClickListener = listener;
     }

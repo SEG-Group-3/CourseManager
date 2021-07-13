@@ -9,8 +9,8 @@ import com.segg3.coursemanager.shared.dao.CoursesDao;
 import com.segg3.coursemanager.shared.models.Course;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CoursesViewModel extends ViewModel {
     private LiveData<List<Course>> courses;
@@ -23,8 +23,8 @@ public class CoursesViewModel extends ViewModel {
     }
 
 
-    public LiveData<List<Course>> loadCourses(HashMap<String, Course> coursesMap) {
-        MutableLiveData liveData = new MutableLiveData();
+    public LiveData<List<Course>> loadCourses(Map<String, Course> coursesMap) {
+        MutableLiveData<List<Course>> liveData = new MutableLiveData<>();
         liveData.setValue(new ArrayList<>(coursesMap.values()));
         return liveData;
     }

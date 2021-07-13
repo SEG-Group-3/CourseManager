@@ -3,13 +3,9 @@ package com.segg3.coursemanager.shared.models;
 import com.segg3.coursemanager.shared.dao.DataObject;
 
 public class User extends DataObject {
-    public String type = "ERROR";
-    public String password = "ERROR";
-    public String userName = "ERROR";
-
-    public User() {
-
-    }
+    public String type = "type?";
+    public String password = "password?";
+    public String userName = "userName?";
 
     @Override
     public String getPrimaryKey() {

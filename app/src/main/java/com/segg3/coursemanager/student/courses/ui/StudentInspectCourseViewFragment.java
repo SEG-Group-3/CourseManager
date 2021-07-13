@@ -49,43 +49,39 @@ public class StudentInspectCourseViewFragment extends Fragment {
         viewingAll = getArguments().getBoolean("viewingAll", false);
         beingEdited = CoursesDao.getInstance().getCourse(courseCode);
         List<Course> alreadyEnrolled = CoursesDao.getInstance().getStudentCourses(MainActivity.instance.auth.getUser().getValue().userName);
-        enrolling = !alreadyEnrolled.stream().anyMatch(course -> course.code.equals(courseCode));
+        enrolling = alreadyEnrolled.stream().noneMatch(course -> course.code.equals(courseCode));
 
 
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                onCancel();
+                back();
             }
         });
 
         // Make button behaviour weather we are enrolling or dropping a course
         if (enrolling) {
             binding.applyButton.setText("Enroll");
-            binding.applyButton.setOnClickListener(v -> {
-                UIUtils.createYesNoMenu("Enrol course", "Do you want to enrol " + beingEdited.name, getContext(), (dialog, which) -> {
-                    if (CoursesDao.getInstance().joinCourse(currentUser.userName, beingEdited.code)) {
-                        UIUtils.createToast(getContext(), "You have joined " + beingEdited.name);
-                    } else {
-                        UIUtils.createToast(getContext(), "An error has occurred!");
-                    }
+            binding.applyButton.setOnClickListener(v -> UIUtils.createYesNoMenu("Enrol course", "Do you want to enrol " + beingEdited.name, getContext(), (dialog, which) -> {
+                if (CoursesDao.getInstance().joinCourse(currentUser.userName, beingEdited.code)) {
+                    UIUtils.createToast(getContext(), "You have joined " + beingEdited.name);
+                } else {
+                    UIUtils.createToast(getContext(), "An error has occurred!");
+                }
 
-                    UIUtils.swipeFragmentLeft(getParentFragmentManager(), new StudentCourseViewFragment());
-                });
-            });
+                UIUtils.swipeFragmentLeft(getParentFragmentManager(), new StudentCourseViewFragment());
+            }));
 
         } else {
             binding.applyButton.setText("Drop");
-            binding.applyButton.setOnClickListener(v -> {
-                UIUtils.createYesNoMenu("Drop course", "Do you want to drop " + beingEdited.name, getContext(), (dialog, which) -> {
-                    if (CoursesDao.getInstance().leaveCourse(currentUser.userName, beingEdited.code)) {
-                        UIUtils.createToast(getContext(), "You have dropped " + beingEdited.name);
-                    } else {
-                        UIUtils.createToast(getContext(), "An error has occurred!");
-                    }
-                    UIUtils.swipeFragmentLeft(getParentFragmentManager(), new StudentMyCourseViewFragment());
-                });
-            });
+            binding.applyButton.setOnClickListener(v -> UIUtils.createYesNoMenu("Drop course", "Do you want to drop " + beingEdited.name, getContext(), (dialog, which) -> {
+                if (CoursesDao.getInstance().leaveCourse(currentUser.userName, beingEdited.code)) {
+                    UIUtils.createToast(getContext(), "You have dropped " + beingEdited.name);
+                } else {
+                    UIUtils.createToast(getContext(), "An error has occurred!");
+                }
+                back();
+            }));
 
         }
 
@@ -113,10 +109,10 @@ public class StudentInspectCourseViewFragment extends Fragment {
     }
 
     private void onCancel(View v) {
-        onCancel();
+        back();
     }
 
-    private void onCancel() {
+    private void back() {
         if (viewingAll)
             UIUtils.swipeFragmentLeft(getParentFragmentManager(), new StudentCourseViewFragment());
         else

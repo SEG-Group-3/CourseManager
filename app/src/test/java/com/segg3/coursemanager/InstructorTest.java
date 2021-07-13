@@ -1,14 +1,8 @@
 package com.segg3.coursemanager;
 
-import com.google.firebase.FirebaseApp;
 import com.segg3.coursemanager.shared.models.Course;
-import com.segg3.coursemanager.shared.models.Instructor;
 
 import junit.framework.TestCase;
-
-import org.junit.Before;
-
-import static org.junit.Assert.*;
 
 public class InstructorTest extends TestCase {
 //

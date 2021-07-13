@@ -18,6 +18,12 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.segg3.coursemanager.R;
 
 public class UIUtils {
+
+    private UIUtils() {
+        // Class is never instantiated
+        throw new IllegalStateException("Tried to instantiate utility class");
+    }
+
     public static void swapViews(FragmentManager manager, Fragment next) {
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(R.id.fragment_container, next);
@@ -76,9 +82,9 @@ public class UIUtils {
     }
 
 
-    public static void createToast(Context applicationContext, int string_id) {
+    public static void createToast(Context applicationContext, int stringId) {
         Toast.makeText(applicationContext,
-                string_id,
+                stringId,
                 Toast.LENGTH_LONG).show();
     }
 
@@ -86,10 +92,12 @@ public class UIUtils {
         return new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Unused
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Unused
             }
 
             @Override
