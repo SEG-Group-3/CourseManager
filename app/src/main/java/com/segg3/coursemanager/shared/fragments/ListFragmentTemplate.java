@@ -89,6 +89,10 @@ public abstract class ListFragmentTemplate<T, A extends GenericCardAdapter<T>> e
         updateItems(query);
     }
 
+    public void forceUpdate(){
+        updateItems(query);
+    }
+
     private void updateItems(String q) {
         if (currentList == null)
             return;

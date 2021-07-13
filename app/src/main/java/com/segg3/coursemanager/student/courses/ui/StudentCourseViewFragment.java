@@ -2,6 +2,9 @@ package com.segg3.coursemanager.student.courses.ui;
 
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -9,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.segg3.coursemanager.R;
+import com.segg3.coursemanager.instructor.courses.ui.InstructorMyCourseViewFragment;
 import com.segg3.coursemanager.shared.adapters.CourseListAdapter;
 import com.segg3.coursemanager.shared.dao.CoursesDao;
 import com.segg3.coursemanager.shared.fragments.ListFragmentTemplate;
@@ -22,12 +26,12 @@ import java.util.List;
 
 
 public class StudentCourseViewFragment extends ListFragmentTemplate<Course, CourseListAdapter> {
-
+    Menu filterMenu;
     @Override
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         UIUtils.setToolbarTitle(getActivity(), getString(R.string.courses));
-
+        setHasOptionsMenu(true);
 
         List<Course> courseL = new ArrayList<>(CoursesDao.getInstance().getCourses().getValue().values());
         setItems(new CourseListAdapter(courseL));
@@ -47,8 +51,33 @@ public class StudentCourseViewFragment extends ListFragmentTemplate<Course, Cour
     @NonNull
     @Override
     public CourseListAdapter filterQuery(@NonNull String query, @NonNull List<Course> items) {
+        // TODO Filter items at day i+1
+        //        for (int i = 0; i < 7; i++) {
+        //            MenuItem dayItem = filterMenu.getItem(i);
+        //            if(!dayItem.isChecked()){
+        //            }
+        //        }
+
         List<Course> filtered = CoursesDao.getInstance().searchCourse(query);
+
+
         return new CourseListAdapter(filtered);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull @NotNull MenuItem item) {
+        item.setChecked(!item.isChecked());
+        forceUpdate();
+        return true;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull @NotNull Menu menu, @NonNull @NotNull MenuInflater inflater) {
+        inflater.inflate(R.menu.course_filter_menu, menu);
+        filterMenu = menu;
+
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
