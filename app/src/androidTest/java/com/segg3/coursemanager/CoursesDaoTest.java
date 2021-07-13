@@ -1,5 +1,7 @@
 package com.segg3.coursemanager;
 
+import android.util.Log;
+
 import com.segg3.coursemanager.shared.dao.CoursesDao;
 import com.segg3.coursemanager.shared.dao.UsersDao;
 import com.segg3.coursemanager.shared.models.Course;
@@ -11,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.time.DayOfWeek;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
@@ -46,7 +49,7 @@ public class CoursesDaoTest {
         {
             setUpTestUsers(userTypes[i1]);
         }
-       TimeUnit.SECONDS.sleep(5);
+        Thread.sleep(5000);
     }
     private void setUpTestCourse(int count) throws InterruptedException {
         Course c = new Course();
@@ -71,16 +74,65 @@ public class CoursesDaoTest {
     }
 
     @Test
-    public void testPropertyCorrectness()  {
+    public void testEditCourseProperty() throws InterruptedException {
+
+       int capacity = 420;
+       String description = "TEST DESCRIPTION";
+       String name = "TEST NAME";
+       String instructor = userTypes[2]+testUserNameSufix;
 
 
-       /*
-        assertEquals(courseDao.getCourse(CODE).code, CODE);
-        assertEquals(courseDao.getCourse(CODE).name, NAME);
-        assertEquals(courseDao.getCourse(CODE).description, DESCRIPTION);
-        assertEquals(courseDao.getCourse(CODE).capacity, CAPACITY);
-        assertEquals(courseDao.getCourse(CODE).instructor, INSTRUCTOR);
-        assertEquals(courseDao.getCourse(CODE).courseHours.get(0), CHOUR);*/
+       String code = CODEPREFIX + 1;
+
+       Course c = courseDao.getCourse(code);
+
+       c.capacity = capacity;
+       c.description = description;
+       c.name = name;
+       c.instructor = instructor;
+
+       courseDao.editCourse(code, c);
+
+       TimeUnit.SECONDS.sleep(5);
+
+       c = courseDao.getCourse(code);
+
+       assertEquals(capacity, c.capacity);
+       assertEquals(description, c.description);
+       assertEquals(name, c.name);
+       assertEquals(instructor, c.instructor);
+    }
+
+    @Test
+    public void testSearchCourse() throws InterruptedException {
+        List<Course> query = courseDao.searchCourse(CODEPREFIX);
+
+        Log.d("DEBUG TEST",query.size()+"");
+        for(int i1 = 0; i1 < query.size(); i1++)
+        {
+            Log.d("DEBUG TEST",query.get(i1).code);
+        }
+
+        assertEquals(3, query.size());
+
+        query = courseDao.searchCourse(CODEPREFIX+1);
+
+        assertEquals(1, query.size());
+        assertEquals(CODEPREFIX+1, query.get(0).code);
+
+        Course c = courseDao.getCourse(CODEPREFIX+2);
+        c.name = "TEST NAME TEST NAME";
+
+        courseDao.editCourse(c.code, c);
+
+        TimeUnit.SECONDS.sleep(5);
+
+        query = courseDao.searchCourse(CODEPREFIX+1);
+
+        assertEquals(1, query.size());
+        assertEquals("TEST NAME TEST NAME", query.get(0).name);
+
+        TimeUnit.SECONDS.sleep(5);
     }
 
     @Test
@@ -98,6 +150,10 @@ public class CoursesDaoTest {
         {
             assertEquals(userTypes[i1].equals("Student"), courseDao.joinCourse(userTypes[i1] + testUserNameSufix, code));
         }
+
+        c = courseDao.getCourse(code);
+
+        assertTrue(c.enrolled.contains(userTypes[1] + testUserNameSufix));
 
         TimeUnit.SECONDS.sleep(5);
     }
@@ -135,8 +191,16 @@ public class CoursesDaoTest {
         User student = userDao.getUser(userTypes[1]+testUserNameSufix);
 
         assertTrue(courseDao.joinCourse(student.userName, code1));
+        course1 = courseDao.getCourse(code1);
+        assertTrue(course1.enrolled.contains(userTypes[1] + testUserNameSufix));
+
         assertTrue(courseDao.joinCourse(student.userName, code2));
+        course2 = courseDao.getCourse(code2);
+        assertTrue(course2.enrolled.contains(userTypes[1] + testUserNameSufix));
+
         assertFalse(courseDao.joinCourse(student.userName, code3));
+        course3 = courseDao.getCourse(code3);
+        assertFalse(course3.enrolled.contains(userTypes[1] + testUserNameSufix));
 
         TimeUnit.SECONDS.sleep(10);
     }
@@ -166,25 +230,55 @@ public class CoursesDaoTest {
     }
 
     @Test
-    public void assignInstructorUnassignInstructor() throws InterruptedException {
-        String code = CODEPREFIX + 0;
+    public void testAssignInstructor() throws InterruptedException {
+        String code = CODEPREFIX + 1;
         assertTrue(courseDao.assignInstructor(userTypes[2] + testUserNameSufix, code));
 
-        TimeUnit.SECONDS.sleep(1);
+        TimeUnit.SECONDS.sleep(5);
+    }
+
+    @Test
+    public void testUnassignInstructor() throws InterruptedException {
+        String code = CODEPREFIX + 1;
+        String instructor = userTypes[2] + testUserNameSufix;
+        courseDao.assignInstructor(instructor,code);
+
+        TimeUnit.SECONDS.sleep(5);
+
         courseDao.unAssignInstructor(code);
 
         assertEquals("", courseDao.getCourse(code).instructor);
     }
 
+    @Test
+    public void testGetStudents() throws InterruptedException {
+        String code = CODEPREFIX + 1;
 
+        String studentUserName = userTypes[1]+testUserNameSufix;
+
+        Course c = courseDao.getCourse(code);
+
+
+        c.capacity = 1;
+
+        courseDao.editCourse(code, c);
+
+        courseDao.joinCourse(studentUserName, code);
+
+        TimeUnit.SECONDS.sleep(5);
+
+        c = courseDao.getCourse(code);
+
+        assertEquals(1, c.registeredStudents);
+        assertEquals(1, c.enrolled.size());
+        assertTrue(c.enrolled.contains(studentUserName));
+    }
 
     @After
-    public void cleanUp() throws InterruptedException {
-       TimeUnit.SECONDS.sleep(1);
+    public void cleanUp() {
         for(int i1 = 1; i1 <= 3; i1++) {
             removeTestCourse(i1);
         }
-
 
         for(int i1 = 0; i1 < userTypes.length; i1++)
         {
