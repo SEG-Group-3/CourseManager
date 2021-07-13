@@ -6,16 +6,30 @@ import java.util.List;
 public abstract class Filter <E> {
     public abstract List<E> search(Object query);
 
-    public static List<Object> union (List<Object> group1, List<Object> group2)
+    public List<E> convert(List<Object> list)
     {
+        List<E> tmp = new ArrayList<>();
+        for(int i1 = 0; i1 < list.size(); i1++)
+        {
+            tmp.add((E) list.get(i1));
+        }
+
+        return tmp;
+    }
+
+    public static List<Object> union (Object group1, Object group2)
+    {
+        List<Object> a = (List<Object>) group1;
+        List<Object> b = (List<Object>) group2;
+
         List<Object> tmp = new ArrayList<>();
 
-        tmp.addAll(group1);
-        for(int i1 = 0; i1 < group2.size(); i1++)
+        tmp.addAll(a);
+        for(int i1 = 0; i1 < b.size(); i1++)
         {
             if(!tmp.contains(group2))
             {
-                tmp.add(group2.get(i1));
+                tmp.add(b.get(i1));
             }
         }
 
