@@ -47,11 +47,7 @@ public class AdminUsersViewFragment extends ListFragmentTemplate<User, UserListA
     @NonNull
     @Override
     public UserListAdapter filterQuery(@NonNull String query, @NonNull List<User> items) {
-        List<User> filtered = new ArrayList<>();
-        for (User u : items)
-            if (u.userName.toLowerCase().contains(query.toLowerCase()) || u.type.toLowerCase().contains(query.toLowerCase()))
-                filtered.add(u);
-
+        List<User> filtered = UsersDao.getInstance().searchUsers(query);
         return new UserListAdapter(filtered);
     }
 

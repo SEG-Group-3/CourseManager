@@ -53,12 +53,7 @@ public class AdminCourseViewFragment extends ListFragmentTemplate<Course, Course
     @NonNull
     @Override
     public CourseListAdapter filterQuery(@NonNull String query, @NonNull List<Course> items) {
-        List<Course> filtered = new ArrayList<>();
-        for (Course c : items)
-            if (c.name.toLowerCase().contains(query.toLowerCase()) || c.code.toLowerCase().contains(query.toLowerCase()) ||
-                    c.instructor.toLowerCase().contains(query.toLowerCase()))
-                filtered.add(c);
-
+        List<Course> filtered = CoursesDao.getInstance().searchCourse(query.toLowerCase());
         return new CourseListAdapter(filtered);
     }
 
