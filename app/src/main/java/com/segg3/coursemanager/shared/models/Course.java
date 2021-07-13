@@ -18,8 +18,6 @@ public class Course extends DataObject {
     public List<String> enrolled = new ArrayList<>();
 
     public Course(){
-        courseHours.add("1|10:00|30");
-        courseHours.add("2|16:00|50");
         this.id = "";
     }
 
