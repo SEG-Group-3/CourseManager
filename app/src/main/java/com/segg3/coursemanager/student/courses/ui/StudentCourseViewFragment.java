@@ -15,6 +15,7 @@ import com.segg3.coursemanager.R;
 import com.segg3.coursemanager.shared.adapters.CourseListAdapter;
 import com.segg3.coursemanager.shared.dao.CoursesDao;
 import com.segg3.coursemanager.shared.filter.DayOfWeekFilter;
+import com.segg3.coursemanager.shared.filter.InstructorFilter;
 import com.segg3.coursemanager.shared.fragments.ListFragmentTemplate;
 import com.segg3.coursemanager.shared.models.Course;
 import com.segg3.coursemanager.shared.utils.UIUtils;
@@ -71,9 +72,10 @@ public class StudentCourseViewFragment extends ListFragmentTemplate<Course, Cour
         List<Course> filtered = CoursesDao.getInstance().searchCourse(query);
 
         DayOfWeekFilter dayOfWeekFilter = new DayOfWeekFilter();
+        InstructorFilter instructorFilter = new InstructorFilter();
 
         filtered = dayOfWeekFilter.search(dayOfWeekQeury, filtered);
-
+        filtered = instructorFilter.search(Boolean.TRUE, filtered);
         return new CourseListAdapter(filtered);
     }
 
