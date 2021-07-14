@@ -36,6 +36,11 @@ public class DayOfWeekFilter extends Filter<Course> {
 
             check = true;
 
+            if(c.courseHours.size() == 0)
+            {
+                check = false;
+            }
+
             for(int i2 = 0; i2 < c.courseHours.size(); i2++)
             {
                 courseHours = new CourseHours(c.courseHours.get(i2));
