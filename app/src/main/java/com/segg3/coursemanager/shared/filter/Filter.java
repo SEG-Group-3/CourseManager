@@ -50,10 +50,10 @@ public abstract class Filter <E> {
 
     public List<E> complement(List<E> a, List<E> surrounding)
     {
-        return diffrence(surrounding, a);
+        return difference(surrounding, a);
     }
 
-    public List<E> diffrence(List<E> a, List<E> b)
+    public List<E> difference(List<E> a, List<E> b)
     {
         List<E> tmp = new ArrayList<>();
 
@@ -68,10 +68,10 @@ public abstract class Filter <E> {
         return tmp;
     }
 
-    public List<E> symmetricDiffrence(List<E> group1, List<E> group2)
+    public List<E> symmetricDifference(List<E> group1, List<E> group2)
     {
-        List<E> tmp1 = this.diffrence(group1,group2);
-        List<E> tmp2 = this.diffrence(group2, group1);
+        List<E> tmp1 = this.difference(group1,group2);
+        List<E> tmp2 = this.difference(group2, group1);
 
         return this.union(tmp1, tmp2);
     }
